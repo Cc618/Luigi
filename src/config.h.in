@@ -1,0 +1,3 @@
+// Luigi version
+#define LUIGI_VERSION_MAJOR @luigi_VERSION_MAJOR@
+#define LUIGI_VERSION_MINOR @luigi_VERSION_MINOR@
