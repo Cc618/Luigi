@@ -1,3 +1,7 @@
 // Luigi version
+
+#include <string>
+
 #define LUIGI_VERSION_MAJOR @luigi_VERSION_MAJOR@
 #define LUIGI_VERSION_MINOR @luigi_VERSION_MINOR@
+#define LUIGI_VERSION_STR (std::to_string(LUIGI_VERSION_MAJOR) + "." + std::to_string(LUIGI_VERSION_MINOR))

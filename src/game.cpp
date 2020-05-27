@@ -44,14 +44,23 @@ void Game::start(const std::string& title, int width, int height, float fps)
         // clear the buffers
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // draw...
-        glBegin(GL_TRIANGLES);
-        glVertex2f(0, 0);
-        glVertex2f(1, 0);
-        glVertex2f(1, 1);
-        glEnd();
+        // TODO : When time, dt
+        step(0);
 
         // end the current frame (internally swaps the front and back buffers)
         window.display();
     }
+}
+
+#include <iostream>
+void Game::step(float dt)
+{
+    // draw...
+    glBegin(GL_TRIANGLES);
+    glVertex2f(0, 0);
+    glVertex2f(1, 0);
+    glVertex2f(1, 1);
+    glEnd();
+
+    std::cout << "Frame\n";
 }

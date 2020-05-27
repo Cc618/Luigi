@@ -24,7 +24,7 @@ cd bin
 python3
 import luigi
 luigi.version
-> 'Luigi <version>'
+> '<luigi version>'
 ```
 
 ## Dependencies
