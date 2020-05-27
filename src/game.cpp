@@ -1,49 +1,11 @@
+#include "game.h"
+
 #include <SFML/Window.hpp>
 #include <SFML/OpenGL.hpp>
 
-
-
-
-
-
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
-#include <vector>
-#include <iostream>
-
-using namespace std;
-
-// ----------------
-// Regular C++ code
-// ----------------
-
-// multiply all entries by 2.0
-// input:  std::vector ([...]) (read only)
-// output: std::vector ([...]) (new copy)
-std::vector<double> modify(std::vector<double>& input)
+void Game::start(const std::string& title, int width, int height, float fps)
 {
-  input[0] = 42;
-  return input;
-}
-
-class Test
-{
-public:
-  Test(int i)
-    : i(i)
-  {}
-
-  void p()
-  {
-    cout << i << endl;
-  }
-
-  int i;
-};
-
-void test()
-{
-sf::ContextSettings settings;
+    sf::ContextSettings settings;
     // settings.depthBits = 24;
     // settings.stencilBits = 8;
     // settings.antialiasingLevel = 4;
@@ -51,7 +13,7 @@ sf::ContextSettings settings;
     // settings.minorVersion = 0;
     
     // create the window
-    sf::Window window(sf::VideoMode(800, 600), "OpenGL", sf::Style::Default, settings);
+    sf::Window window(sf::VideoMode(width, height), title, sf::Style::Default, settings);
     window.setVerticalSyncEnabled(true);
 
     // activate the window
@@ -92,23 +54,4 @@ sf::ContextSettings settings;
         // end the current frame (internally swaps the front and back buffers)
         window.display();
     }
-}
-
-// ----------------
-// Python interface
-// ----------------
-
-namespace py = pybind11;
-
-PYBIND11_MODULE(luigi,m)
-{
-  // m.doc() = "pybind11 example plugin";
-
-  m.def("modify", &modify, "Multiply all entries of a list by 2.0");
-  m.def("test", &test, "tst");
-
-  py::class_<Test>(m, "Test")
-    .def_readwrite("i", &Test::i)
-    .def(py::init<int>())
-    .def("p", &Test::p);
 }
