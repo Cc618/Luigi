@@ -1,6 +1,7 @@
 #include <pybind11/pybind11.h>
+#include <pybind11/functional.h>
+#include <pybind11/stl.h>
 #include "luigi"
-
 namespace py = pybind11;
 
 #include <iostream>
@@ -13,6 +14,7 @@ PYBIND11_MODULE(luigi, m)
 
     // --- Entity --- //
     py::class_<Entity>(m, "Entity")
+        .def(py::init<>())
         .doc() = "An entity is the most basic (abstract) type for game objects"
     ;
 
@@ -26,10 +28,20 @@ PYBIND11_MODULE(luigi, m)
         .doc() = "Handles the window and the game environment"
     ;
 
-    // // --- Layer --- //
-    // py::class_<Game>(m, "Layer")
-    //     .def(py::init<>())
-    //     .def("run", &Game::run) // TODO : Args
-    //     .doc() = "Handles the window and the game environment"
-    // ;
+    // --- Layer --- //
+    py::class_<Layer, Entity>(m, "Layer")
+        .def(py::init<const string&, const list<Entity*>&>())
+        .def_readwrite("name", &Layer::name)
+        .def_readwrite("z", &Layer::z)
+        .doc() = "Gathers entities with same z index"
+    ;
+
+    // --- Scene --- //
+    py::class_<Scene, Entity>(m, "Scene")
+        // TODO :
+        // .def_readonly_static("current", &Scene::current)
+        .def(py::init<const string&, const list<Layer*>&>())
+        .def_readwrite("name", &Scene::name)
+        .doc() = "A screen with multiple layers of entities"
+    ;
 }

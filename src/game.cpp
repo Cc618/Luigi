@@ -18,7 +18,7 @@ Game::Game()
     instance = this;
 }
 
-void Game::run(const string& title, int width, int height, float fps)
+void Game::run(const std::function<Scene*()>& first_scene_factory, const string& title, int width, int height, float fps)
 {
     Error::check(fps > 0.f, "FPS must be greater than 0");
 
@@ -37,7 +37,10 @@ void Game::run(const string& title, int width, int height, float fps)
     win.setVerticalSyncEnabled(true);
     win.setActive(true);
 
-    root = start();
+    // Init
+    start();
+    Scene::current = first_scene_factory();
+    Error::check(Scene::current != nullptr, "The first scene can't be None");
 
     bool on_game = true;
     auto clock = Clock();
@@ -81,25 +84,25 @@ void Game::run(const string& title, int width, int height, float fps)
     }
 
     stop();
-
-    delete root;
 }
 
-Entity *Game::start()
+Scene *Game::start()
 {
-    return new Entity();
+    // TODO : Start all scenes
+    cout << "OK\n";
+    return new Scene("main");
 }
 
 void Game::update(float dt)
 {
-    root->update(dt);
+    Scene::current->update(dt);
 }
 
 void Game::draw()
 {
-    root->draw();
+    Scene::current->draw();
 
-    // draw...
+    // TODO : rm
     glBegin(GL_TRIANGLES);
     glVertex2f(0, 0);
     glVertex2f(1, 0);
@@ -109,5 +112,7 @@ void Game::draw()
 
 void Game::stop()
 {
+    Scene::current->stop();
 
+    // TODO : Stop all scenes and delete after
 }

@@ -10,10 +10,16 @@ public:
     virtual ~Entity() = default;
 
 public:
+    virtual void start()
+    {}
+
     // Called each frame
     virtual void update(float dt)
     {}
     virtual void draw()
+    {}
+
+    virtual void stop()
     {}
 
 public:

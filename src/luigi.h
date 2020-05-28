@@ -2,3 +2,4 @@
 #include "entity.h"
 #include "error.h"
 #include "game.h"
+#include "scene.h"
