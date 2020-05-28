@@ -11,6 +11,11 @@ PYBIND11_MODULE(luigi, m)
     m.doc() = "Luigi 2D game engine";
     m.attr("version") = LUIGI_VERSION_STR;
 
+    // --- Entity --- //
+    py::class_<Entity>(m, "Entity")
+        .doc() = "An entity is the most basic (abstract) type for game objects"
+    ;
+
     // --- Error --- //
     py::register_exception<Error>(m, "Error");
 
@@ -20,4 +25,11 @@ PYBIND11_MODULE(luigi, m)
         .def("run", &Game::run) // TODO : Args
         .doc() = "Handles the window and the game environment"
     ;
+
+    // // --- Layer --- //
+    // py::class_<Game>(m, "Layer")
+    //     .def(py::init<>())
+    //     .def("run", &Game::run) // TODO : Args
+    //     .doc() = "Handles the window and the game environment"
+    // ;
 }

@@ -3,6 +3,7 @@
 // Handles the window and the game environment
 
 #include <string>
+#include "entity.h"
 
 class Game
 {
@@ -19,7 +20,7 @@ public:
 
 private:
     // After window creation
-    void start();
+    Entity *start();
     
     // Called each frame
     void update(float dt);
@@ -27,4 +28,8 @@ private:
 
     // Before window destruction
     void stop();
+
+private:
+    // The root of the entity tree
+    Entity *root;
 };

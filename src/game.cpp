@@ -37,58 +37,68 @@ void Game::run(const string& title, int width, int height, float fps)
     win.setVerticalSyncEnabled(true);
     win.setActive(true);
 
-    start();
+    root = start();
 
     bool on_game = true;
     auto clock = Clock();
 
     // Main loop
-    while (on_game)
+    try
     {
-        Event event;
-        while (win.pollEvent(event))
+        while (on_game)
         {
-            if (event.type == Event::Closed)
-                on_game = false;
-            else if (event.type == Event::Resized)
-                glViewport(0, 0, event.size.width, event.size.height);
+            Event event;
+            while (win.pollEvent(event))
+            {
+                if (event.type == Event::Closed)
+                    on_game = false;
+                else if (event.type == Event::Resized)
+                    glViewport(0, 0, event.size.width, event.size.height);
+            }
+
+            // Handle time
+            // Delta time in seconds
+            float dt = clock.getElapsedTime().asSeconds();
+
+            // Wait for next frame
+            if (dt < target_dt)
+            {
+                sleep(seconds(target_dt - dt));
+                dt = target_dt;
+            }
+
+            clock.restart();
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            update(dt);
+            draw();
+
+            win.display();
         }
-
-        // Handle time
-        // Delta time in seconds
-        float dt = clock.getElapsedTime().asSeconds();
-
-        // Wait for next frame
-        if (dt < target_dt)
-        {
-            sleep(seconds(target_dt - dt));
-            dt = target_dt;
-        }
-
-        clock.restart();
-
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        update(dt);
-        draw();
-
-        win.display();
+    } catch (Error& e) {
+        cerr << "Uncaught error: " << e.what() << endl;
     }
 
     stop();
+
+    delete root;
 }
 
-void Game::start()
+Entity *Game::start()
 {
-
+    return new Entity();
 }
 
 void Game::update(float dt)
 {
+    root->update(dt);
 }
 
 void Game::draw()
 {
+    root->draw();
+
     // draw...
     glBegin(GL_TRIANGLES);
     glVertex2f(0, 0);
