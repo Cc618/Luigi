@@ -7,7 +7,10 @@
 class Game
 {
 public:
-    Game() = default;
+    static Game *instance;
+
+public:
+    Game();
     virtual ~Game() = default;
 
 public:
@@ -16,5 +19,6 @@ public:
 
 private:
     // Called each frame
-    void step(float dt);
+    void update(float dt);
+    void draw();
 };
