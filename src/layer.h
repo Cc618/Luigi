@@ -9,7 +9,7 @@
 class Layer : public Entity
 {
 public:
-    Layer(const std::string& name, const std::list<Entity*>& entities={}, int z=0);
+    Layer(const std::string& name, int z=0);
     virtual ~Layer();
     
 public:

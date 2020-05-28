@@ -2,10 +2,10 @@
 #include <pybind11/functional.h>
 #include <pybind11/stl.h>
 #include "luigi"
+
+using namespace std;
 namespace py = pybind11;
 
-#include <iostream>
-using namespace std;
 PYBIND11_MODULE(luigi, m)
 {
     // --- Module --- //
@@ -30,7 +30,7 @@ PYBIND11_MODULE(luigi, m)
 
     // --- Layer --- //
     py::class_<Layer, Entity>(m, "Layer")
-        .def(py::init<const string&, const list<Entity*>&>())
+        .def(py::init<const string&, int>())
         .def_readwrite("name", &Layer::name)
         .def_readwrite("z", &Layer::z)
         .doc() = "Gathers entities with same z index"
@@ -40,7 +40,7 @@ PYBIND11_MODULE(luigi, m)
     py::class_<Scene, Entity>(m, "Scene")
         // TODO :
         // .def_readonly_static("current", &Scene::current)
-        .def(py::init<const string&, const list<Layer*>&>())
+        .def(py::init<const string&>())
         .def_readwrite("name", &Scene::name)
         .doc() = "A screen with multiple layers of entities"
     ;

@@ -16,6 +16,7 @@ public:
     // Called each frame
     virtual void update(float dt)
     {}
+
     virtual void draw()
     {}
 

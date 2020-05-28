@@ -1,7 +1,7 @@
 #include "layer.h"
 
-Layer::Layer(const std::string& name, const std::list<Entity*>& entities, int z)
-    : name(name), entities(entities), z(z)
+Layer::Layer(const std::string& name, int z)
+    : name(name), z(z)
 {}
 
 Layer::~Layer()

@@ -13,7 +13,7 @@ public:
     static Scene *current;
 
 public:
-    Scene(const std::string& name, const std::list<Layer*>& layers={ new Layer("main") });
+    Scene(const std::string& name);
     virtual ~Scene();
 
 public:

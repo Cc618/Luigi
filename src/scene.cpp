@@ -2,8 +2,8 @@
 
 Scene *Scene::current = nullptr;
 
-Scene::Scene(const std::string &name, const std::list<Layer*>& layers)
-    : name(name), layers(layers)
+Scene::Scene(const std::string &name)
+    : name(name)
 {}
 
 Scene::~Scene()

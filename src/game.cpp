@@ -18,7 +18,7 @@ Game::Game()
     instance = this;
 }
 
-void Game::run(const std::function<Scene*()>& first_scene_factory, const string& title, int width, int height, float fps)
+void Game::run(const std::function<Scene*()> &first_scene_factory, const string &title, int width, int height, float fps)
 {
     Error::check(fps > 0.f, "FPS must be greater than 0");
 
@@ -39,7 +39,9 @@ void Game::run(const std::function<Scene*()>& first_scene_factory, const string&
 
     // Init
     start();
-    Scene::current = first_scene_factory();
+    // Scene::current = new Scene("MAIN", {});
+    Scene::current = new Scene(*first_scene_factory());
+    cout << "Scene " << Scene::current->name << endl;
     Error::check(Scene::current != nullptr, "The first scene can't be None");
 
     bool on_game = true;
@@ -50,6 +52,7 @@ void Game::run(const std::function<Scene*()>& first_scene_factory, const string&
     {
         while (on_game)
         {
+
             Event event;
             while (win.pollEvent(event))
             {
@@ -79,27 +82,34 @@ void Game::run(const std::function<Scene*()>& first_scene_factory, const string&
 
             win.display();
         }
-    } catch (Error& e) {
-        cerr << "Uncaught error: " << e.what() << endl;
+    }
+    catch (Error &e)
+    {
+        cerr << "Uncaught luigi error: " << e.what() << endl;
+    }
+    catch (std::exception &e)
+    {
+        cerr << "Uncaught c++ error: " << e.what() << endl;
     }
 
     stop();
 }
 
-Scene *Game::start()
+void Game::start()
 {
     // TODO : Start all scenes
-    cout << "OK\n";
-    return new Scene("main");
+    cout << "start\n";
 }
 
 void Game::update(float dt)
 {
+    cout << "update " << Scene::current << " " << Scene::current->name << endl;
     Scene::current->update(dt);
 }
 
 void Game::draw()
 {
+    cout << "draw\n";
     Scene::current->draw();
 
     // TODO : rm

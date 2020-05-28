@@ -22,7 +22,7 @@ public:
 private:
     // After window creation
     // Returns the current scene
-    Scene *start();
+    void start();
     
     // Called each frame
     void update(float dt);
