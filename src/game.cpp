@@ -6,6 +6,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <SFML/OpenGL.hpp>
+#include "error.h"
 
 using namespace sf;
 using namespace std;
@@ -17,8 +18,10 @@ Game::Game()
     instance = this;
 }
 
-void Game::start(const string& title, int width, int height, float fps)
+void Game::run(const string& title, int width, int height, float fps)
 {
+    Error::check(fps > 0.f, "FPS must be greater than 0");
+
     // Target delta time
     float target_dt = 1.f / fps;
 
