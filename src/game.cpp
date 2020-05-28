@@ -37,7 +37,7 @@ void Game::run(const string& title, int width, int height, float fps)
     win.setVerticalSyncEnabled(true);
     win.setActive(true);
 
-    // TODO : Load
+    start();
 
     bool on_game = true;
     auto clock = Clock();
@@ -75,7 +75,12 @@ void Game::run(const string& title, int width, int height, float fps)
         win.display();
     }
 
-    // TODO : Stop
+    stop();
+}
+
+void Game::start()
+{
+
 }
 
 void Game::update(float dt)
@@ -90,4 +95,9 @@ void Game::draw()
     glVertex2f(1, 0);
     glVertex2f(1, 1);
     glEnd();
+}
+
+void Game::stop()
+{
+
 }
