@@ -7,37 +7,37 @@
 #include "entity.h"
 #include "layer.h"
 
-// TMP
-#include <iostream>
-#include <vector>
-class TstScene
-{
-public:
-    TstScene()
-    {
-        std::cout << "TstScene()\n";
-    }
-    ~TstScene()
-    {
-        std::cout << "~TstScene()\n";
-    }
+// // TMP
+// #include <iostream>
+// #include <vector>
+// class TstScene
+// {
+// public:
+//     TstScene()
+//     {
+//         std::cout << "TstScene()\n";
+//     }
+//     ~TstScene()
+//     {
+//         std::cout << "~TstScene()\n";
+//     }
 
-    void add(Entity *e)
-    {
-        std::cout << "TstScene::add\n";
-        entities.push_back(e);
-    }
+//     void add(Entity *e)
+//     {
+//         std::cout << "TstScene::add\n";
+//         entities.push_back(e);
+//     }
 
-    void update(float dt)
-    {
-        std::cout << "TstScene::update\n";
+//     void update(float dt)
+//     {
+//         std::cout << "TstScene::update\n";
 
-        for (auto e : entities)
-            e->update(dt);
-    }
+//         for (auto e : entities)
+//             e->update(dt);
+//     }
 
-    std::vector<Entity*> entities;
-};
+//     std::vector<Entity*> entities;
+// };
 
 
 class Scene : public Entity
@@ -45,8 +45,17 @@ class Scene : public Entity
 public:
     static Scene *current;
 
+    // TODO : Map ?
+    static std::list<Scene*> instances;
+
 public:
-    Scene(const std::string& name);
+    // Creates a new scene and registers it
+    static Scene *create(const std::string& name);
+
+    // Find a scene by name
+    static Scene *find(const std::string& name);
+
+public:
     virtual ~Scene();
 
 public:
@@ -56,14 +65,15 @@ public:
     virtual void stop() override;
 
 public:
-    // TODO : Layer arg
     void add(Entity *e);
-    // TODO :
-    // void add_layer(Layer *l);
+
+    // Like Game::set_layer
+    void set_layer(const std::string& name, bool create=false, int z=0);
 
 public:
     std::string name;
+    Layer *selected_layer;
+    std::list<Layer*> layers;
 
 private:
-    std::list<Layer*> layers;
-};
+    Scene(const std::string& name);};

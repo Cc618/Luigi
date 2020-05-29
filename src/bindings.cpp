@@ -24,33 +24,28 @@ PYBIND11_MODULE(luigi, m)
     // --- Game --- //
     py::class_<Game>(m, "Game")
         .def(py::init<>())
-        .def("run", &Game::run) // TODO : Args
-        // TMP
-        .def("add_entity", &Game::add_entity, py::keep_alive<1, 2>())
+        // TODO : Args
+        .def("run", &Game::run) 
+        .def("set_scene", &Game::set_scene)
+        .def("set_layer", &Game::set_layer)
+        .def("add", &Game::add, py::keep_alive<1, 2>())
         .doc() = "Handles the window and the game environment"
     ;
 
-    // --- Layer --- //
-    py::class_<Layer, Entity>(m, "Layer")
-        .def(py::init<const string&, int>())
-        .def_readwrite("name", &Layer::name)
-        .def_readwrite("z", &Layer::z)
-        .def("add", &Layer::add, py::arg("entity"), py::keep_alive<1, 2>())
-        .doc() = "Gathers entities with same z index"
-    ;
+    // // --- Layer --- //
+    // py::class_<Layer, Entity>(m, "Layer")
+    //     .def(py::init<const string&, int>())
+    //     .def_readwrite("name", &Layer::name)
+    //     .def_readwrite("z", &Layer::z)
+    //     .def("add", &Layer::add, py::arg("entity"), py::keep_alive<1, 2>())
+    //     .doc() = "Gathers entities with same z index"
+    // ;
 
-    // --- Scene --- //
-    py::class_<Scene, Entity>(m, "Scene")
-        .def(py::init<const string&>())
-        .def("add", &Scene::add, py::arg("entity"), py::keep_alive<1, 2>())
-        .def_readwrite("name", &Scene::name)
-        .doc() = "A screen with multiple layers of entities"
-    ;
-    
-    // TMP
-    py::class_<TstScene>(m, "TstScene")
-        .def(py::init<>())
-        // .def("add", &TstScene::add, py::arg("entity"), py::keep_alive<1, 2>())
-        .def("add", &TstScene::add, py::keep_alive<1, 2>())
-    ;
+    // // --- Scene --- //
+    // py::class_<Scene, Entity>(m, "Scene")
+    //     .def(py::init<const string&>())
+    //     .def("add", &Scene::add, py::arg("entity"), py::keep_alive<1, 2>())
+    //     .def_readwrite("name", &Scene::name)
+    //     .doc() = "A screen with multiple layers of entities"
+    // ;
 }

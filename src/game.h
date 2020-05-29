@@ -13,19 +13,32 @@ public:
 
 public:
     Game();
-    virtual ~Game() = default;
+    virtual ~Game();
 
 public:
     // TODO : Use config (for fullscreen...)
-    void run(const std::function<void (TstScene*)>& first_scene_factory, const std::string& title, int width, int height, float fps=60);
+    // Construct is called to create scenes, layers and
+    void run(const std::function<void ()>& construct, const std::string& title, int width, int height, float fps=60);
 
-    void add_entity(Entity *e);
+    // Selects the current scene to add entities
+    // * Used in the construct function pointer in run
+    // * When a scene is changed, the next scene is automatically selected
+    void set_scene(const std::string& name, bool create=false);
+
+    // Like set_scene but for a layer within the current selected scene
+    // * z is used only for creation
+    void set_layer(const std::string& name, bool create=false, int index=0);
+
+    // Adds an entity to the target scene and layer
+    void add(Entity *e);
+
+    // TODO : change_scene
 
 private:
     // After window creation
     // Returns the current scene
     void start();
-    
+
     // Called each frame
     void update(float dt);
     void draw();
@@ -33,6 +46,7 @@ private:
     // Before window destruction
     void stop();
 
-    // TMP + delete
-    TstScene *scn;
+private:
+    // Selections
+    Scene *selected_scene;
 };

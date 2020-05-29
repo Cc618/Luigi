@@ -15,10 +15,17 @@ Game *Game::instance = nullptr;
 
 Game::Game()
 {
+    Error::check(instance == nullptr, "Only one game can be created");
+
     instance = this;
 }
 
-void Game::run(const std::function<void (TstScene*)>& first_scene_factory, const string &title, int width, int height, float fps)
+Game::~Game()
+{
+    // TODO : Reset static attributes
+}
+
+void Game::run(const std::function<void ()>& construct, const string &title, int width, int height, float fps)
 {
     Error::check(fps > 0.f, "FPS must be greater than 0");
 
@@ -39,12 +46,16 @@ void Game::run(const std::function<void (TstScene*)>& first_scene_factory, const
 
     // Init
     start();
-    // Scene::current = new Scene("main");
-    // first_scene_factory(Scene::current);
-    // cout << "Scene " << Scene::current->name << endl;
-    // Error::check(Scene::current != nullptr, "The first scene can't be None");
-    scn = new TstScene();
-    first_scene_factory(scn);
+    construct();
+
+    // Set first scene
+    Error::check(Scene::instances.size() > 0, "No scene created");
+    Scene::current = *Scene::instances.begin();
+    // TMP
+    cout << Scene::instances.size() << " scenes\n";
+    cout << selected_scene->name << " main scene\n";
+    cout << selected_scene->layers.size() << " layers\n";
+    cout << selected_scene->selected_layer->name << " selected layer\n";
 
     bool on_game = true;
     auto clock = Clock();
@@ -105,8 +116,8 @@ void Game::start()
 
 void Game::update(float dt)
 {
-    cout << "Game::update\n";
-    scn->update(dt);
+    // cout << "Game::update\n";
+    // scn->update(dt);
     // Scene::current->update(dt);
 }
 
@@ -131,7 +142,23 @@ void Game::stop()
     // TODO : Stop all scenes and delete after
 }
 
-void Game::add_entity(Entity *e)
+void Game::set_scene(const std::string& name, bool create)
 {
-    scn->add(e);
+    if (create)
+        selected_scene = Scene::create(name);
+    else
+        selected_scene = Scene::find(name);
+}
+
+void Game::set_layer(const std::string& name, bool create, int z)
+{
+    Error::check(selected_scene != nullptr, "No scene created, create a scene before creating layers");
+
+    selected_scene->set_layer(name, create, z);
+}
+
+void Game::add(Entity *e)
+{
+    Error::check(selected_scene != nullptr, "No scene created, create a scene and a layer before adding entities");
+    selected_scene->add(e);
 }
