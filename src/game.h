@@ -17,7 +17,9 @@ public:
 
 public:
     // TODO : Use config (for fullscreen...)
-    void run(const std::function<Scene*()>& first_scene_factory, const std::string& title, int width, int height, float fps=60);
+    void run(const std::function<void (TstScene*)>& first_scene_factory, const std::string& title, int width, int height, float fps=60);
+
+    void add_entity(Entity *e);
 
 private:
     // After window creation
@@ -30,4 +32,7 @@ private:
 
     // Before window destruction
     void stop();
+
+    // TMP + delete
+    TstScene *scn;
 };

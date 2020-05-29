@@ -19,6 +19,9 @@ public:
     virtual void stop() override;
 
 public:
+    void add(Entity *e);
+
+public:
     std::string name;
     // To draw over layers with lesser z indices
     int z;

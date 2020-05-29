@@ -18,7 +18,7 @@ Game::Game()
     instance = this;
 }
 
-void Game::run(const std::function<Scene*()> &first_scene_factory, const string &title, int width, int height, float fps)
+void Game::run(const std::function<void (TstScene*)>& first_scene_factory, const string &title, int width, int height, float fps)
 {
     Error::check(fps > 0.f, "FPS must be greater than 0");
 
@@ -39,10 +39,12 @@ void Game::run(const std::function<Scene*()> &first_scene_factory, const string 
 
     // Init
     start();
-    // Scene::current = new Scene("MAIN", {});
-    Scene::current = new Scene(*first_scene_factory());
-    cout << "Scene " << Scene::current->name << endl;
-    Error::check(Scene::current != nullptr, "The first scene can't be None");
+    // Scene::current = new Scene("main");
+    // first_scene_factory(Scene::current);
+    // cout << "Scene " << Scene::current->name << endl;
+    // Error::check(Scene::current != nullptr, "The first scene can't be None");
+    scn = new TstScene();
+    first_scene_factory(scn);
 
     bool on_game = true;
     auto clock = Clock();
@@ -52,7 +54,6 @@ void Game::run(const std::function<Scene*()> &first_scene_factory, const string 
     {
         while (on_game)
         {
-
             Event event;
             while (win.pollEvent(event))
             {
@@ -98,31 +99,39 @@ void Game::run(const std::function<Scene*()> &first_scene_factory, const string 
 void Game::start()
 {
     // TODO : Start all scenes
-    cout << "start\n";
+    // TMP
+    // cout << "Game::start\n";
 }
 
 void Game::update(float dt)
 {
-    cout << "update " << Scene::current << " " << Scene::current->name << endl;
-    Scene::current->update(dt);
+    cout << "Game::update\n";
+    scn->update(dt);
+    // Scene::current->update(dt);
 }
 
 void Game::draw()
 {
-    cout << "draw\n";
-    Scene::current->draw();
+    // cout << "Game::draw\n";
+    // Scene::current->draw();
 
-    // TODO : rm
-    glBegin(GL_TRIANGLES);
-    glVertex2f(0, 0);
-    glVertex2f(1, 0);
-    glVertex2f(1, 1);
-    glEnd();
+    // // TODO : rm
+    // glBegin(GL_TRIANGLES);
+    // glVertex2f(0, 0);
+    // glVertex2f(1, 0);
+    // glVertex2f(1, 1);
+    // glEnd();
 }
 
 void Game::stop()
 {
-    Scene::current->stop();
+    // TMP
+    // Scene::current->stop();
 
     // TODO : Stop all scenes and delete after
+}
+
+void Game::add_entity(Entity *e)
+{
+    scn->add(e);
 }
