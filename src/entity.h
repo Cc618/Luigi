@@ -3,20 +3,11 @@
 // An entity is the most basic (abstract) type for game objects
 // Provides main lifetime functions
 
-// TMP
-#include <iostream>
-
 class Entity
 {
 public:
-    Entity()
-    {
-        std::cout << "Entity()\n";
-    }
-    virtual ~Entity()
-    {
-        std::cout << "~Entity()\n";
-    }
+    Entity() = default;
+    virtual ~Entity() = default;
 
 public:
     virtual void start()

@@ -24,15 +24,14 @@ void Layer::update(float dt)
     for (auto entity : entities)
         entity->update(dt);
     
-    // TMP
-    // // Remove dead entities
-    // for (auto i = entities.begin(); i != entities.end(); ++i)
-    //     if ((*i)->dead)
-    //     {
-    //         (*i)->stop();
-    //         delete *i;
-    //         i = entities.erase(i);
-    //     }
+    // Remove dead entities
+    for (auto i = entities.begin(); i != entities.end(); ++i)
+        if ((*i)->dead)
+        {
+            (*i)->stop();
+            delete *i;
+            i = entities.erase(i);
+        }
 }
 
 void Layer::draw()

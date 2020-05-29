@@ -51,11 +51,6 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
     // Set first scene
     Error::check(Scene::instances.size() > 0, "No scene created");
     Scene::current = *Scene::instances.begin();
-    // TMP
-    cout << Scene::instances.size() << " scenes\n";
-    cout << selected_scene->name << " main scene\n";
-    cout << selected_scene->layers.size() << " layers\n";
-    cout << selected_scene->selected_layer->name << " selected layer\n";
 
     bool on_game = true;
     auto clock = Clock();

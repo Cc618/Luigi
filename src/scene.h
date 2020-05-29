@@ -7,39 +7,6 @@
 #include "entity.h"
 #include "layer.h"
 
-// // TMP
-// #include <iostream>
-// #include <vector>
-// class TstScene
-// {
-// public:
-//     TstScene()
-//     {
-//         std::cout << "TstScene()\n";
-//     }
-//     ~TstScene()
-//     {
-//         std::cout << "~TstScene()\n";
-//     }
-
-//     void add(Entity *e)
-//     {
-//         std::cout << "TstScene::add\n";
-//         entities.push_back(e);
-//     }
-
-//     void update(float dt)
-//     {
-//         std::cout << "TstScene::update\n";
-
-//         for (auto e : entities)
-//             e->update(dt);
-//     }
-
-//     std::vector<Entity*> entities;
-// };
-
-
 class Scene : public Entity
 {
 public:

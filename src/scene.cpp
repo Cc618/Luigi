@@ -89,12 +89,3 @@ void Scene::set_layer(const std::string& name, bool create, int z)
         selected_layer = *result;
     }
 }
-
-// void Scene::add(Layer *layer)
-// {
-//     // TODO : Insert by z index
-//     layers.push_back(layer);
-
-//     // TODO : Only if started
-//     layer->start();
-// }

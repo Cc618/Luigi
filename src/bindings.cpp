@@ -26,8 +26,8 @@ PYBIND11_MODULE(luigi, m)
         .def(py::init<>())
         // TODO : Args
         .def("run", &Game::run) 
-        .def("set_scene", &Game::set_scene)
-        .def("set_layer", &Game::set_layer)
+        .def("set_scene", &Game::set_scene, py::arg("name"), py::arg("create")=false)
+        .def("set_layer", &Game::set_layer, py::arg("name"), py::arg("create")=false, py::arg("z")=0)
         .def("add", &Game::add, py::keep_alive<1, 2>())
         .doc() = "Handles the window and the game environment"
     ;
