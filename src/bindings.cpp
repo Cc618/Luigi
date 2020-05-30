@@ -64,7 +64,7 @@ PYBIND11_MODULE(luigi, m)
     // ;
 
     // --- Sprite --- //
-    py::class_<Sprite, Entity, PySprite>(m, "Sprite")
+    py::class_<Sprite, Entity, PyEntityChild<Sprite>>(m, "Sprite")
         .def(py::init<float, float, float, float, float>())
         // TODO : Update
         .def_readwrite("x", &Sprite::x)
