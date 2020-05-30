@@ -25,10 +25,14 @@ PYBIND11_MODULE(luigi, m)
 
     py::class_<Entity, PyEntity>(m, "Entity")
         .def(py::init<>())
+
+        .def_readwrite("dead", &Entity::dead)
+        
         .def("start", &Entity::start)
         .def("update", &Entity::update, py::arg("dt"))
         .def("draw", &Entity::draw)
         .def("stop", &Entity::stop)
+        
         .doc() = "An entity is the most basic (abstract) type for game objects"
     ;
 
@@ -67,15 +71,4 @@ PYBIND11_MODULE(luigi, m)
 
         .doc() = "An image mapped to a camera"
     ;
-
-    // py::class_<Sprite, PySprite>(m, "Sprite")
-    //     .def(py::init<float, float, float, float, float>())
-    //     // .def("update", &Sprite::update, py::arg("dt"))
-    // ;
-
-    // py::class_<Sprite, PySprite>(m, "Sprite")
-    //     .def(py::init<float, float, float, float, float>())
-    //     .def("update", &Sprite::update, py::arg("dt"))
-    // ;
-
 }
