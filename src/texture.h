@@ -22,6 +22,10 @@ public:
 public:
     void bind() const;
 
+public:
+    unsigned int width;
+    unsigned int height;
+
 private:
     static std::unordered_map<std::string, Texture*> instances;
 

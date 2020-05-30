@@ -139,49 +139,14 @@ void Sprite::init_sprites()
         // TODO : Error 
         cout << "Error : Can't find pos uniform\n";
     }
-
-
-    // // Texture //
-    // // TODO : Move
-    // unsigned char texture[] = {
-    //     0, 255, 255, 255,
-    //     255, 0, 0, 255,
-    //     255, 0, 0, 255,
-    //     0, 255, 255, 255,
-    // };
-
-    // // unsigned char texture[] = {
-    // //     0, 255, 255, 255,
-    // //     0, 255, 255, 255,
-    // //     0, 255, 255, 255,
-    // //     0, 255, 255, 255,
-    // // };
-
-    // // unsigned char texture[] = {
-    // //     255, 255, 255, 255,
-    // //     0, 0, 0, 255,
-    // //     255, 255, 255, 255,
-    // //     0, 0, 0, 255,
-    // // };
-
-    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    // glEnable(GL_BLEND);
-
-    // glGenTextures(1, &texture_id);
-    // glBindTexture(GL_TEXTURE_2D, texture_id);
-
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-
-    // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 2, 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture);
-    // glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 Sprite::Sprite(const string& texture)
     : texture(Texture::get(texture))
-{}
+{
+    width = this->texture->width;
+    height = this->texture->height;
+}
 
 void Sprite::draw()
 {
@@ -213,11 +178,14 @@ void Sprite::set_uniforms() const
 {
     glUseProgram(shader_id);
 
+    // TODO : One transformation matrix
+
     // Position
     glUniform2f(u_pos, x, y);
 
     // Transform
+    // TODO : See flip y for cam or for sprite
     float transform[4];
-    genTransform(transform, rot, width, height);
+    genTransform(transform, rot, width, -height);
     glUniformMatrix2fv(u_transform, 1, false, transform);
 }

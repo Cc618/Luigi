@@ -7,7 +7,7 @@ using namespace std;
 // Generates a texture on GPU and returns the handle to this texture
 // * Format is RGBA8
 // TODO : filter
-static GLuint genTexture(const unsigned char *data)
+static GLuint genTexture(const unsigned char *data, size_t width, size_t height)
 {
     GLuint id;
 
@@ -19,7 +19,7 @@ static GLuint genTexture(const unsigned char *data)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 2, 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     glBindTexture(GL_TEXTURE_2D, 0);
 
     return id;
@@ -55,13 +55,17 @@ Texture *Texture::get(const std::string& name)
 Texture::Texture(const std::string &name, const std::string &file)
     : name(name)
 {
-    unsigned char texture[] = {
-        0, 255, 255, 255,
-        255, 0, 0, 255,
-        255, 0, 0, 255,
-        0, 255, 255, 255,
-    };
-    id = genTexture(texture);
+    // Load
+    sf::Image img;
+    img.loadFromFile(file);
+
+    // Get properties
+    auto size = img.getSize();
+    width = size.x;
+    height = size.y;
+
+    // Send to GPU
+    id = genTexture(img.getPixelsPtr(), width, height);
 }
 
 Texture::~Texture()
