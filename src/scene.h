@@ -23,7 +23,7 @@ public:
     static Scene *find(const std::string& name);
 
 public:
-    virtual ~Scene();
+    virtual ~Scene() = default;
 
 public:
     virtual void start() override;
@@ -43,4 +43,5 @@ public:
     std::list<Layer*> layers;
 
 private:
-    Scene(const std::string& name);};
+    Scene(const std::string& name);
+};

@@ -117,22 +117,12 @@ void Game::start()
 
 void Game::update(float dt)
 {
-    cout << "Game::update\n";
-    // scn->update(dt);
     Scene::current->update(dt);
 }
 
 void Game::draw()
 {
-    cout << "Game::draw\n";
     Scene::current->draw();
-
-    // // TODO : rm
-    // glBegin(GL_TRIANGLES);
-    // glVertex2f(0, 0);
-    // glVertex2f(1, 0);
-    // glVertex2f(1, 1);
-    // glEnd();
 }
 
 void Game::stop()

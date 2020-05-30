@@ -10,8 +10,8 @@ public:
     virtual ~Entity() = default;
 
 public:
-    virtual void start()
-    {}
+    // !!! Must be called by children
+    virtual void start();
 
     // Called each frame
     virtual void update(float dt)
@@ -20,10 +20,14 @@ public:
     virtual void draw()
     {}
 
-    virtual void stop()
-    {}
+    // !!! Must be called by children
+    virtual void stop();
 
 public:
     // Change this to true to remove it
     bool dead;
+
+protected:
+    // Whether start has been called
+    bool started;
 };

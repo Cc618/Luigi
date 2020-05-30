@@ -5,7 +5,9 @@
 #include <GL/glew.h>
 #include "entity.h"
 
-// TMP
+
+
+
 #include <iostream>
 
 class Sprite : public Entity
@@ -20,23 +22,21 @@ public:
     virtual ~Sprite() = default;
 
 public:
-    virtual void start()
+    virtual void start() override
     {
-        std::cout << "Sprite::start\n";
+        Entity::start();
+        std::cout << "Sprite::start" << std::endl;
     }
-
-    // Called each frame
-    virtual void update(float dt)
+    virtual void stop() override
     {
-        std::cout << "Sprite::update\n";
+        std::cout << "Sprite::stop" << std::endl;
+        Entity::stop();
     }
-
+    virtual void update(float) override
+    {
+        std::cout << "Sprite::update" << std::endl;
+    }
     virtual void draw() override;
-
-    virtual void stop()
-    {
-        std::cout << "Sprite::stop\n";
-    }
 
 public:
     float x;

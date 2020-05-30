@@ -1,6 +1,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/functional.h>
 #include <pybind11/stl.h>
+#include "py_classes.h"
 #include "luigi"
 
 using namespace std;
@@ -13,8 +14,21 @@ PYBIND11_MODULE(luigi, m)
     m.attr("version") = LUIGI_VERSION_STR;
 
     // --- Entity --- //
-    py::class_<Entity>(m, "Entity")
+    // py::class_<Entity>(m, "Entity")
+    //     .def(py::init<>())
+    //     .def("start", &Entity::start)
+    //     .def("update", &Entity::update, py::arg("dt"))
+    //     .def("draw", &Entity::draw)
+    //     .def("stop", &Entity::stop)
+    //     .doc() = "An entity is the most basic (abstract) type for game objects"
+    // ;
+
+    py::class_<Entity, PyEntity>(m, "Entity")
         .def(py::init<>())
+        .def("start", &Entity::start)
+        .def("update", &Entity::update, py::arg("dt"))
+        .def("draw", &Entity::draw)
+        .def("stop", &Entity::stop)
         .doc() = "An entity is the most basic (abstract) type for game objects"
     ;
 
@@ -49,11 +63,34 @@ PYBIND11_MODULE(luigi, m)
     //     .doc() = "A screen with multiple layers of entities"
     // ;
 
-    // --- Scene --- //
-    py::class_<Sprite, Entity>(m, "Sprite")
+    // --- Sprite --- //
+    py::class_<Sprite, Entity, PySprite>(m, "Sprite")
         .def(py::init<float, float, float, float, float>())
         // TODO : Update
         .def_readwrite("x", &Sprite::x)
+
+        // .def("start", py::overload_cast<>(&Entity::start))
+        // .def("update", py::overload_cast<float>(&Entity::update), py::arg("dt"))
+        // // .def("update", &Sprite::update, py::arg("dt"))
+        // .def("draw", py::overload_cast<>(&Entity::draw))
+        // .def("stop", py::overload_cast<>(&Entity::stop))
+        
+        .def("start", &Sprite::start)
+        .def("update", &Sprite::update, py::arg("dt"))
+        .def("draw", &Sprite::draw)
+        .def("stop", &Sprite::stop)
+
         .doc() = "An image mapped to a camera"
     ;
+
+    // py::class_<Sprite, PySprite>(m, "Sprite")
+    //     .def(py::init<float, float, float, float, float>())
+    //     // .def("update", &Sprite::update, py::arg("dt"))
+    // ;
+
+    // py::class_<Sprite, PySprite>(m, "Sprite")
+    //     .def(py::init<float, float, float, float, float>())
+    //     .def("update", &Sprite::update, py::arg("dt"))
+    // ;
+
 }

@@ -1,8 +1,6 @@
 #include "scene.h"
 #include "error.h"
 #include <algorithm>
-// TODO :
-#include <iostream>
 
 using namespace std;
 
@@ -35,20 +33,16 @@ Scene::Scene(const std::string &name)
     layers.push_back(selected_layer = new Layer("main"));
 }
 
-Scene::~Scene()
-{
-    cout << "Scene::~Scene\n";
-}
-
 void Scene::start()
 {
+    Entity::start();
+
     for (auto layer : layers)
         layer->start();
 }
 
 void Scene::update(float dt)
 {
-    printf("Scene::update\n");
     for (auto layer : layers)
         layer->update(dt);
 }
@@ -63,11 +57,14 @@ void Scene::stop()
 {
     for (auto layer : layers)
         layer->stop();
+
+    Entity::stop();
 }
 
 void Scene::add(Entity *e)
 {
     Error::check(selected_layer != nullptr, "Can't add without layers, create a layer before creating entities");
+
     selected_layer->add(e);
 }
 
@@ -75,6 +72,8 @@ void Scene::set_layer(const std::string& name, bool create, int z)
 {
     if (create)
     {
+        Error::check(!started, "Can't create layers when a scene has started");
+
         selected_layer = new Layer(name, z);
         layers.push_back(selected_layer);
     }

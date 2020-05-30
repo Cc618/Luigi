@@ -10,7 +10,7 @@ class Layer : public Entity
 {
 public:
     Layer(const std::string& name, int z=0);
-    virtual ~Layer();
+    virtual ~Layer() = default;
     
 public:
     virtual void start() override;
