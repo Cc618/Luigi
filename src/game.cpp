@@ -2,11 +2,13 @@
 
 // TODO :
 #include <iostream>
+#include <GL/glew.h>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <SFML/OpenGL.hpp>
 #include "error.h"
+#include "sprite.h"
 
 using namespace sf;
 using namespace std;
@@ -44,6 +46,11 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
     win.setVerticalSyncEnabled(true);
     win.setActive(true);
 
+    // Init glew
+    GLenum err = glewInit();
+    if (GLEW_OK != err)
+        throw Error(string("GLEW init error : ") + (const char*)glewGetErrorString(err));
+
     // Init
     start();
     construct();
@@ -51,6 +58,7 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
     // Set first scene
     Error::check(Scene::instances.size() > 0, "No scene created");
     Scene::current = *Scene::instances.begin();
+    Scene::current->start();
 
     bool on_game = true;
     auto clock = Clock();
@@ -104,22 +112,20 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
 
 void Game::start()
 {
-    // TODO : Start all scenes
-    // TMP
-    // cout << "Game::start\n";
+    ::Sprite::init_sprites();
 }
 
 void Game::update(float dt)
 {
-    // cout << "Game::update\n";
+    cout << "Game::update\n";
     // scn->update(dt);
-    // Scene::current->update(dt);
+    Scene::current->update(dt);
 }
 
 void Game::draw()
 {
-    // cout << "Game::draw\n";
-    // Scene::current->draw();
+    cout << "Game::draw\n";
+    Scene::current->draw();
 
     // // TODO : rm
     // glBegin(GL_TRIANGLES);
@@ -131,8 +137,9 @@ void Game::draw()
 
 void Game::stop()
 {
-    // TMP
-    // Scene::current->stop();
+    ::Sprite::stop_sprites();
+
+    Scene::current->stop();
 
     // TODO : Stop all scenes and delete after
 }

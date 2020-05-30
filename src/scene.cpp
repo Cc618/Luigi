@@ -75,7 +75,6 @@ void Scene::set_layer(const std::string& name, bool create, int z)
 {
     if (create)
     {
-        cout << "LAYER\n";
         selected_layer = new Layer(name, z);
         layers.push_back(selected_layer);
     }

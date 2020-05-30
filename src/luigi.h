@@ -3,3 +3,4 @@
 #include "error.h"
 #include "game.h"
 #include "scene.h"
+#include "sprite.h"

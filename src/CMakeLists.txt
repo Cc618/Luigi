@@ -18,7 +18,7 @@ find_package(OpenGL REQUIRED)
 target_link_libraries(luigi
     pybind11::module
     sfml-graphics sfml-window sfml-system
-    GL
+    GL GLEW
 )
 
 # Rename the library

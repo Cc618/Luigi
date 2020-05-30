@@ -48,4 +48,12 @@ PYBIND11_MODULE(luigi, m)
     //     .def_readwrite("name", &Scene::name)
     //     .doc() = "A screen with multiple layers of entities"
     // ;
+
+    // --- Scene --- //
+    py::class_<Sprite, Entity>(m, "Sprite")
+        .def(py::init<float, float, float, float, float>())
+        // TODO : Update
+        .def_readwrite("x", &Sprite::x)
+        .doc() = "An image mapped to a camera"
+    ;
 }
