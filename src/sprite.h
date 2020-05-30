@@ -5,11 +5,6 @@
 #include <GL/glew.h>
 #include "entity.h"
 
-
-
-
-#include <iostream>
-
 class Sprite : public Entity
 {
 public:
@@ -22,20 +17,6 @@ public:
     virtual ~Sprite() = default;
 
 public:
-    virtual void start() override
-    {
-        Entity::start();
-        std::cout << "Sprite::start" << std::endl;
-    }
-    virtual void stop() override
-    {
-        std::cout << "Sprite::stop" << std::endl;
-        Entity::stop();
-    }
-    virtual void update(float) override
-    {
-        std::cout << "Sprite::update" << std::endl;
-    }
     virtual void draw() override;
 
 public:

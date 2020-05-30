@@ -193,8 +193,6 @@ Sprite::Sprite(float x, float y, float rot, float width, float height)
 
 void Sprite::draw()
 {
-    std::cout << "Sprite::draw\n";
-
     // Send uniforms to the shader
     set_uniforms();
 
