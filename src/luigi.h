@@ -5,3 +5,4 @@
 #include "inputs.h"
 #include "scene.h"
 #include "sprite.h"
+#include "texture.h"

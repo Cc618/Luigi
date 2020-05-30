@@ -81,9 +81,6 @@ int Sprite::shader_id;
 int Sprite::u_pos;
 int Sprite::u_transform;
 
-// TODO : Move
-GLuint texture_id;
-
 void Sprite::init_sprites()
 {
     // Generate VBO //
@@ -144,51 +141,46 @@ void Sprite::init_sprites()
     }
 
 
-    // Texture //
-    // TODO : Move
-    unsigned char texture[] = {
-        0, 255, 255, 255,
-        255, 0, 0, 255,
-        255, 0, 0, 255,
-        0, 255, 255, 255,
-    };
-
+    // // Texture //
+    // // TODO : Move
     // unsigned char texture[] = {
     //     0, 255, 255, 255,
-    //     0, 255, 255, 255,
-    //     0, 255, 255, 255,
+    //     255, 0, 0, 255,
+    //     255, 0, 0, 255,
     //     0, 255, 255, 255,
     // };
 
-    // unsigned char texture[] = {
-    //     255, 255, 255, 255,
-    //     0, 0, 0, 255,
-    //     255, 255, 255, 255,
-    //     0, 0, 0, 255,
-    // };
+    // // unsigned char texture[] = {
+    // //     0, 255, 255, 255,
+    // //     0, 255, 255, 255,
+    // //     0, 255, 255, 255,
+    // //     0, 255, 255, 255,
+    // // };
 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_BLEND);
+    // // unsigned char texture[] = {
+    // //     255, 255, 255, 255,
+    // //     0, 0, 0, 255,
+    // //     255, 255, 255, 255,
+    // //     0, 0, 0, 255,
+    // // };
 
-    glGenTextures(1, &texture_id);
-    glBindTexture(GL_TEXTURE_2D, texture_id);
+    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    // glEnable(GL_BLEND);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    // glGenTextures(1, &texture_id);
+    // glBindTexture(GL_TEXTURE_2D, texture_id);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 2, 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture);
-    glBindTexture(GL_TEXTURE_2D, 0);
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+    // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 2, 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture);
+    // glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Sprite::stop_sprites()
-{
-    // TODO :
-}
-
-Sprite::Sprite(float x, float y, float rot, float width, float height)
-    : x(x), y(y), rot(rot), width(width), height(height)
+Sprite::Sprite(const string& texture)
+    : texture(Texture::get(texture))
 {}
 
 void Sprite::draw()
@@ -196,9 +188,11 @@ void Sprite::draw()
     // Send uniforms to the shader
     set_uniforms();
 
+    // Set shader
     glUseProgram(shader_id);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture_id);
+
+    // Set Texture
+    texture->bind();
 
     // Position
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);

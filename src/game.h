@@ -20,6 +20,7 @@ public:
     // Construct is called to create scenes, layers and
     void run(const std::function<void ()>& construct, const std::string& title, int width, int height, float fps=60);
 
+
     // Selects the current scene to add entities
     // * Used in the construct function pointer in run
     // * When a scene is changed, the next scene is automatically selected

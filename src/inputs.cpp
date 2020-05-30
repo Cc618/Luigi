@@ -85,7 +85,7 @@ unordered_map<std::string, Keyboard::Key> id_to_kbd = {
 };
 
 // To lower
-static string name_to_id(const string& name)
+static inline string name_to_id(const string& name)
 {
     string result = name;
 

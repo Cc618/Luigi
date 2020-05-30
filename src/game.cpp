@@ -112,7 +112,12 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
 
 void Game::start()
 {
+    // TODO : rm
     ::Sprite::init_sprites();
+
+    // Init blending
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
 }
 
 void Game::update(float dt)
@@ -127,8 +132,6 @@ void Game::draw()
 
 void Game::stop()
 {
-    ::Sprite::stop_sprites();
-
     Scene::current->stop();
 
     // TODO : Stop all scenes and delete after

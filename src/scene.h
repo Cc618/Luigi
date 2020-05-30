@@ -7,6 +7,7 @@
 #include "entity.h"
 #include "layer.h"
 
+// TODO : Handle z index in layers
 class Scene : public Entity
 {
 public:

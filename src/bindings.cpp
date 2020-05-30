@@ -42,11 +42,14 @@ PYBIND11_MODULE(luigi, m)
     // --- Game --- //
     py::class_<Game>(m, "Game")
         .def(py::init<>())
-        // TODO : Args
-        .def("run", &Game::run) 
+        
+        .def_readonly_static("instance", &Game::instance)
+        
+        .def("run", &Game::run) // TODO : Args
         .def("set_scene", &Game::set_scene, py::arg("name"), py::arg("create")=false)
         .def("set_layer", &Game::set_layer, py::arg("name"), py::arg("create")=false, py::arg("z")=0)
         .def("add", &Game::add, py::keep_alive<1, 2>())
+        
         .doc() = "Handles the window and the game environment"
     ;
 
@@ -56,7 +59,7 @@ PYBIND11_MODULE(luigi, m)
 
     // --- Sprite --- //
     py::class_<Sprite, Entity, PyEntityChild<Sprite>>(m, "Sprite")
-        .def(py::init<float, float, float, float, float>())
+        .def(py::init<std::string>(), py::arg("texture"))
 
         .def_readwrite("x", &Sprite::x)
         .def_readwrite("y", &Sprite::y)
@@ -71,4 +74,7 @@ PYBIND11_MODULE(luigi, m)
 
         .doc() = "An image mapped to a camera"
     ;
+
+    // --- Texture --- //
+    m.def("new_texture", &new_texture, py::arg("name"), py::arg("file"));
 }
