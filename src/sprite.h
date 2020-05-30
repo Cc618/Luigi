@@ -5,6 +5,7 @@
 #include <GL/glew.h>
 #include "entity.h"
 #include "texture.h"
+#include "shader.h"
 
 class Sprite : public Entity
 {
@@ -12,8 +13,7 @@ public:
     static void init_sprites();
 
 public:
-    // TODO : Texture frame
-    Sprite(const std::string& texture);
+    Sprite(const std::string& texture, const std::string& shader="main");
     // TODO : Update
     virtual ~Sprite() = default;
 
@@ -28,17 +28,15 @@ public:
     float height = 1;
 
 private:
+    // TMP
     // Ids
     static GLuint vbo_id;
-    static int shader_id;
-
-    // Uniform locations
-    static int u_pos;
-    static int u_transform;
 
 private:
     void set_uniforms() const;
 
 private:
+    // TODO : Sprite sheet
     const Texture *texture;
+    Shader *shader;
 };

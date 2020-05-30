@@ -56,10 +56,12 @@ PYBIND11_MODULE(luigi, m)
     // --- Input --- //
     m.def("pressed", &pressed, py::arg("name"));
 
+    // --- Shader --- //
+    m.def("new_shader", &new_shader, py::arg("name"), py::arg("vertex_file"), py::arg("fragment_file"), py::arg("uniforms"));
 
     // --- Sprite --- //
     py::class_<Sprite, Entity, PyEntityChild<Sprite>>(m, "Sprite")
-        .def(py::init<std::string>(), py::arg("texture"))
+        .def(py::init<string, string>(), py::arg("texture"), py::arg("shader")="main")
 
         .def_readwrite("x", &Sprite::x)
         .def_readwrite("y", &Sprite::y)

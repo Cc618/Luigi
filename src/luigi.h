@@ -4,5 +4,6 @@
 #include "game.h"
 #include "inputs.h"
 #include "scene.h"
+#include "shader.h"
 #include "sprite.h"
 #include "texture.h"

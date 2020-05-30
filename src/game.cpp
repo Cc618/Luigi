@@ -9,6 +9,7 @@
 #include <SFML/OpenGL.hpp>
 #include "error.h"
 #include "sprite.h"
+#include "shader.h"
 
 using namespace sf;
 using namespace std;
@@ -118,6 +119,8 @@ void Game::start()
     // Init blending
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
+
+    ::Shader::create_main();
 }
 
 void Game::update(float dt)
