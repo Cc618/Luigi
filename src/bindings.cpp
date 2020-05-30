@@ -46,35 +46,20 @@ PYBIND11_MODULE(luigi, m)
         .doc() = "Handles the window and the game environment"
     ;
 
-    // // --- Layer --- //
-    // py::class_<Layer, Entity>(m, "Layer")
-    //     .def(py::init<const string&, int>())
-    //     .def_readwrite("name", &Layer::name)
-    //     .def_readwrite("z", &Layer::z)
-    //     .def("add", &Layer::add, py::arg("entity"), py::keep_alive<1, 2>())
-    //     .doc() = "Gathers entities with same z index"
-    // ;
+    // --- Input --- //
+    m.def("pressed", &pressed, py::arg("name"));
 
-    // // --- Scene --- //
-    // py::class_<Scene, Entity>(m, "Scene")
-    //     .def(py::init<const string&>())
-    //     .def("add", &Scene::add, py::arg("entity"), py::keep_alive<1, 2>())
-    //     .def_readwrite("name", &Scene::name)
-    //     .doc() = "A screen with multiple layers of entities"
-    // ;
 
     // --- Sprite --- //
     py::class_<Sprite, Entity, PyEntityChild<Sprite>>(m, "Sprite")
         .def(py::init<float, float, float, float, float>())
-        // TODO : Update
-        .def_readwrite("x", &Sprite::x)
 
-        // .def("start", py::overload_cast<>(&Entity::start))
-        // .def("update", py::overload_cast<float>(&Entity::update), py::arg("dt"))
-        // // .def("update", &Sprite::update, py::arg("dt"))
-        // .def("draw", py::overload_cast<>(&Entity::draw))
-        // .def("stop", py::overload_cast<>(&Entity::stop))
-        
+        .def_readwrite("x", &Sprite::x)
+        .def_readwrite("y", &Sprite::y)
+        .def_readwrite("width", &Sprite::width)
+        .def_readwrite("height", &Sprite::height)
+        .def_readwrite("rot", &Sprite::rot)
+
         .def("start", &Sprite::start)
         .def("update", &Sprite::update, py::arg("dt"))
         .def("draw", &Sprite::draw)
