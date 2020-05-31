@@ -16,11 +16,14 @@ layout (location = 1) in vec2 inTexCoords;
 
 out vec2 texCoords;
 
+// Main camera
+uniform mat3 cam;
+// Entity transform
 uniform mat3 transform;
 
 void main()
 {
-    vec2 point = (transform * vertex).xy;
+    vec2 point = (cam * (transform * vertex)).xy;
     gl_Position = vec4(point, 0, 1);
 
     texCoords = inTexCoords;
@@ -64,7 +67,7 @@ static int genShaderComponent(const char *name, const char *source, GLenum type)
 }
 
 // Generates a program on GPU and returns the handle to this program
-static GLuint genShader(const char *vert, const char *frag,
+static GLuint gen_shader(const char *vert, const char *frag,
                         const list<string> &uniforms_names, unordered_map<string, GLint> &uniforms_ids)
 {
     // Compile both shaders
@@ -128,7 +131,7 @@ Shader *Shader::get(const string &name)
 
 void Shader::create_main()
 {
-    create_src("main", main_vertex, main_fragment, { "transform" });
+    create_src("main", main_vertex, main_fragment, { "transform", "cam" });
 }
 
 Shader *Shader::create_src(const string &name, const string &vertex, const string &fragment, const std::list<std::string> &uniforms)
@@ -142,11 +145,22 @@ Shader *Shader::create_src(const string &name, const string &vertex, const strin
     return s;
 }
 
+void Shader::set_main_cam(const Mat3 *mat)
+{
+    for (auto s : instances)
+        s.second->set_uniform_mat3(s.second->u_cam, mat);
+}
+
 // --- Instance --- //
 Shader::Shader(const string &name, const string &vert, const string &frag, const std::list<std::string> &uniforms)
     : name(name)
 {
-    id = genShader(vert.c_str(), frag.c_str(), uniforms, this->uniforms);
+    id = gen_shader(vert.c_str(), frag.c_str(), uniforms, this->uniforms);
+
+    // Check default uniforms
+    auto cam = this->uniforms.find("cam");
+    Error::check(cam != this->uniforms.end(), "The 'cam' uniform must be defined in the shader '" + name + "'");
+    u_cam = (*cam).second;
 }
 
 Shader::~Shader()

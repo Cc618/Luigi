@@ -1,6 +1,5 @@
 #include "game.h"
 
-// TODO :
 #include <iostream>
 #include <GL/glew.h>
 #include <SFML/Graphics.hpp>
@@ -11,6 +10,7 @@
 #include "sprite.h"
 #include "shader.h"
 #include "buffers.h"
+#include "camera.h"
 
 using namespace sf;
 using namespace std;
@@ -56,6 +56,10 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
     // Init
     start();
     construct();
+
+    // Set camera
+    if (Camera::main == nullptr)
+        Camera::main = new Camera(height);
 
     // Set first scene
     Error::check(Scene::instances.size() > 0, "No scene created");
@@ -131,6 +135,10 @@ void Game::update(float dt)
 
 void Game::draw()
 {
+    auto main_cam = Camera::main->get_transform();
+    ::Shader::set_main_cam(main_cam);
+    delete main_cam;
+
     Scene::current->draw();
 }
 
@@ -160,4 +168,12 @@ void Game::add(Entity *e)
 {
     Error::check(selected_scene != nullptr, "No scene created, create a scene and a layer before adding entities");
     selected_scene->add(e);
+}
+
+void Game::set_main_cam(float height, float x, float y, float rot) const
+{
+    if (Camera::main != nullptr)
+        delete Camera::main;
+    
+    Camera::main = new Camera(height, x, y, rot);
 }

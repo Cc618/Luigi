@@ -27,6 +27,9 @@ public:
     static Shader *create_src(const std::string& name, const std::string& vertex,
         const std::string& fragment, const std::list<std::string>& uniforms);
 
+    // Sets the main camera for each shader (as a matrix)
+    static void set_main_cam(const Mat3 *mat);
+
 public:
     ~Shader();
 
@@ -68,4 +71,7 @@ private:
 private:
     GLuint id;
     std::string name;
+
+    // The cam uniform is a mat3x3 that describes the main camera used for sprites
+    GLint u_cam;
 };

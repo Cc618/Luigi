@@ -13,16 +13,21 @@ PYBIND11_MODULE(luigi, m)
     m.doc() = "Luigi 2D game engine";
     m.attr("version") = LUIGI_VERSION_STR;
 
-    // --- Entity --- //
-    // py::class_<Entity>(m, "Entity")
-    //     .def(py::init<>())
-    //     .def("start", &Entity::start)
-    //     .def("update", &Entity::update, py::arg("dt"))
-    //     .def("draw", &Entity::draw)
-    //     .def("stop", &Entity::stop)
-    //     .doc() = "An entity is the most basic (abstract) type for game objects"
-    // ;
+    // --- Camera --- //
+    py::class_<Camera>(m, "Camera")
+        .def_readwrite_static("main", &Camera::main)
 
+        // TODO : Properties to avoid updating each frame
+        .def_readwrite("x", &Camera::x)
+        .def_readwrite("y", &Camera::y)
+        .def_readwrite("width", &Camera::width)
+        .def_readwrite("height", &Camera::height)
+        .def_readwrite("rot", &Camera::rot)
+
+        .doc() = "A 2D camera delineating a view"
+    ;
+
+    // --- Entity --- //
     py::class_<Entity, PyEntity>(m, "Entity")
         .def(py::init<>())
 
@@ -48,7 +53,8 @@ PYBIND11_MODULE(luigi, m)
         .def("run", &Game::run) // TODO : Args
         .def("set_scene", &Game::set_scene, py::arg("name"), py::arg("create")=false)
         .def("set_layer", &Game::set_layer, py::arg("name"), py::arg("create")=false, py::arg("z")=0)
-        .def("add", &Game::add, py::keep_alive<1, 2>())
+        .def("add", &Game::add, py::arg("entity"), py::keep_alive<1, 2>())
+        .def("set_main_cam", &Game::set_main_cam, py::arg("height"), py::arg("x")=0, py::arg("y")=0, py::arg("rot")=0)
 
         .doc() = "Handles the window and the game environment"
     ;
