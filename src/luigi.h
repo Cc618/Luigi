@@ -2,6 +2,7 @@
 #include "config.h"
 #include "entity.h"
 #include "error.h"
+#include "frame.h"
 #include "game.h"
 #include "inputs.h"
 #include "maths.h"

@@ -20,13 +20,17 @@ out vec2 texCoords;
 uniform mat3 cam;
 // Entity transform
 uniform mat3 transform;
+// Texture coordinates transform
+uniform mat3 tex_transform;
 
 void main()
 {
+    // Position
     vec2 point = (cam * (transform * vertex)).xy;
     gl_Position = vec4(point, 0, 1);
 
-    texCoords = inTexCoords;
+    // Texture
+    texCoords = (tex_transform * vec3(inTexCoords, 1)).xy;
 }
 )";
 
@@ -131,7 +135,7 @@ Shader *Shader::get(const string &name)
 
 void Shader::create_main()
 {
-    create_src("main", main_vertex, main_fragment, { "transform", "cam" });
+    create_src("main", main_vertex, main_fragment, { "transform", "cam", "tex_transform" });
 }
 
 Shader *Shader::create_src(const string &name, const string &vertex, const string &fragment, const std::list<std::string> &uniforms)

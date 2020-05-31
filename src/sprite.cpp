@@ -6,17 +6,36 @@
 
 using namespace std;
 
-Sprite::Sprite(const string& texture, const string& shader)
-    : texture(Texture::get(texture)), shader(Shader::get(shader))
+Sprite::Sprite(const Frame& frame, const string& shader)
+    : frame(frame), shader(Shader::get(shader))
 {
-    width = this->texture->width;
-    height = this->texture->height;
+    width = this->frame.first_region.width;
+    height = this->frame.first_region.height;
 }
 
 void Sprite::start()
 {
     u_transform = shader->get_uniform("transform");
 }
+
+void Sprite::update(float dt)
+{
+    frame.update(dt);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void Sprite::draw()
 {
@@ -25,7 +44,12 @@ void Sprite::draw()
 
     // Set shader & texture
     shader->use();
-    texture->use();
+    frame.texture->use();
+    
+    // // TODO : Not here ?
+    auto tex = frame.get_transform();
+    shader->set_mat3("tex_transform", tex);
+    delete tex;
 
     // Bind buffer and draw it
     VBO::square->use();

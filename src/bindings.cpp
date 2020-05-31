@@ -44,6 +44,14 @@ PYBIND11_MODULE(luigi, m)
     // --- Error --- //
     py::register_exception<Error>(m, "Error");
 
+    // --- Frame --- //
+    py::class_<Frame>(m, "Frame")
+        // TODO : Other constructors
+        .def(py::init<const string&, const std::vector<Box>&, float>())
+        
+        .doc() = "Handles the window and the game environment"
+    ;
+
     // --- Game --- //
     py::class_<Game>(m, "Game")
         .def(py::init<>())
@@ -70,6 +78,18 @@ PYBIND11_MODULE(luigi, m)
         .doc() = "A 3x3 matrix"
     ;
 
+    py::class_<Box>(m, "Box")
+        // TODO : args
+        .def(py::init<GLfloat, GLfloat, GLfloat, GLfloat>())
+
+        .def_readwrite("x", &Box::x)
+        .def_readwrite("y", &Box::y)
+        .def_readwrite("width", &Box::width)
+        .def_readwrite("height", &Box::height)
+
+        .doc() = "A 2D region"
+    ;
+
     // --- Shader --- //
     m.def("new_shader", &new_shader, py::arg("name"), py::arg("vertex_file"), py::arg("fragment_file"), py::arg("uniforms"));
 
@@ -93,7 +113,7 @@ PYBIND11_MODULE(luigi, m)
 
     // --- Sprite --- //
     py::class_<Sprite, Entity, PyEntityChild<Sprite>>(m, "Sprite")
-        .def(py::init<string, string>(), py::arg("texture"), py::arg("shader")="main")
+        .def(py::init<const Frame&, string>(), py::arg("frame"), py::arg("shader")="main")
 
         .def_readwrite("x", &Sprite::x)
         .def_readwrite("y", &Sprite::y)

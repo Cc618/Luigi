@@ -4,17 +4,18 @@
 
 #include <GL/glew.h>
 #include "entity.h"
-#include "texture.h"
+#include "frame.h"
 #include "shader.h"
 
 class Sprite : public Entity
 {
 public:
-    Sprite(const std::string& texture, const std::string& shader="main");
+    Sprite(const Frame& frame, const std::string& shader="main");
     virtual ~Sprite() = default;
 
 public:
     virtual void start() override;
+    virtual void update(float dt) override;
     virtual void draw() override;
 
 public:
@@ -32,8 +33,7 @@ private:
     void set_uniforms() const;
 
 private:
-    // TODO : Sprite sheet
-    const Texture *texture;
+    Frame frame;
     Shader *shader;
     
     // Uniform locations
