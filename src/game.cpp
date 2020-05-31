@@ -135,9 +135,7 @@ void Game::update(float dt)
 
 void Game::draw()
 {
-    auto main_cam = Camera::main->get_transform();
-    ::Shader::set_main_cam(main_cam);
-    delete main_cam;
+    Camera::main->update(::Shader::set_main_cam);
 
     Scene::current->draw();
 }

@@ -18,11 +18,11 @@ PYBIND11_MODULE(luigi, m)
         .def_readwrite_static("main", &Camera::main)
 
         // TODO : Properties to avoid updating each frame
-        .def_readwrite("x", &Camera::x)
-        .def_readwrite("y", &Camera::y)
-        .def_readwrite("width", &Camera::width)
-        .def_readwrite("height", &Camera::height)
-        .def_readwrite("rot", &Camera::rot)
+        .def_property("x", &Camera::get_x, &Camera::set_x)
+        .def_property("y", &Camera::get_y, &Camera::set_y)
+        .def_property_readonly("width", &Camera::get_width)
+        .def_property("height", &Camera::get_height, &Camera::set_height)
+        .def_property("rot", &Camera::get_rot, &Camera::set_rot)
 
         .doc() = "A 2D camera delineating a view"
     ;

@@ -148,7 +148,10 @@ Shader *Shader::create_src(const string &name, const string &vertex, const strin
 void Shader::set_main_cam(const Mat3 *mat)
 {
     for (auto s : instances)
+    {
+        s.second->use();
         s.second->set_uniform_mat3(s.second->u_cam, mat);
+    }
 }
 
 // --- Instance --- //
