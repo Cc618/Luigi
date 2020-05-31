@@ -25,7 +25,7 @@ public:
 struct Box
 {
 public:
-    Box(GLfloat x, GLfloat y, GLfloat width, GLfloat height);
+    Box(GLfloat x=0, GLfloat y=0, GLfloat width=0, GLfloat height=0);
 
 public:
     // Returns a transform describing the box
