@@ -67,12 +67,12 @@ PYBIND11_MODULE(luigi, m)
         .def("set_uniform_2f", &Shader::set_uniform_2f, py::arg("id"), py::arg("x"), py::arg("y"))
         .def("set_uniform_3f", &Shader::set_uniform_3f, py::arg("id"), py::arg("x"), py::arg("y"), py::arg("z"))
         .def("set_uniform_4f", &Shader::set_uniform_4f, py::arg("id"), py::arg("r"), py::arg("g"), py::arg("b"), py::arg("a"))
-        .def("set_uniform_mat2", &Shader::set_uniform_mat2) // TODO : Args
+        // .def("set_uniform_mat2", &Shader::set_uniform_mat2) // TODO : Args
         .def("set_1f", &Shader::set_1f, py::arg("name"), py::arg("x"))
         .def("set_2f", &Shader::set_2f, py::arg("name"), py::arg("x"), py::arg("y"))
         .def("set_3f", &Shader::set_3f, py::arg("name"), py::arg("x"), py::arg("y"), py::arg("z"))
         .def("set_4f", &Shader::set_4f, py::arg("name"), py::arg("r"), py::arg("g"), py::arg("b"), py::arg("a"))
-        .def("set_mat2", &Shader::set_mat2) // TODO : Args
+        // .def("set_mat2", &Shader::set_mat2) // TODO : Args
 
         .doc() = "A GPU program"
     ;

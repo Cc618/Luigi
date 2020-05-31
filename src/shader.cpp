@@ -10,17 +10,17 @@ using namespace std;
 static string main_vertex = R"(
 #version 330 core
 
-layout (location = 0) in vec2 vertex;
+// Vertex contains (x, y, 1)
+layout (location = 0) in vec3 vertex;
 layout (location = 1) in vec2 inTexCoords;
 
 out vec2 texCoords;
 
-uniform vec2 pos;
-uniform mat2 transform;
+uniform mat3 transform;
 
 void main()
 {
-    vec2 point = transform * vertex + pos;
+    vec2 point = (transform * vertex).xy;
     gl_Position = vec4(point, 0, 1);
 
     texCoords = inTexCoords;
@@ -29,6 +29,7 @@ void main()
 
 static string main_fragment = R"(
 #version 330 core
+
 out vec4 FragColor;
 
 in vec2 texCoords;
@@ -127,8 +128,7 @@ Shader *Shader::get(const string &name)
 
 void Shader::create_main()
 {
-    // TODO : Uniforms change
-    create_src("main", main_vertex, main_fragment, {"pos", "transform"});
+    create_src("main", main_vertex, main_fragment, { "transform" });
 }
 
 Shader *Shader::create_src(const string &name, const string &vertex, const string &fragment, const std::list<std::string> &uniforms)
@@ -188,9 +188,9 @@ Shader *Shader::set_4f(const std::string &name, float r, float g, float b, float
     return set_uniform_4f(get_uniform(name), r, g, b, a);
 }
 
-Shader *Shader::set_mat2(const std::string &name, float a, float b, float c, float d)
+Shader *Shader::set_mat3(const std::string &name, const Mat3 *mat)
 {
-    return set_uniform_mat2(get_uniform(name), a, b, c, d);
+    return set_uniform_mat3(get_uniform(name), mat);
 }
 
 Shader *Shader::set_uniform_1f(GLint id, float x)
@@ -221,16 +221,9 @@ Shader *Shader::set_uniform_4f(GLint id, float r, float g, float b, float a)
     return this;
 }
 
-Shader *Shader::set_uniform_mat2(GLint id, float a, float b, float c, float d)
+Shader *Shader::set_uniform_mat3(GLint id, const Mat3 *mat)
 {
-    GLfloat mat[] = {
-        a,
-        b,
-        c,
-        d,
-    };
-
-    glUniformMatrix2fv(id, 1, false, mat);
+    glUniformMatrix3fv(id, 1, false, mat->data);
 
     return this;
 }

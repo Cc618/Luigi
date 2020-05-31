@@ -40,6 +40,7 @@ private:
     // TODO : Sprite sheet
     const Texture *texture;
     Shader *shader;
+    
     // Uniform locations
-    GLint u_pos, u_transform;
+    GLint u_transform;
 };

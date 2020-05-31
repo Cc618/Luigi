@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <list>
 #include <GL/glew.h>
+#include "maths.h"
 
 // Like Shader::create but without return
 void new_shader(const std::string& name, const std::string& vertex_file,
@@ -44,14 +45,14 @@ public:
     Shader *set_3f(const std::string& name, float x, float y, float z);
     Shader *set_4f(const std::string& name, float r, float g, float b, float a);
     // TODO : Custom matrix type
-    Shader *set_mat2(const std::string& name, float a, float b, float c, float d);
+    Shader *set_mat3(const std::string& name, const Mat3 *mat);
 
     // Faster calls with ids retrieved with get_uniform
     Shader *set_uniform_1f(GLint id, float x);
     Shader *set_uniform_2f(GLint id, float x, float y);
     Shader *set_uniform_3f(GLint id, float x, float y, float z);
     Shader *set_uniform_4f(GLint id, float r, float g, float b, float a);
-    Shader *set_uniform_mat2(GLint id, float a, float b, float c, float d);
+    Shader *set_uniform_mat3(GLint id, const Mat3 *mat);
 
 public:
     // Uniform name to id

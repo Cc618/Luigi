@@ -1,12 +1,13 @@
 #include "sprite.h"
 #include <iostream>
 #include <cmath>
+#include "maths.h"
 
 using namespace std;
 
-constexpr size_t SPRITE_VERTEX_SIZE = 4;
+constexpr size_t SPRITE_VERTEX_SIZE = 5;
 
-// TODO : In math
+// TMP : rm
 void genTransform(float *data, float rot, float width, float height)
 {
     data[0] = width * cosf(rot);
@@ -23,12 +24,12 @@ void Sprite::init_sprites()
     // Generate VBO //
     // x, y, u, v
     float vertices[6 * SPRITE_VERTEX_SIZE] = {
-        -.5f,   -.5f,   0.f,  0.f,
-        0.5f,   -.5f,   1.f,  0.f,
-        0.5f,   0.5f,   1.f,  1.f,
-        0.5f,   0.5f,   1.f,  1.f,
-        -.5f,   -.5f,   0.f,  0.f,
-        -.5f,   0.5f,   0.f,  1.f,
+        -.5f,   -.5f,   1,  0.f,  0.f,
+        0.5f,   -.5f,   1,  1.f,  0.f,
+        0.5f,   0.5f,   1,  1.f,  1.f,
+        0.5f,   0.5f,   1,  1.f,  1.f,
+        -.5f,   -.5f,   1,  0.f,  0.f,
+        -.5f,   0.5f,   1,  0.f,  1.f,
     };
 
     glGenBuffers(1, &vbo_id);
@@ -45,7 +46,6 @@ Sprite::Sprite(const string& texture, const string& shader)
 
 void Sprite::start()
 {
-    u_pos = shader->get_uniform("pos");
     u_transform = shader->get_uniform("transform");
 }
 
@@ -59,11 +59,11 @@ void Sprite::draw()
     texture->use();
 
     // Position
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, SPRITE_VERTEX_SIZE * sizeof(float), 0);
     glEnableVertexAttribArray(0);
 
     // Texture
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, SPRITE_VERTEX_SIZE * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
     // Draw
@@ -77,14 +77,10 @@ void Sprite::set_uniforms() const
 {
     shader->use();
 
-    // TODO : One transformation matrix
+    // auto m = Mat3::create_id();
+    auto m = Mat3::create_transform(x, y, width, height, rot);
+ 
+    shader->set_uniform_mat3(u_transform, m);
 
-    // Position
-    shader->set_uniform_2f(u_pos, x, y);
-
-    // Transform
-    // TODO : See flip y for cam or for sprite
-    float transform[4];
-    genTransform(transform, rot, width, -height);
-    shader->set_uniform_mat2(u_transform, transform[0], transform[1], transform[2], transform[3]);
+    delete m;
 }
