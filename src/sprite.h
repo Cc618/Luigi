@@ -10,11 +10,7 @@
 class Sprite : public Entity
 {
 public:
-    static void init_sprites();
-
-public:
     Sprite(const std::string& texture, const std::string& shader="main");
-    // TODO : Update
     virtual ~Sprite() = default;
 
 public:
@@ -22,16 +18,15 @@ public:
     virtual void draw() override;
 
 public:
+    // Multiplies width and height by factor
+    void scale(float factor);
+
+public:
     float x;
     float y;
     float rot;
     float width = 1;
     float height = 1;
-
-private:
-    // TMP
-    // Ids
-    static GLuint vbo_id;
 
 private:
     void set_uniforms() const;

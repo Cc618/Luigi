@@ -100,6 +100,8 @@ PYBIND11_MODULE(luigi, m)
         .def("draw", &Sprite::draw)
         .def("stop", &Sprite::stop)
 
+        .def("scale", &Sprite::scale, py::arg("factor"))
+
         .doc() = "An image mapped to a camera"
     ;
 

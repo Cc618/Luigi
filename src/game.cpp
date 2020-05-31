@@ -10,6 +10,7 @@
 #include "error.h"
 #include "sprite.h"
 #include "shader.h"
+#include "buffers.h"
 
 using namespace sf;
 using namespace std;
@@ -113,7 +114,8 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
 
 void Game::start()
 {
-    ::Sprite::init_sprites();
+    // Init buffers
+    VBO::create_square();
 
     // Init blending
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

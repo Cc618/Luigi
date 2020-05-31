@@ -57,7 +57,7 @@ Texture::Texture(const std::string &name, const std::string &file)
 {
     // Load
     sf::Image img;
-    img.loadFromFile(file);
+    Error::check(img.loadFromFile(file), "Can't load texture '" + name + "' from file '" + file + "'");
 
     // Get properties
     auto size = img.getSize();
