@@ -22,3 +22,17 @@ public:
     GLfloat data[9];
 };
 
+struct Box
+{
+public:
+    Box(GLfloat x, GLfloat y, GLfloat width, GLfloat height);
+
+public:
+    // Returns a transform describing the box
+    // Useful to get texture transformation matrix
+    Mat3 *get_transform() const;
+
+public:
+    GLfloat x, y, width, height;
+};
+

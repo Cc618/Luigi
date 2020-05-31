@@ -53,6 +53,22 @@ Mat3 *Mat3::create_id()
     m->data[6] = 0;
     m->data[7] = 0;
     m->data[8] = 1;
- 
+
+    return m;
+}
+
+// --- Box --- //
+Box::Box(GLfloat x, GLfloat y, GLfloat width, GLfloat height)
+    : x(x), y(y), width(width), height(height)
+{}
+
+Mat3 *Box::get_transform() const
+{
+    auto m = new Mat3();
+
+    m->data[0] = width; m->data[1] = 0;         m->data[2] = x;
+    m->data[3] = 0;     m->data[4] = height;    m->data[5] = y;
+    m->data[6] = 0;     m->data[7] = 0;         m->data[8] = 1;
+
     return m;
 }
