@@ -3,6 +3,7 @@
 #include "error.h"
 #include "game.h"
 #include "inputs.h"
+#include "maths.h"
 #include "scene.h"
 #include "shader.h"
 #include "sprite.h"
