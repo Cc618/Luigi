@@ -55,8 +55,8 @@ void Sprite::draw()
     set_uniforms();
 
     // Set shader & texture
-    shader->bind();
-    texture->bind();
+    shader->use();
+    texture->use();
 
     // Position
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
@@ -75,7 +75,7 @@ void Sprite::draw()
 
 void Sprite::set_uniforms() const
 {
-    shader->bind();
+    shader->use();
 
     // TODO : One transformation matrix
 

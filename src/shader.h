@@ -30,7 +30,7 @@ public:
     ~Shader();
 
 public:
-    void bind() const;
+    void use() const;
 
     // Retrieves the id of a uniform
     GLint get_uniform(const std::string& name) const;

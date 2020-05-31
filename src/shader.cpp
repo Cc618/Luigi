@@ -154,7 +154,7 @@ Shader::~Shader()
     // TMP : Destroy shader
 }
 
-void Shader::bind() const
+void Shader::use() const
 {
     glUseProgram(id);
 }

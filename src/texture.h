@@ -20,7 +20,7 @@ public:
     ~Texture();
 
 public:
-    void bind() const;
+    void use() const;
 
 public:
     unsigned int width;

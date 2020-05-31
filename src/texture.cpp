@@ -73,7 +73,7 @@ Texture::~Texture()
     // TMP : Destroy texture
 }
 
-void Texture::bind() const
+void Texture::use() const
 {
     glBindTexture(GL_TEXTURE_2D, id);
     glActiveTexture(GL_TEXTURE0);
