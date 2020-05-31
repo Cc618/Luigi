@@ -4,6 +4,12 @@
 
 using namespace std;
 
+// Compares 2 layers by their z index
+static bool layer_cmp(Layer* a, Layer *b)
+{
+    return a->z < b->z;
+}
+
 Scene *Scene::current = nullptr;
 
 list<Scene*> Scene::instances;
@@ -27,10 +33,10 @@ Scene *Scene::find(const std::string& name)
 }
 
 Scene::Scene(const std::string &name)
-    : name(name)
+    : name(name), layers(layer_cmp)
 {
-    // TMP
-    layers.push_back(selected_layer = new Layer("main"));
+    // Create default main layer
+    layers.insert(selected_layer = new Layer("main"));
 }
 
 void Scene::start()
@@ -75,7 +81,7 @@ void Scene::set_layer(const std::string& name, bool create, int z)
         Error::check(!started, "Can't create layers when a scene has started");
 
         selected_layer = new Layer(name, z);
-        layers.push_back(selected_layer);
+        layers.insert(selected_layer);
     }
     else
     {

@@ -3,17 +3,15 @@
 // A screen with multiple layers of entities
 
 #include <string>
-#include <list>
+#include <set>
 #include "entity.h"
 #include "layer.h"
 
-// TODO : Handle z index in layers
 class Scene : public Entity
 {
 public:
     static Scene *current;
 
-    // TODO : Map ?
     static std::list<Scene*> instances;
 
 public:
@@ -41,7 +39,8 @@ public:
 public:
     std::string name;
     Layer *selected_layer;
-    std::list<Layer*> layers;
+    // A set is used to order layers by the z index
+    std::set<Layer*, bool (*)(Layer*, Layer*)> layers;
 
 private:
     Scene(const std::string& name);

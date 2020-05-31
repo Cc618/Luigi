@@ -25,9 +25,9 @@ public:
 
 public:
     // Change this to true to remove it
-    bool dead;
+    bool dead = false;
 
 protected:
     // Whether start has been called
-    bool started;
+    bool started = false;
 };

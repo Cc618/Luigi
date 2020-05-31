@@ -22,9 +22,9 @@ public:
     void scale(float factor);
 
 public:
-    float x;
-    float y;
-    float rot;
+    float x = 0;
+    float y = 0;
+    float rot = 0;
     float width = 1;
     float height = 1;
 
