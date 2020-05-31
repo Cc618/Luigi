@@ -59,6 +59,22 @@ PYBIND11_MODULE(luigi, m)
     // --- Shader --- //
     m.def("new_shader", &new_shader, py::arg("name"), py::arg("vertex_file"), py::arg("fragment_file"), py::arg("uniforms"));
 
+    py::class_<Shader>(m, "Shader")
+        .def_static("get", &Shader::get, py::arg("name"))
+        
+        .def("get_uniform", &Shader::get_uniform, py::arg("name"))
+        .def("set_uniform_1f", &Shader::set_uniform_1f, py::arg("id"), py::arg("x"))
+        .def("set_uniform_2f", &Shader::set_uniform_2f, py::arg("id"), py::arg("x"), py::arg("y"))
+        .def("set_uniform_3f", &Shader::set_uniform_3f, py::arg("id"), py::arg("x"), py::arg("y"), py::arg("z"))
+        .def("set_uniform_4f", &Shader::set_uniform_4f, py::arg("id"), py::arg("r"), py::arg("g"), py::arg("b"), py::arg("a"))
+        .def("set_uniform_mat2", &Shader::set_uniform_mat2) // TODO : Args
+        .def("set_1f", &Shader::set_1f, py::arg("name"), py::arg("x"))
+        .def("set_2f", &Shader::set_2f, py::arg("name"), py::arg("x"), py::arg("y"))
+        .def("set_3f", &Shader::set_3f, py::arg("name"), py::arg("x"), py::arg("y"), py::arg("z"))
+        .def("set_4f", &Shader::set_4f, py::arg("name"), py::arg("r"), py::arg("g"), py::arg("b"), py::arg("a"))
+        .def("set_mat2", &Shader::set_mat2) // TODO : Args
+    ;
+
     // --- Sprite --- //
     py::class_<Sprite, Entity, PyEntityChild<Sprite>>(m, "Sprite")
         .def(py::init<string, string>(), py::arg("texture"), py::arg("shader")="main")

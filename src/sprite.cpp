@@ -43,6 +43,12 @@ Sprite::Sprite(const string& texture, const string& shader)
     height = this->texture->height;
 }
 
+void Sprite::start()
+{
+    u_pos = shader->get_uniform("pos");
+    u_transform = shader->get_uniform("transform");
+}
+
 void Sprite::draw()
 {
     // Send uniforms to the shader
@@ -72,14 +78,13 @@ void Sprite::set_uniforms() const
     shader->bind();
 
     // TODO : One transformation matrix
-    // TODO : Shader functions
 
     // Position
-    shader->set_uniform_2f("pos", x, y);
+    shader->set_uniform_2f(u_pos, x, y);
 
     // Transform
     // TODO : See flip y for cam or for sprite
     float transform[4];
     genTransform(transform, rot, width, -height);
-    shader->set_uniform_mat2("transform", transform[0], transform[1], transform[2], transform[3]);
+    shader->set_uniform_mat2(u_transform, transform[0], transform[1], transform[2], transform[3]);
 }

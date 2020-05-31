@@ -113,7 +113,6 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
 
 void Game::start()
 {
-    // TODO : rm
     ::Sprite::init_sprites();
 
     // Init blending

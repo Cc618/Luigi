@@ -18,6 +18,7 @@ public:
     virtual ~Sprite() = default;
 
 public:
+    virtual void start() override;
     virtual void draw() override;
 
 public:
@@ -39,4 +40,6 @@ private:
     // TODO : Sprite sheet
     const Texture *texture;
     Shader *shader;
+    // Uniform locations
+    GLint u_pos, u_transform;
 };

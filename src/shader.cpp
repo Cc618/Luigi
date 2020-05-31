@@ -64,7 +64,7 @@ static int genShaderComponent(const char *name, const char *source, GLenum type)
 
 // Generates a program on GPU and returns the handle to this program
 static GLuint genShader(const char *vert, const char *frag,
-    const list<string>& uniforms_names, unordered_map<string, GLint>& uniforms_ids)
+                        const list<string> &uniforms_names, unordered_map<string, GLint> &uniforms_ids)
 {
     // Compile both shaders
     int vertex = genShaderComponent("vertex", vert, GL_VERTEX_SHADER);
@@ -104,19 +104,19 @@ static GLuint genShader(const char *vert, const char *frag,
 }
 
 // --- Static --- //
-unordered_map<string, Shader*> Shader::instances;
+unordered_map<string, Shader *> Shader::instances;
 
-void new_shader(const string& name, const string& vertex_file, const string& fragment_file, const std::list<std::string>& uniforms)
+void new_shader(const string &name, const string &vertex_file, const string &fragment_file, const std::list<std::string> &uniforms)
 {
     Shader::create(name, vertex_file, fragment_file, uniforms);
 }
 
-Shader *Shader::create(const string& name, const string& vertex_file, const string& fragment_file, const std::list<std::string>& uniforms)
+Shader *Shader::create(const string &name, const string &vertex_file, const string &fragment_file, const std::list<std::string> &uniforms)
 {
     return create_src(name, read_txt_file(vertex_file), read_txt_file(fragment_file), uniforms);
 }
 
-Shader *Shader::get(const string& name)
+Shader *Shader::get(const string &name)
 {
     auto result = instances.find(name);
 
@@ -128,10 +128,10 @@ Shader *Shader::get(const string& name)
 void Shader::create_main()
 {
     // TODO : Uniforms change
-    create_src("main", main_vertex, main_fragment, { "pos", "transform" });
+    create_src("main", main_vertex, main_fragment, {"pos", "transform"});
 }
 
-Shader *Shader::create_src(const string& name, const string& vertex, const string& fragment, const std::list<std::string>& uniforms)
+Shader *Shader::create_src(const string &name, const string &vertex, const string &fragment, const std::list<std::string> &uniforms)
 {
     Error::check(instances.find(name) == instances.end(), "Shader with name '" + name + "' already exists");
 
@@ -143,7 +143,7 @@ Shader *Shader::create_src(const string& name, const string& vertex, const strin
 }
 
 // --- Instance --- //
-Shader::Shader(const string &name, const string& vert, const string& frag, const std::list<std::string>& uniforms)
+Shader::Shader(const string &name, const string &vert, const string &frag, const std::list<std::string> &uniforms)
     : name(name)
 {
     id = genShader(vert.c_str(), frag.c_str(), uniforms, this->uniforms);
@@ -159,62 +159,78 @@ void Shader::bind() const
     glUseProgram(id);
 }
 
-Shader *Shader::set_uniform_1f(const std::string& name, float x)
+GLint Shader::get_uniform(const std::string &name) const
 {
     // Find
     auto u_id = uniforms.find(name);
     Error::check(u_id != uniforms.end(), "Uniform with name '" + name + "' not found or not present in the uniform list");
 
-    glUniform1f((*u_id).second, x);
- 
+    return (*u_id).second;
+}
+
+Shader *Shader::set_1f(const std::string &name, float x)
+{
+    return set_uniform_1f(get_uniform(name), x);
+}
+
+Shader *Shader::set_2f(const std::string &name, float x, float y)
+{
+    return set_uniform_2f(get_uniform(name), x, y);
+}
+
+Shader *Shader::set_3f(const std::string &name, float x, float y, float z)
+{
+    return set_uniform_3f(get_uniform(name), x, y, z);
+}
+
+Shader *Shader::set_4f(const std::string &name, float r, float g, float b, float a)
+{
+    return set_uniform_4f(get_uniform(name), r, g, b, a);
+}
+
+Shader *Shader::set_mat2(const std::string &name, float a, float b, float c, float d)
+{
+    return set_uniform_mat2(get_uniform(name), a, b, c, d);
+}
+
+Shader *Shader::set_uniform_1f(GLint id, float x)
+{
+    glUniform1f(id, x);
+
     return this;
 }
 
-Shader *Shader::set_uniform_2f(const std::string& name, float x, float y)
+Shader *Shader::set_uniform_2f(GLint id, float x, float y)
 {
-    // Find
-    auto u_id = uniforms.find(name);
-    Error::check(u_id != uniforms.end(), "Uniform with name '" + name + "' not found or not present in the uniform list");
-
-    glUniform2f((*u_id).second, x, y);
+    glUniform2f(id, x, y);
 
     return this;
 }
 
-Shader *Shader::set_uniform_3f(const std::string& name, float x, float y, float z)
+Shader *Shader::set_uniform_3f(GLint id, float x, float y, float z)
 {
-    // Find
-    auto u_id = uniforms.find(name);
-    Error::check(u_id != uniforms.end(), "Uniform with name '" + name + "' not found or not present in the uniform list");
+    glUniform3f(id, x, y, z);
 
-    glUniform3f((*u_id).second, x, y, z);
- 
     return this;
 }
 
-Shader *Shader::set_uniform_4f(const std::string& name, float r, float g, float b, float a)
+Shader *Shader::set_uniform_4f(GLint id, float r, float g, float b, float a)
 {
-    // Find
-    auto u_id = uniforms.find(name);
-    Error::check(u_id != uniforms.end(), "Uniform with name '" + name + "' not found or not present in the uniform list");
+    glUniform4f(id, r, g, b, a);
 
-    glUniform4f((*u_id).second, r, g, b, a);
- 
     return this;
 }
 
-Shader *Shader::set_uniform_mat2(const std::string& name, float a, float b, float c, float d)
+Shader *Shader::set_uniform_mat2(GLint id, float a, float b, float c, float d)
 {
-    // Find
-    auto u_id = uniforms.find(name);
-    Error::check(u_id != uniforms.end(), "Uniform with name '" + name + "' not found or not present in the uniform list");
-
     GLfloat mat[] = {
-        a, b,
-        c, d,
+        a,
+        b,
+        c,
+        d,
     };
 
-    glUniformMatrix2fv((*u_id).second, 1, false, mat);
- 
+    glUniformMatrix2fv(id, 1, false, mat);
+
     return this;
 }
