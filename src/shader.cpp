@@ -151,7 +151,7 @@ Shader::Shader(const string &name, const string &vert, const string &frag, const
 
 Shader::~Shader()
 {
-    // TMP : Destroy shader
+    glDeleteProgram(id);
 }
 
 void Shader::use() const

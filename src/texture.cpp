@@ -70,7 +70,7 @@ Texture::Texture(const std::string &name, const std::string &file)
 
 Texture::~Texture()
 {
-    // TMP : Destroy texture
+    glDeleteTextures(1, &id);
 }
 
 void Texture::use() const

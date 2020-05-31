@@ -73,6 +73,8 @@ PYBIND11_MODULE(luigi, m)
         .def("set_3f", &Shader::set_3f, py::arg("name"), py::arg("x"), py::arg("y"), py::arg("z"))
         .def("set_4f", &Shader::set_4f, py::arg("name"), py::arg("r"), py::arg("g"), py::arg("b"), py::arg("a"))
         .def("set_mat2", &Shader::set_mat2) // TODO : Args
+
+        .doc() = "A GPU program"
     ;
 
     // --- Sprite --- //

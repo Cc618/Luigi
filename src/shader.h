@@ -36,15 +36,8 @@ public:
     GLint get_uniform(const std::string& name) const;
 
     // Set uniforms
-    // !!! These functions must be called in the draw method when the shader is bound
-    // TODO : Python bindings
-    // Faster calls with ids retrieved with get_uniform
-    Shader *set_uniform_1f(GLint id, float x);
-    Shader *set_uniform_2f(GLint id, float x, float y);
-    Shader *set_uniform_3f(GLint id, float x, float y, float z);
-    Shader *set_uniform_4f(GLint id, float r, float g, float b, float a);
-    Shader *set_uniform_mat2(GLint id, float a, float b, float c, float d);
-
+    // !!! These functions must be called in the draw method when the shader is bound (with use)
+    // * Note that 'this' is returned to allow chains
     // To optimize, use set_uniform with the id retrieved by get_uniform
     Shader *set_1f(const std::string& name, float x);
     Shader *set_2f(const std::string& name, float x, float y);
@@ -52,6 +45,13 @@ public:
     Shader *set_4f(const std::string& name, float r, float g, float b, float a);
     // TODO : Custom matrix type
     Shader *set_mat2(const std::string& name, float a, float b, float c, float d);
+
+    // Faster calls with ids retrieved with get_uniform
+    Shader *set_uniform_1f(GLint id, float x);
+    Shader *set_uniform_2f(GLint id, float x, float y);
+    Shader *set_uniform_3f(GLint id, float x, float y, float z);
+    Shader *set_uniform_4f(GLint id, float r, float g, float b, float a);
+    Shader *set_uniform_mat2(GLint id, float a, float b, float c, float d);
 
 public:
     // Uniform name to id
