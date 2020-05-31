@@ -46,7 +46,8 @@ void Sprite::set_uniforms() const
 {
     shader->use();
 
-    auto m = Mat3::create_transform(x, y, width, height, rot);
+    // Flip y with -height
+    auto m = Mat3::create_transform(x, y, width, -height, rot);
  
     shader->set_uniform_mat3(u_transform, m);
 

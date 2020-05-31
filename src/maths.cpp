@@ -4,7 +4,7 @@
 // --- Mat3 --- //
 // Rotate -> Scale -> Translate
 // Rotate * Scale = [a, b, c, d] as a Mat2
-Mat3 *Mat3::create_transform(float x, float y, float width, float height, float rot)
+Mat3 *Mat3::create_transform(float x, float y, float width, float height, float rot, bool translate_after)
 {
     Mat3 *m = new Mat3();
 
@@ -21,8 +21,16 @@ Mat3 *Mat3::create_transform(float x, float y, float width, float height, float 
     m->data[1] = c; m->data[4] = d;
 
     // Translate
-    m->data[6] = x;
-    m->data[7] = y;
+    if (translate_after)
+    {
+        m->data[6] = x;
+        m->data[7] = y;
+    }
+    else
+    {
+        m->data[6] = x * a + y * b;
+        m->data[7] = x * c + y * d;
+    }
 
     // Last row
     m->data[2] = 0;

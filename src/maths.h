@@ -8,7 +8,8 @@ struct Mat3
 {
 public:
     // 2D transformation matrix
-    static Mat3 *create_transform(float x, float y, float width=1, float height=1, float rot=0);
+    // * translate_after describes whether we have to translate after rotation and scaling
+    static Mat3 *create_transform(float x, float y, float width=1, float height=1, float rot=0, bool translate_after=true);
 
     // Identity
     static Mat3 *create_id();
