@@ -9,6 +9,7 @@ To compile Luigi :
 ```sh
 # Install dependencies...
 # Download pybind11
+git submodule init
 git submodule update --remote
 # Generate build system
 cmake .
