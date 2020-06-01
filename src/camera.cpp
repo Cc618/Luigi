@@ -6,7 +6,7 @@ Camera *Camera::main = nullptr;
 
 Mat3 *Camera::get_transform() const
 {
-    return Mat3::create_tsr(-x, -y, inv_width, inv_height, -rot);
+    return Mat3::create_tsr(-x, -y, inv_half_width, inv_half_height, -rot);
 }
 
 Camera::Camera(float height, float x, float y, float rot)
@@ -53,16 +53,32 @@ float Camera::get_rot() const
     return rot;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+#include <iostream>
+
 void Camera::set_height(float val)
 {
     Error::check(val > 0, "The height of the camera must be > 0");
 
     transform_changed = true;
     height = val;
-    inv_height = 1.f / val;
+    inv_half_height = 2.f / val;
+std::cout << height << std::endl;
 
     width = height * Game::instance->ratio;
-    inv_width = 1.f / width;
+    inv_half_width = 2.f / width;
 }
 
 void Camera::set_x(float val)

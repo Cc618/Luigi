@@ -9,6 +9,7 @@ public:
     static Camera *main;
 
 public:
+    // Width is computed with the screen aspect ratio
     Camera(float height, float x=0, float y=0, float rot=0);
     virtual ~Camera() = default;
 
@@ -39,8 +40,11 @@ private:
     float x;
     float y;
     float width;
-    float inv_width;
     float height;
-    float inv_height;
     float rot;
+
+    // To avoid divisions
+    // Halved because otherwise the viewport will have doubled size
+    float inv_half_width;
+    float inv_half_height;
 };

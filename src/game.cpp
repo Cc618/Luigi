@@ -85,9 +85,7 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
                     glViewport(0, 0, event.size.width, event.size.height);
                     ratio = (float)event.size.width / (float)event.size.height;
 
-                    Camera::main->transform_changed = true;
-
-                    // TMP : Update cameras
+                    Camera::main->set_height(Camera::main->get_height());
                 }
             }
 
