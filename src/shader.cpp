@@ -10,11 +10,11 @@ using namespace std;
 static string main_vertex = R"(
 #version 330 core
 
-// Vertex contains (x, y, 1)
-layout (location = 0) in vec3 vertex;
-layout (location = 1) in vec2 inTexCoords;
+// Vertex is the local vertex location
+layout (location = 0) in vec2 vertex;
+layout (location = 1) in vec2 tex_coords;
 
-out vec2 texCoords;
+out vec2 tex;
 
 // Main camera
 uniform mat3 cam;
@@ -26,26 +26,26 @@ uniform mat3 tex_transform;
 void main()
 {
     // Position
-    vec2 point = (cam * (transform * vertex)).xy;
+    vec2 point = (cam * transform * vec3(vertex, 1)).xy;
     gl_Position = vec4(point, 0, 1);
 
     // Texture
-    texCoords = (tex_transform * vec3(inTexCoords, 1)).xy;
+    tex = (tex_transform * vec3(tex_coords, 1)).xy;
 }
 )";
 
 static string main_fragment = R"(
 #version 330 core
 
-out vec4 FragColor;
+out vec4 px;
 
-in vec2 texCoords;
+in vec2 tex;
 
 uniform sampler2D sprite;
 
 void main()
 {
-    FragColor = texture(sprite, texCoords);
+    px = texture(sprite, tex);
 }
 )";
 

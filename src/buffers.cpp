@@ -1,6 +1,6 @@
 #include "buffers.h"
 
-constexpr size_t SQUARE_VERTEX_SIZE = 5;
+constexpr size_t SQUARE_VERTEX_SIZE = 4;
 
 // --- VBO --- //
 VBO *VBO::square = nullptr;
@@ -8,16 +8,16 @@ VBO *VBO::square = nullptr;
 void VBO::create_square()
 {
     // x, y, 1, u, v
-    GLfloat vertices[6 * 5] = {
-        -.5f,   -.5f,   1,  0,  0,
-        0.5f,   -.5f,   1,  1,  0,
-        0.5f,   0.5f,   1,  1,  1,
-        0.5f,   0.5f,   1,  1,  1,
-        -.5f,   -.5f,   1,  0,  0,
-        -.5f,   0.5f,   1,  0,  1,
+    GLfloat vertices[6 * 4] = {
+        -.5f,   -.5f,   0,  0,
+        0.5f,   -.5f,   1,  0,
+        0.5f,   0.5f,   1,  1,
+        0.5f,   0.5f,   1,  1,
+        -.5f,   -.5f,   0,  0,
+        -.5f,   0.5f,   0,  1,
     };
 
-    square = new VBO(vertices, 6, 5);
+    square = new VBO(vertices, 6, SQUARE_VERTEX_SIZE);
 }
 
 void VBO::use_square(VBO *b)
@@ -25,11 +25,11 @@ void VBO::use_square(VBO *b)
     b->use();
 
     // Position
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, b->vertex_size * sizeof(float), 0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, b->vertex_size * sizeof(float), 0);
     glEnableVertexAttribArray(0);
 
     // Texture
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, b->vertex_size * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, b->vertex_size * sizeof(float), (void*)(2 * sizeof(float)));
     glEnableVertexAttribArray(1);
 }
 
