@@ -2,7 +2,6 @@
 
 #include "maths.h"
 
-// TODO : Binding to overload
 class Camera
 {
 public:
@@ -15,6 +14,7 @@ public:
 
 public:
     // Called each frame before draw but after update
+    // set_transform is called when the transform has changed
     void update(void (*set_transform)(const Mat3 *transform));
 
     // Generates the transform

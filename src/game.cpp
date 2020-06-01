@@ -44,6 +44,7 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
     // settings.majorVersion = 3;
     // settings.minorVersion = 0;
 
+    ratio = (float)width / (float)height;
     Window win(VideoMode(width, height), title, Style::Default, settings);
     win.setVerticalSyncEnabled(true);
     win.setActive(true);
@@ -80,7 +81,14 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
                 if (event.type == Event::Closed)
                     on_game = false;
                 else if (event.type == Event::Resized)
+                {
                     glViewport(0, 0, event.size.width, event.size.height);
+                    ratio = (float)event.size.width / (float)event.size.height;
+
+                    Camera::main->transform_changed = true;
+
+                    // TMP : Update cameras
+                }
             }
 
             // Handle time

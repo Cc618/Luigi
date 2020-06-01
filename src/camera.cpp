@@ -1,16 +1,15 @@
 #include "camera.h"
 #include "error.h"
+#include "game.h"
 
 Camera *Camera::main = nullptr;
 
 Mat3 *Camera::get_transform() const
 {
-    // TODO : Inv width and height
-    return Mat3::create_transform(-x, -y, inv_width, inv_height, -rot, false);
+    return Mat3::create_tsr(-x, -y, inv_width, inv_height, -rot);
 }
 
 Camera::Camera(float height, float x, float y, float rot)
-    // TODO : Width with ratio
     : x(x), y(y), rot(rot)
 {
     set_height(height);
@@ -62,8 +61,7 @@ void Camera::set_height(float val)
     height = val;
     inv_height = 1.f / val;
 
-    // TODO : width ratio
-    width = val * 1;
+    width = height * Game::instance->ratio;
     inv_width = 1.f / width;
 }
 

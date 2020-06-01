@@ -72,7 +72,9 @@ PYBIND11_MODULE(luigi, m)
 
     // --- Maths --- //
     py::class_<Mat3>(m, "Mat3")
-        .def_static("create_transform", &Mat3::create_transform, py::arg("x"), py::arg("y"), py::arg("width")=1, py::arg("height")=1, py::arg("rot")=0, py::arg("translate_after")=true)
+        .def_static("create_tsr", &Mat3::create_tsr, py::arg("x"), py::arg("y"), py::arg("width")=1, py::arg("height")=1, py::arg("rot")=0)
+        .def_static("create_rst", &Mat3::create_rst, py::arg("x"), py::arg("y"), py::arg("width")=1, py::arg("height")=1, py::arg("rot")=0)
+        .def_static("create_srt", &Mat3::create_srt, py::arg("x"), py::arg("y"), py::arg("width")=1, py::arg("height")=1, py::arg("rot")=0)
         .def_static("create_id", &Mat3::create_id)
 
         .doc() = "A 3x3 matrix"

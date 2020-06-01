@@ -2,40 +2,44 @@
 #include <cmath>
 
 // --- Mat3 --- //
-// Rotate -> Scale -> Translate
-// Rotate * Scale = [a, b, c, d] as a Mat2
-Mat3 *Mat3::create_transform(float x, float y, float width, float height, float rot, bool translate_after)
+Mat3 *Mat3::create_tsr(float x, float y, float width, float height, float rot)
 {
     Mat3 *m = new Mat3();
 
-    GLfloat i = cosf(rot);
-    GLfloat j = sinf(rot);
+    GLfloat i = sinf(rot);
+    GLfloat j = cosf(rot);
 
-    GLfloat a = width * i;
-    GLfloat b = -height * j;
-    GLfloat c = width * j;
-    GLfloat d = height * i;
+    m->data[0] = width * j; m->data[3] = -height * i;   m->data[6] = m->data[0] * x + m->data[3] * y;
+    m->data[1] = width * i; m->data[4] = height * j;    m->data[7] = m->data[1] * x + m->data[4] * y;
+    m->data[2] = 0;         m->data[5] = 0;             m->data[8] = 1;
 
-    // Rotate * Scale
-    m->data[0] = a; m->data[3] = b;
-    m->data[1] = c; m->data[4] = d;
+    return m;
+}
 
-    // Translate
-    if (translate_after)
-    {
-        m->data[6] = x;
-        m->data[7] = y;
-    }
-    else
-    {
-        m->data[6] = x * a + y * b;
-        m->data[7] = x * c + y * d;
-    }
+Mat3 *Mat3::create_rst(float x, float y, float width, float height, float rot)
+{
+    Mat3 *m = new Mat3();
 
-    // Last row
-    m->data[2] = 0;
-    m->data[5] = 0;
-    m->data[8] = 1;
+    GLfloat i = sinf(rot);
+    GLfloat j = cosf(rot);
+
+    m->data[0] = width * j;     m->data[3] = -width * i;    m->data[6] = x;
+    m->data[1] = height * i;    m->data[4] = height * j;    m->data[7] = y;
+    m->data[2] = 0;             m->data[5] = 0;             m->data[8] = 1;
+
+    return m;
+}
+
+Mat3 *Mat3::create_srt(float x, float y, float width, float height, float rot)
+{
+    Mat3 *m = new Mat3();
+
+    GLfloat i = sinf(rot);
+    GLfloat j = cosf(rot);
+
+    m->data[0] = width * j;     m->data[3] = height * i;     m->data[6] = x;
+    m->data[1] = -width * i;    m->data[4] = height * j;    m->data[7] = y;
+    m->data[2] = 0;             m->data[5] = 0;             m->data[8] = 1;
 
     return m;
 }

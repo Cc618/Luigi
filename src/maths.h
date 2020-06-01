@@ -7,9 +7,15 @@
 struct Mat3
 {
 public:
-    // 2D transformation matrix
-    // * translate_after describes whether we have to translate after rotation and scaling
-    static Mat3 *create_transform(float x, float y, float width=1, float height=1, float rot=0, bool translate_after=true);
+    // 2D transformation matrices
+    // Translate -> Scale -> Rotate
+    static Mat3 *create_tsr(float x, float y, float width=1, float height=1, float rot=0);
+
+    // Rotate -> Scale -> Translate
+    static Mat3 *create_rst(float x, float y, float width=1, float height=1, float rot=0);
+
+    // Scale -> Rotate -> Translate
+    static Mat3 *create_srt(float x, float y, float width=1, float height=1, float rot=0);
 
     // Identity
     static Mat3 *create_id();

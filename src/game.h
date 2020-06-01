@@ -36,6 +36,10 @@ public:
 
     // TODO : change_scene
 
+public:
+    // Aspect ratio
+    float ratio;
+
 private:
     // After window creation
     // Returns the current scene
