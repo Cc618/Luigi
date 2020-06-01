@@ -38,4 +38,5 @@ private:
     
     // Uniform locations
     GLint u_transform;
+    GLint u_tex_transform;
 };

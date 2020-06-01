@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 #include "texture.h"
 #include "maths.h"
 
@@ -32,12 +33,11 @@ public:
     Box first_region;
 
 private:
-    // TMP : Use shared pointers or delete
     // All transforms describing regions
-    std::vector<Mat3*> transforms;
+    std::vector<std::unique_ptr<Mat3>> transforms;
     
     // Current region transform
-    std::vector<Mat3*>::const_iterator current;
+    std::vector<std::unique_ptr<Mat3>>::const_iterator current;
 
     float time = 0;
     // 1 / fps

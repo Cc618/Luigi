@@ -16,6 +16,7 @@ Sprite::Sprite(const Frame& frame, const string& shader)
 void Sprite::start()
 {
     u_transform = shader->get_uniform("transform");
+    u_tex_transform = shader->get_uniform("tex_transform");
 }
 
 void Sprite::update(float dt)
@@ -23,33 +24,14 @@ void Sprite::update(float dt)
     frame.update(dt);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 void Sprite::draw()
 {
-    // Send uniforms to the shader
-    set_uniforms();
-
     // Set shader & texture
-    shader->use();
     frame.texture->use();
-    
-    // // TODO : Not here ?
-    auto tex = frame.get_transform();
-    shader->set_mat3("tex_transform", tex);
-    delete tex;
+
+    // Send uniforms to the shader
+    shader->use();
+    set_uniforms();
 
     // Bind buffer and draw it
     VBO::square->use();
@@ -68,7 +50,9 @@ void Sprite::scale(float factor)
 
 void Sprite::set_uniforms() const
 {
-    shader->use();
+    auto tex = frame.get_transform();
+    shader->set_uniform_mat3(u_tex_transform, tex);
+    delete tex;
 
     // Flip y with -height
     auto m = Mat3::create_transform(x, y, width, -height, rot);

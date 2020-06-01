@@ -6,16 +6,15 @@ using namespace std;
 
 // Generates a texture on GPU and returns the handle to this texture
 // * Format is RGBA8
-// TODO : filter
-static GLuint genTexture(const unsigned char *data, size_t width, size_t height)
+static GLuint genTexture(const unsigned char *data, size_t width, size_t height, GLenum usage)
 {
     GLuint id;
 
     glGenTextures(1, &id);
     glBindTexture(GL_TEXTURE_2D, id);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, usage);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, usage);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
@@ -27,16 +26,16 @@ static GLuint genTexture(const unsigned char *data, size_t width, size_t height)
 
 std::unordered_map<std::string, Texture*> Texture::instances;
 
-void new_texture(const std::string& name, const std::string& file)
+void new_texture(const std::string& name, const std::string& file, const std::string& mode)
 {
-    Texture::create(name, file);
+    Texture::create(name, file, mode);
 }
 
-Texture *Texture::create(const std::string& name, const std::string& file)
+Texture *Texture::create(const std::string& name, const std::string& file, const std::string& mode)
 {
     Error::check(instances.find(name) == instances.end(), "Texture with name '" + name + "' already exists");
 
-    auto t = new Texture(name, file);
+    auto t = new Texture(name, file, mode);
 
     instances[name] = t;
 
@@ -52,7 +51,7 @@ Texture *Texture::get(const std::string& name)
     return (*result).second;
 }
 
-Texture::Texture(const std::string &name, const std::string &file)
+Texture::Texture(const std::string &name, const std::string &file, const std::string &mode)
     : name(name)
 {
     // Load
@@ -64,8 +63,16 @@ Texture::Texture(const std::string &name, const std::string &file)
     width = size.x;
     height = size.y;
 
+    GLenum usage;
+    if (mode == "pixel")
+        usage = GL_NEAREST;
+    else if (mode == "blur")
+        usage = GL_LINEAR;
+    else
+        throw Error("Mode '" + mode + "' invalid, use either 'pixel' or 'blur'");
+
     // Send to GPU
-    id = genTexture(img.getPixelsPtr(), width, height);
+    id = genTexture(img.getPixelsPtr(), width, height, usage);
 }
 
 Texture::~Texture()

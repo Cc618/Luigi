@@ -132,5 +132,8 @@ PYBIND11_MODULE(luigi, m)
     ;
 
     // --- Texture --- //
-    m.def("new_texture", &new_texture, py::arg("name"), py::arg("file"));
+    m.def("new_texture", &new_texture, py::arg("name"), py::arg("file"), py::arg("mode")="pixel",
+        py::doc(R"(Mode :
+- pixel : No blur when scaling the texture (nearest)
+- blur : Blur when scaling the texture (linear))"));
 }

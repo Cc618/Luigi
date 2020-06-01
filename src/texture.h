@@ -8,12 +8,15 @@
 #include <GL/glew.h>
 
 // Like Texture::create but without return
-void new_texture(const std::string& name, const std::string& file);
+// Mode :
+// - pixel : No blur when scaling the texture (nearest)
+// - blur : Blur when scaling the texture (linear)
+void new_texture(const std::string& name, const std::string& file, const std::string& mode="pixel");
 
 class Texture
 {
 public:
-    static Texture *create(const std::string& name, const std::string& file);
+    static Texture *create(const std::string& name, const std::string& file, const std::string& mode="pixel");
     static Texture *get(const std::string& name);
 
 public:
@@ -30,8 +33,10 @@ private:
     static std::unordered_map<std::string, Texture*> instances;
 
 private:
-    // TODO : Mode (nearest...)
-    Texture(const std::string &name, const std::string &file);
+    // Mode :
+    // - pixel : No blur when scaling the texture (nearest)
+    // - blur : Blur when scaling the texture (linear)
+    Texture(const std::string &name, const std::string &file, const std::string &mode="pixel");
 
 private:
     GLuint id;

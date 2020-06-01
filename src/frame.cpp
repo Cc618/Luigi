@@ -56,8 +56,8 @@ Frame::Frame(const Frame& other)
     : texture(other.texture), frame_duration(other.frame_duration), first_region(other.first_region)
 {
     transforms.reserve(other.transforms.size());
-    for (auto transform : other.transforms)
-        transforms.emplace_back(new Mat3(*transform));
+    for (auto i = 0; i < other.transforms.size(); ++i)
+        transforms.emplace_back(new Mat3(*other.transforms[i]));
 
     current = transforms.begin();
 }
