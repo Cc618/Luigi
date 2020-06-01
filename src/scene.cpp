@@ -1,6 +1,7 @@
 #include "scene.h"
-#include "error.h"
 #include <algorithm>
+#include "error.h"
+#include "camera.h"
 
 using namespace std;
 
@@ -14,9 +15,9 @@ Scene *Scene::current = nullptr;
 
 list<Scene*> Scene::instances;
 
-Scene *Scene::create(const std::string& name)
+Scene *Scene::create(const std::string& name, const std::string& default_cam)
 {
-    auto scn = new Scene(name);
+    auto scn = new Scene(name, default_cam);
 
     instances.push_back(scn);
 
@@ -32,8 +33,8 @@ Scene *Scene::find(const std::string& name)
     return *scn;
 }
 
-Scene::Scene(const std::string &name)
-    : name(name), layers(layer_cmp)
+Scene::Scene(const std::string &name, const std::string& default_cam)
+    : name(name), layers(layer_cmp), default_cam(default_cam)
 {
     // Create default main layer
     layers.insert(selected_layer = new Layer("main"));
@@ -42,6 +43,9 @@ Scene::Scene(const std::string &name)
 void Scene::start()
 {
     Entity::start();
+
+    // TMP : Set camera to default camera
+    Camera::main = Camera::instances[default_cam];
 
     for (auto layer : layers)
         layer->start();

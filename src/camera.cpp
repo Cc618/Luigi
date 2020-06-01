@@ -2,15 +2,19 @@
 #include "error.h"
 #include "game.h"
 
+using namespace std;
+
 Camera *Camera::main = nullptr;
+
+unordered_map<string, Camera*> Camera::instances;
 
 Mat3 *Camera::get_transform() const
 {
     return Mat3::create_tsr(-x, -y, inv_half_width, inv_half_height, -rot);
 }
 
-Camera::Camera(float height, float x, float y, float rot)
-    : x(x), y(y), rot(rot)
+Camera::Camera(const string& name, float height, float x, float y, float rot)
+    : name(name), x(x), y(y), rot(rot)
 {
     set_height(height);
 }
@@ -53,20 +57,17 @@ float Camera::get_rot() const
     return rot;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-#include <iostream>
+void Camera::set(float x, float y, float height, float rot)
+{
+    if (height > 0)
+        set_height(height);
+ 
+    if (rot > 0)
+        set_rot(rot);
+    
+    set_x(x);
+    set_y(y);
+}
 
 void Camera::set_height(float val)
 {
@@ -75,7 +76,6 @@ void Camera::set_height(float val)
     transform_changed = true;
     height = val;
     inv_half_height = 2.f / val;
-std::cout << height << std::endl;
 
     width = height * Game::instance->ratio;
     inv_half_width = 2.f / width;

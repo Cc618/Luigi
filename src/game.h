@@ -5,6 +5,7 @@
 #include <string>
 #include <functional>
 #include "scene.h"
+#include "camera.h"
 
 class Game
 {
@@ -32,10 +33,14 @@ public:
     // Adds an entity to the target scene and layer
     void add(Entity *e);
 
-    // TMP : Update cameras when changed + ren
-    void set_main_cam(float height, float x=0, float y=0, float rot=0) const;
+    // TODO : Update ?
+    // Used in the constructor to create the main camera
+    // void set_main_cam(float height, float x=0, float y=0, float rot=0) const;
 
     // TODO : change_scene
+    // TODO : Change cam + Update cameras when changed
+
+    Camera *add_cam(const std::string& name, float height, bool _default=false);
 
 public:
     // Aspect ratio

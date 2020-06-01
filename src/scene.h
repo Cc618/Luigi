@@ -16,7 +16,7 @@ public:
 
 public:
     // Creates a new scene and registers it
-    static Scene *create(const std::string& name);
+    static Scene *create(const std::string& name, const std::string& default_cam);
 
     // Find a scene by name
     static Scene *find(const std::string& name);
@@ -38,10 +38,11 @@ public:
 
 public:
     std::string name;
+    std::string default_cam;
     Layer *selected_layer;
     // A set is used to order layers by the z index
     std::set<Layer*, bool (*)(Layer*, Layer*)> layers;
 
 private:
-    Scene(const std::string& name);
+    Scene(const std::string& name, const std::string& default_cam);
 };

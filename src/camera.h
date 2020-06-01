@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+#include <unordered_map>
 #include "maths.h"
 
 class Camera
@@ -8,9 +10,12 @@ public:
     // Camera used for sprites
     static Camera *main;
 
+    // Cams by name
+    static std::unordered_map<std::string, Camera*> instances;
+
 public:
     // Width is computed with the screen aspect ratio
-    Camera(float height, float x=0, float y=0, float rot=0);
+    Camera(const std::string& name, float height, float x=0, float y=0, float rot=0);
     virtual ~Camera() = default;
 
 public:
@@ -27,6 +32,8 @@ public:
     float get_height() const;
     float get_rot() const;
 
+    // If height or rot == -1, then height / rot is not changed
+    void set(float x=0, float y=0, float height=-1, float rot=-1);
     void set_height(float val);
     void set_x(float val);
     void set_y(float val);
@@ -35,6 +42,7 @@ public:
 public:
     // Whether the transform has changed since the last frame
     bool transform_changed = true;
+    std::string name;
 
 private:
     float x;

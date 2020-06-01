@@ -23,8 +23,10 @@ PYBIND11_MODULE(luigi, m)
         .def_property_readonly("width", &Camera::get_width)
         .def_property("height", &Camera::get_height, &Camera::set_height)
         .def_property("rot", &Camera::get_rot, &Camera::set_rot)
+        .def("set", &Camera::set, py::arg("x")=0, py::arg("y")=0, py::arg("height")=-1, py::arg("rot")=-1,
+            py::doc("If height or rot == -1, then height / rot is not changed"))
 
-        .doc() = "A 2D camera delineating a view"
+        .doc() = "A 2D camera describing a view"
     ;
 
     // --- Entity --- //
@@ -62,7 +64,8 @@ PYBIND11_MODULE(luigi, m)
         .def("set_scene", &Game::set_scene, py::arg("name"), py::arg("create")=false)
         .def("set_layer", &Game::set_layer, py::arg("name"), py::arg("create")=false, py::arg("z")=0)
         .def("add", &Game::add, py::arg("entity"), py::keep_alive<1, 2>())
-        .def("set_main_cam", &Game::set_main_cam, py::arg("height"), py::arg("x")=0, py::arg("y")=0, py::arg("rot")=0)
+        // TMP .def("set_main_cam", &Game::set_main_cam, py::arg("height"), py::arg("x")=0, py::arg("y")=0, py::arg("rot")=0)
+        .def("add_cam", &Game::add_cam, py::arg("name"), py::arg("height"), py::arg("default")=true, py::return_value_policy::reference)
 
         .doc() = "Handles the window and the game environment"
     ;

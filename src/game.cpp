@@ -59,14 +59,15 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
     construct();
 
     // Set camera
-    if (Camera::main == nullptr)
-        Camera::main = new Camera(height);
+    Error::check(Camera::instances.size() > 0, "No camera created");
 
     // Set first scene
     Error::check(Scene::instances.size() > 0, "No scene created");
+
+    // TODO : Only allow set_scene
     Scene::current = *Scene::instances.begin();
     Scene::current->start();
-
+    
     bool on_game = true;
     auto clock = Clock();
 
@@ -84,7 +85,7 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
                 {
                     glViewport(0, 0, event.size.width, event.size.height);
                     ratio = (float)event.size.width / (float)event.size.height;
-
+                    
                     Camera::main->set_height(Camera::main->get_height());
                 }
             }
@@ -156,7 +157,7 @@ void Game::stop()
 void Game::set_scene(const std::string& name, bool create)
 {
     if (create)
-        selected_scene = Scene::create(name);
+        selected_scene = Scene::create(name, "main");
     else
         selected_scene = Scene::find(name);
 }
@@ -174,10 +175,30 @@ void Game::add(Entity *e)
     selected_scene->add(e);
 }
 
-void Game::set_main_cam(float height, float x, float y, float rot) const
-{
-    if (Camera::main != nullptr)
-        delete Camera::main;
+// void Game::set_main_cam(float height, float x, float y, float rot) const
+// {
+//     // TMP
+//     if (Camera::main != nullptr)
+//         delete Camera::main;
     
-    Camera::main = new Camera(height, x, y, rot);
+//     Camera::main = new Camera("main", height, x, y, rot);
+// }
+
+Camera *Game::add_cam(const std::string& name, float height, bool _default)
+{
+    // Ensure no camera with the same name exists
+    auto i = Camera::instances.find(name);
+    Error::check(i == Camera::instances.end(), "Camera '" + name + "' already exists");
+
+    // Create cam
+    Camera *cam = new Camera(name, height);
+    Camera::instances[name] = cam;
+
+    if (_default)
+    {
+        Error::check(selected_scene != nullptr, "A scene must be created before a camera");
+        selected_scene->default_cam = name;
+    }
+
+    return cam;
 }
