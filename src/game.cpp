@@ -103,7 +103,7 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
 
             clock.restart();
 
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT);
 
             update(dt);
             draw();
@@ -125,12 +125,12 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
 
 void Game::start()
 {
-    // Init buffers
-    VBO::create_square();
-
     // Init blending
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
+
+    // Init buffers
+    VBO::create_square();
 
     ::Shader::create_main();
 }

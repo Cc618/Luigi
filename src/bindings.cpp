@@ -78,6 +78,10 @@ PYBIND11_MODULE(luigi, m)
         .doc() = "Handles the window and the game environment"
     ;
 
+    // game_fun
+    m.def("set_clear_color", &set_clear_color,
+        py::arg("r"), py::arg("g"), py::arg("b"), py::arg("a")=1);
+
     // --- Input --- //
     m.def("pressed", &pressed, py::arg("name"));
 

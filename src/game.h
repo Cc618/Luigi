@@ -7,6 +7,8 @@
 #include "scene.h"
 #include "camera.h"
 
+void set_clear_color(GLclampf r, GLclampf g, GLclampf b, GLclampf a=1);
+
 class Game
 {
 public:
