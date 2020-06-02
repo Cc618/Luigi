@@ -37,13 +37,9 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
     // Target delta time
     float target_dt = 1.f / fps;
 
-    // TODO : Update
     ContextSettings settings;
-    // settings.depthBits = 24;
-    // settings.stencilBits = 8;
-    // settings.antialiasingLevel = 4;
-    // settings.majorVersion = 3;
-    // settings.minorVersion = 0;
+    settings.majorVersion = 3;
+    settings.minorVersion = 3;
 
     ratio = (float)width / (float)height;
     win = new Window(VideoMode(width, height), title, Style::Default, settings);
