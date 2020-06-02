@@ -17,7 +17,8 @@ PYBIND11_MODULE(luigi, m)
     py::class_<Camera>(m, "Camera")
         .def_readwrite_static("main", &Camera::main)
 
-        // TODO : Properties to avoid updating each frame
+        .def_readwrite("name", &Camera::name)
+
         .def_property("x", &Camera::get_x, &Camera::set_x)
         .def_property("y", &Camera::get_y, &Camera::set_y)
         .def_property_readonly("width", &Camera::get_width)
@@ -47,11 +48,18 @@ PYBIND11_MODULE(luigi, m)
     py::register_exception<Error>(m, "Error");
 
     // --- Frame --- //
-    py::class_<Frame>(m, "Frame")
+    py::class_<Region>(m, "Region")
         // TODO : Other constructors
-        .def(py::init<const string&, const std::vector<Box>&, float>())
+        .def(py::init<const string&, const Box&>(), py::arg("texture_name"), py::arg("rect"))
         
-        .doc() = "Handles the window and the game environment"
+        .doc() = "A texture region"
+    ;
+
+    py::class_<Frame, Region>(m, "Frame")
+        // TODO : Other constructors
+        .def(py::init<const string&, const std::vector<Box>&, float>(), py::arg("texture_name"), py::arg("regions"), py::arg("fps"))
+        
+        .doc() = "An animated texture region"
     ;
 
     // --- Game --- //
@@ -118,7 +126,7 @@ PYBIND11_MODULE(luigi, m)
 
     // --- Sprite --- //
     py::class_<Sprite, Entity, PyEntityChild<Sprite>>(m, "Sprite")
-        .def(py::init<const Frame&, string>(), py::arg("frame"), py::arg("shader")="main")
+        .def(py::init<const Region*, string>(), py::arg("frame"), py::arg("shader")="main")
 
         .def_readwrite("x", &Sprite::x)
         .def_readwrite("y", &Sprite::y)

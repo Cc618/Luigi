@@ -7,7 +7,7 @@
 class Camera
 {
 public:
-    // Camera used for sprites
+    // Current camera used for sprites
     static Camera *main;
 
     // Cams by name

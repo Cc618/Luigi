@@ -6,11 +6,16 @@
 
 using namespace std;
 
-Sprite::Sprite(const Frame& frame, const string& shader)
-    : frame(frame), shader(Shader::get(shader))
+Sprite::Sprite(const Region *frame, const string& shader)
+    : frame(frame->copy()), shader(Shader::get(shader))
 {
-    width = this->frame.first_region.width;
-    height = this->frame.first_region.height;
+    width = this->frame->rect.width;
+    height = this->frame->rect.height;
+}
+
+Sprite::~Sprite()
+{
+    delete frame;
 }
 
 void Sprite::start()
@@ -21,13 +26,13 @@ void Sprite::start()
 
 void Sprite::update(float dt)
 {
-    frame.update(dt);
+    frame->update(dt);
 }
 
 void Sprite::draw()
 {
     // Set shader & texture
-    frame.texture->use();
+    frame->texture->use();
 
     // Send uniforms to the shader
     shader->use();
@@ -50,7 +55,7 @@ void Sprite::scale(float factor)
 
 void Sprite::set_uniforms() const
 {
-    auto tex = frame.get_transform();
+    auto tex = frame->get_transform();
     shader->set_uniform_mat3(u_tex_transform, tex);
     delete tex;
 

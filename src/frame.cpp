@@ -1,7 +1,53 @@
 #include "frame.h"
 #include "error.h"
 
-Frame::Frame(const std::string& texture_name, Box region)
+// --- Region --- //
+Region::Region(const std::string& texture_name, const Box& rect)
+    : Region(Texture::get(texture_name), rect)
+{}
+
+Region::Region(const Texture *texture, const Box& rect)
+    : texture(texture), rect(rect)
+{
+    create_transform();
+}
+
+Region::~Region()
+{
+    delete transform;
+}
+
+Region::Region(const Region& other)
+    : texture(other.texture), rect(other.rect), transform(new Mat3(*other.transform))
+{}
+
+Region *Region::copy() const
+{
+    return new Region(*this);
+}
+
+Mat3 *Region::get_transform() const
+{
+    return new Mat3(*transform);
+}
+
+void Region::create_transform()
+{
+    Box box(rect);
+    float inv_width = 1.f / texture->width;
+    float inv_height = 1.f / texture->height;
+
+    // Normalize to have UV coordinates
+    box.x *= inv_width;
+    box.width *= inv_width;
+    box.y *= inv_height;
+    box.height *= inv_height;
+
+    transform = box.get_transform();
+}
+
+// --- Frame --- //
+Frame::Frame(const std::string& texture_name, const Box& region)
     : Frame(Texture::get(texture_name), region)
 {}
 
@@ -9,17 +55,18 @@ Frame::Frame(const std::string& texture_name, const std::vector<Box>& regions, f
     : Frame(Texture::get(texture_name), regions, fps)
 {}
 
-Frame::Frame(const Texture *texture, Box region)
+Frame::Frame(const Texture *texture, const Box& region)
     : Frame(texture, { region }, .001f)
 {}
 
 Frame::Frame(const Texture *texture, const std::vector<Box>& regions, float fps)
-    : texture(texture)
+    : Region(texture, Box())
 {
     Error::check(!regions.empty(), "Regions cannot be empty");
     Error::check(fps > 0, "FPS must be > 0");
 
-    first_region = regions[0];
+    // rect describes the first region here
+    rect = regions[0];
 
     frame_duration = 1 / fps;
 
@@ -53,7 +100,7 @@ Frame::Frame(const Texture *texture, const std::vector<Box>& regions, float fps)
 }
 
 Frame::Frame(const Frame& other)
-    : texture(other.texture), frame_duration(other.frame_duration), first_region(other.first_region)
+    : Region(other), frame_duration(other.frame_duration)
 {
     transforms.reserve(other.transforms.size());
     for (auto i = 0; i < other.transforms.size(); ++i)
@@ -77,4 +124,14 @@ void Frame::update(float dt)
         if (current == transforms.end())
             current = transforms.begin();
     }
+}
+
+Region *Frame::copy() const
+{
+    return new Frame(*this);
+}
+
+Mat3 *Frame::get_transform() const
+{
+    return new Mat3(**current);
 }

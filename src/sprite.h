@@ -10,8 +10,8 @@
 class Sprite : public Entity
 {
 public:
-    Sprite(const Frame& frame, const std::string& shader="main");
-    virtual ~Sprite() = default;
+    Sprite(const Region *frame, const std::string& shader="main");
+    virtual ~Sprite();
 
 public:
     virtual void start() override;
@@ -33,7 +33,7 @@ private:
     void set_uniforms() const;
 
 private:
-    Frame frame;
+    Region *frame;
     Shader *shader;
     
     // Uniform locations

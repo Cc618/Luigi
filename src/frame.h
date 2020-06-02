@@ -1,6 +1,6 @@
 #pragma once
 
-// A animatable texture region
+// Texture region and animated texture region
 
 #include <vector>
 #include <string>
@@ -8,29 +8,53 @@
 #include "texture.h"
 #include "maths.h"
 
-// TODO : Static frame ?
-
-class Frame
+class Region
 {
 public:
-    Frame(const std::string& texture_name, Box region);
-    Frame(const std::string& texture_name, const std::vector<Box>& regions, float fps);
-    Frame(const Texture *texture, Box region);
-    Frame(const Texture *texture, const std::vector<Box>& regions, float fps);
-    Frame(const Frame& other);
+    Region(const std::string& texture_name, const Box& rect);
+    Region(const Texture *texture, const Box& rect);
+    virtual ~Region();
+    Region(const Region& other);
 
 public:
-    void update(float dt);
+    virtual void update(float dt)
+    {}
 
-    inline Mat3 *get_transform() const
-    {
-        return new Mat3(**current);
-    }
+    virtual Region *copy() const;
+
+    // Returns the texture coordinates transform
+    virtual Mat3 *get_transform() const;
 
 public:
     const Texture *texture;
 
-    Box first_region;
+    Box rect;
+
+private:
+    // Create transform from rect
+    void create_transform();
+
+private:
+    Mat3 *transform;
+};
+
+// Animated region
+class Frame : public Region
+{
+public:
+    Frame(const std::string& texture_name, const Box& region);
+    Frame(const std::string& texture_name, const std::vector<Box>& regions, float fps);
+    Frame(const Texture *texture, const Box& region);
+    Frame(const Texture *texture, const std::vector<Box>& regions, float fps);
+    Frame(const Frame& other);
+    virtual ~Frame() = default;
+
+public:
+    virtual void update(float dt) override;
+
+    virtual Region *copy() const override;
+
+    virtual Mat3 *get_transform() const override;
 
 private:
     // All transforms describing regions

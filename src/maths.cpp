@@ -37,7 +37,7 @@ Mat3 *Mat3::create_srt(float x, float y, float width, float height, float rot)
     GLfloat i = sinf(rot);
     GLfloat j = cosf(rot);
 
-    m->data[0] = width * j;     m->data[3] = height * i;     m->data[6] = x;
+    m->data[0] = width * j;     m->data[3] = height * i;    m->data[6] = x;
     m->data[1] = -width * i;    m->data[4] = height * j;    m->data[7] = y;
     m->data[2] = 0;             m->data[5] = 0;             m->data[8] = 1;
 

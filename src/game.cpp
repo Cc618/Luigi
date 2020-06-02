@@ -175,15 +175,6 @@ void Game::add(Entity *e)
     selected_scene->add(e);
 }
 
-// void Game::set_main_cam(float height, float x, float y, float rot) const
-// {
-//     // TMP
-//     if (Camera::main != nullptr)
-//         delete Camera::main;
-    
-//     Camera::main = new Camera("main", height, x, y, rot);
-// }
-
 Camera *Game::set_cam(const std::string& name, bool create, float height, bool _default)
 {
     auto i = Camera::instances.find(name);
