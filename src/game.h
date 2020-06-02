@@ -40,7 +40,7 @@ public:
     // TODO : change_scene
     // TODO : Change cam + Update cameras when changed
 
-    Camera *add_cam(const std::string& name, float height, bool _default=false);
+    Camera *set_cam(const std::string& name, bool create=false, float height=100, bool _default=false);
 
 public:
     // Aspect ratio

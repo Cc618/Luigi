@@ -86,7 +86,7 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
                     glViewport(0, 0, event.size.width, event.size.height);
                     ratio = (float)event.size.width / (float)event.size.height;
                     
-                    Camera::main->set_height(Camera::main->get_height());
+                    Camera::main->update_ratio();
                 }
             }
 
@@ -184,21 +184,33 @@ void Game::add(Entity *e)
 //     Camera::main = new Camera("main", height, x, y, rot);
 // }
 
-Camera *Game::add_cam(const std::string& name, float height, bool _default)
+Camera *Game::set_cam(const std::string& name, bool create, float height, bool _default)
 {
-    // Ensure no camera with the same name exists
     auto i = Camera::instances.find(name);
-    Error::check(i == Camera::instances.end(), "Camera '" + name + "' already exists");
 
-    // Create cam
-    Camera *cam = new Camera(name, height);
-    Camera::instances[name] = cam;
-
-    if (_default)
+    if (create)
     {
-        Error::check(selected_scene != nullptr, "A scene must be created before a camera");
-        selected_scene->default_cam = name;
+        // Ensure no camera with the same name exists
+        Error::check(i == Camera::instances.end(), "Camera '" + name + "' already exists");
+
+        // Create cam
+        Camera *cam = new Camera(name, height);
+        Camera::instances[name] = cam;
+
+        if (_default)
+        {
+            Error::check(selected_scene != nullptr, "A scene must be created before a camera");
+            selected_scene->default_cam = name;
+        }
+        
+        return cam;
     }
 
-    return cam;
+    // Ensure the name matches a camera
+    Error::check(i != Camera::instances.end(), "Camera '" + name + "' doesn't exists (use create=True)");
+
+    Camera::main = (*i).second;
+    Camera::main->update_ratio();
+
+    return Camera::main;
 }

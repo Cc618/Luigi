@@ -38,6 +38,8 @@ public:
     void set_x(float val);
     void set_y(float val);
     void set_rot(float val);
+    // Same height but changes width
+    void update_ratio();
 
 public:
     // Whether the transform has changed since the last frame

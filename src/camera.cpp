@@ -73,12 +73,11 @@ void Camera::set_height(float val)
 {
     Error::check(val > 0, "The height of the camera must be > 0");
 
-    transform_changed = true;
     height = val;
     inv_half_height = 2.f / val;
 
-    width = height * Game::instance->ratio;
-    inv_half_width = 2.f / width;
+    // transform_changed is set to true here
+    update_ratio();
 }
 
 void Camera::set_x(float val)
@@ -99,3 +98,10 @@ void Camera::set_rot(float val)
     rot = val;
 }
 
+void Camera::update_ratio()
+{
+    transform_changed = true;
+
+    width = height * Game::instance->ratio;
+    inv_half_width = 2.f / width;
+}

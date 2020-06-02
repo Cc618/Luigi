@@ -65,7 +65,7 @@ PYBIND11_MODULE(luigi, m)
         .def("set_layer", &Game::set_layer, py::arg("name"), py::arg("create")=false, py::arg("z")=0)
         .def("add", &Game::add, py::arg("entity"), py::keep_alive<1, 2>())
         // TMP .def("set_main_cam", &Game::set_main_cam, py::arg("height"), py::arg("x")=0, py::arg("y")=0, py::arg("rot")=0)
-        .def("add_cam", &Game::add_cam, py::arg("name"), py::arg("height"), py::arg("default")=true, py::return_value_policy::reference)
+        .def("set_cam", &Game::set_cam, py::arg("name"), py::arg("create")=false, py::arg("height")=100, py::arg("default")=true, py::return_value_policy::reference)
 
         .doc() = "Handles the window and the game environment"
     ;
