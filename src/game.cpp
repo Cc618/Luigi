@@ -56,22 +56,21 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
     start();
     construct();
 
-    // Set camera
-    Error::check(Camera::instances.size() > 0, "No camera created");
-
     // Set first scene
-    Error::check(Scene::instances.size() > 0, "No scene created");
+    Error::check(SceneFactory::instances.size() > 0, "No scene created");
 
-    // TODO : Only allow set_scene
-    Scene::current = *Scene::instances.begin();
-    Scene::current->start();
+    auto first_scene = SceneFactory::instances.find(default_scene);
+    Error::check(first_scene != SceneFactory::instances.end(), "The default scene '" + default_scene + "' is not found");
 
-    bool on_game = true;
+    Scene::current = (*first_scene).second->spawn();
+
+
     auto clock = Clock();
 
     // Main loop
     try
     {
+        on_game = true;
         while (on_game)
         {
             update_inputs();
@@ -85,7 +84,7 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
                 {
                     glViewport(0, 0, event.size.width, event.size.height);
                     ratio = (float)event.size.width / (float)event.size.height;
-                    
+
                     Camera::main->update_ratio();
                 }
                 else if (event.type == Event::KeyPressed)
@@ -124,6 +123,8 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
         cerr << "Uncaught c++ error: " << e.what() << endl;
     }
 
+    on_game = false;
+
     stop();
 }
 
@@ -158,25 +159,39 @@ void Game::stop()
     // TODO : Stop all scenes and delete after
 }
 
-void Game::set_scene(const std::string& name, bool create)
+void Game::set_scene(const std::string& name, bool create, const std::function<void ()>& factory)
 {
+    // TODO : If not started, just register the name
+
+    // TODO : Spawn
+
     if (create)
-        selected_scene = Scene::create(name, "main");
+    {
+        Error::check(!on_game, "Can't create new scenes on game");
+
+        // Register the scene, this scene won't be destroyed
+        new SceneFactory(name, factory);
+    }
+    else if (on_game)
+        // TODO : Change scene
+    {}
+        // current_scene = Scene::find(name);
     else
-        selected_scene = Scene::find(name);
+        default_scene = name;
 }
 
-void Game::set_layer(const std::string& name, bool create, int z)
-{
-    Error::check(selected_scene != nullptr, "No scene created, create a scene before creating layers");
+// TMP
+// void Game::set_layer(const std::string& name, bool create, int z)
+// {
+//     Error::check(current_scene != nullptr, "No scene created, create a scene before creating layers");
 
-    selected_scene->set_layer(name, create, z);
-}
+//     current_scene->set_layer(name, create, z);
+// }
 
 void Game::add(Entity *e)
 {
-    Error::check(selected_scene != nullptr, "No scene created, create a scene and a layer before adding entities");
-    selected_scene->add(e);
+    Error::check(Scene::current != nullptr, "No scene created, create a scene and a layer before adding entities");
+    Scene::current->add(e);
 }
 
 Camera *Game::set_cam(const std::string& name, bool create, float height, bool _default)
@@ -192,12 +207,13 @@ Camera *Game::set_cam(const std::string& name, bool create, float height, bool _
         Camera *cam = new Camera(name, height);
         Camera::instances[name] = cam;
 
-        if (_default)
-        {
-            Error::check(selected_scene != nullptr, "A scene must be created before a camera");
-            selected_scene->default_cam = name;
-        }
-        
+        // TODO
+        // if (_default)
+        // {
+        //     Error::check(current_scene != nullptr, "A scene must be created before a camera");
+        //     current_scene->default_cam = name;
+        // }
+
         return cam;
     }
 

@@ -4,6 +4,8 @@
 
 #include <string>
 #include <set>
+#include <unordered_map>
+#include <functional>
 #include "entity.h"
 #include "layer.h"
 
@@ -12,16 +14,20 @@ class Scene : public Entity
 public:
     static Scene *current;
 
+    // TODO : rm ?
     static std::list<Scene*> instances;
 
 public:
+    // TODO : rm
     // Creates a new scene and registers it
-    static Scene *create(const std::string& name, const std::string& default_cam);
+    // static Scene *create(const std::string& name, const std::string& default_cam);
 
     // Find a scene by name
+    // TODO : ren by get
     static Scene *find(const std::string& name);
 
 public:
+    Scene(const std::string& name, const std::string& default_cam);
     virtual ~Scene() = default;
 
 public:
@@ -42,7 +48,25 @@ public:
     Layer *selected_layer;
     // A set is used to order layers by the z index
     std::set<Layer*, bool (*)(Layer*, Layer*)> layers;
+};
 
-private:
-    Scene(const std::string& name, const std::string& default_cam);
+// These factories are never deleted
+struct SceneFactory
+{
+public:
+    static std::unordered_map<std::string, SceneFactory*> instances;
+
+public:
+    // TMP : Binding keep alive
+    SceneFactory(const std::string& name, const std::function<void ()>& factory);
+
+public:
+    // Creates a new scene
+    Scene *spawn() const;
+
+public:
+    std::string name;
+
+    // This is not really a factory but it sets up the scene
+    std::function<void ()> factory;
 };

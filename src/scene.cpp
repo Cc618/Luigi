@@ -11,18 +11,20 @@ static bool layer_cmp(Layer* a, Layer *b)
     return a->z < b->z;
 }
 
+// --- Scene --- //
 Scene *Scene::current = nullptr;
 
 list<Scene*> Scene::instances;
 
-Scene *Scene::create(const std::string& name, const std::string& default_cam)
-{
-    auto scn = new Scene(name, default_cam);
+// TMP
+// Scene *Scene::create(const std::string& name, const std::string& default_cam)
+// {
+//     auto scn = new Scene(name, default_cam);
 
-    instances.push_back(scn);
+//     instances.push_back(scn);
 
-    return scn;
-}
+//     return scn;
+// }
 
 Scene *Scene::find(const std::string& name)
 {
@@ -44,8 +46,10 @@ void Scene::start()
 {
     Entity::start();
 
-    // TMP : Set camera to default camera
-    Camera::main = Camera::instances[default_cam];
+    // Try to retrieve the default camera
+    auto i = Camera::instances.find(default_cam);
+    Error::check(i != Camera::instances.end(), "The default camera named '" + default_cam + "' from the '" + name + "' scene cannot be found");
+    Camera::main = (*i).second;
 
     for (auto layer : layers)
         layer->start();
@@ -96,4 +100,29 @@ void Scene::set_layer(const std::string& name, bool create, int z)
 
         selected_layer = *result;
     }
+}
+
+// --- SceneFactory --- //
+unordered_map<std::string, SceneFactory*> SceneFactory::instances;
+
+SceneFactory::SceneFactory(const std::string& name, const std::function<void ()>& factory)
+    : name(name), factory(factory)
+{
+    auto i = instances.find(name);
+    Error::check(i == instances.end(), "A scene with the same name already exists");
+
+    instances[name] = this;
+}
+
+Scene *SceneFactory::spawn() const
+{
+    // TMP : Default cam
+    Scene *scn = new Scene(name, "main");
+    Scene::current = scn;
+    
+    factory();
+
+    scn->start();
+
+    return scn;
 }
