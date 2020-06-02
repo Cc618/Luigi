@@ -89,10 +89,9 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
                     Camera::main->update_ratio();
                 }
                 else if (event.type == Event::KeyPressed)
-                {
-                    // TODO : Set repeat
                     set_key_down(event.key.code);
-                }
+                else if (event.type == Event::MouseButtonPressed)
+                    set_btn_down(event.mouseButton.button);
             }
 
             // Handle time

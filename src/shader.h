@@ -47,7 +47,6 @@ public:
     Shader *set_2f(const std::string& name, float x, float y);
     Shader *set_3f(const std::string& name, float x, float y, float z);
     Shader *set_4f(const std::string& name, float r, float g, float b, float a);
-    // TODO : Custom matrix type
     Shader *set_mat3(const std::string& name, const Mat3 *mat);
 
     // Faster calls with ids retrieved with get_uniform

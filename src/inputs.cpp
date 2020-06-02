@@ -4,12 +4,13 @@
 #include <algorithm>
 #include <SFML/Graphics.hpp>
 #include "error.h"
+#include "game.h"
 
 using namespace std;
 using namespace sf;
 
 // Use lower case ids separated by spaces
-unordered_map<std::string, Keyboard::Key> id_to_kbd = {
+unordered_map<std::string, Keyboard::Key> id_to_key = {
     // Letters
     { "a", Keyboard::A },
     { "b", Keyboard::B },
@@ -86,6 +87,14 @@ unordered_map<std::string, Keyboard::Key> id_to_kbd = {
 
 unordered_map<sf::Keyboard::Key, bool> typed_keys;
 
+std::unordered_map<std::string, sf::Mouse::Button> id_to_btn = {
+    { "left", Mouse::Button::Left },
+    { "right", Mouse::Button::Right },
+    { "middle", Mouse::Button::Middle },
+};
+
+std::unordered_map<sf::Mouse::Button, bool> typed_btns;
+
 // To lower
 static inline string name_to_id(const string& name)
 {
@@ -100,9 +109,9 @@ bool pressed(const std::string& name)
 {
     // Find key
     string id = name_to_id(name);
-    auto key = id_to_kbd.find(id);
+    auto key = id_to_key.find(id);
 
-    Error::check(key != id_to_kbd.end(), "Unknown key with name '" + name + "'");
+    Error::check(key != id_to_key.end(), "Unknown key with name '" + name + "'");
 
     // Test key
     return Keyboard::isKeyPressed((*key).second);
@@ -112,9 +121,9 @@ bool typed(const std::string& name)
 {
     // Find key
     string id = name_to_id(name);
-    auto key = id_to_kbd.find(id);
+    auto key = id_to_key.find(id);
 
-    Error::check(key != id_to_kbd.end(), "Unknown key with name '" + name + "'");
+    Error::check(key != id_to_key.end(), "Unknown key with name '" + name + "'");
 
     // Test key
     return typed_keys[(*key).second];
@@ -125,9 +134,40 @@ void set_key_down(const sf::Keyboard::Key& key)
     typed_keys[key] = true;
 }
 
+bool mouse_pressed(const std::string& name)
+{
+    // Find key
+    string id = name_to_id(name);
+    auto btn = id_to_btn.find(id);
+
+    Error::check(btn != id_to_btn.end(), "Unknown mouse button with name '" + name + "'");
+
+    return sf::Mouse::isButtonPressed((*btn).second);
+}
+
+bool mouse_typed(const std::string& name)
+{
+    // Find key
+    string id = name_to_id(name);
+    auto btn = id_to_btn.find(id);
+
+    Error::check(btn != id_to_btn.end(), "Unknown mouse button with name '" + name + "'");
+
+    return typed_btns[(*btn).second];
+}
+
 void update_inputs()
 {
     // Set all keys to false
-    for (auto p : id_to_kbd)
+    for (auto p : id_to_key)
         typed_keys[p.second] = false;
+    
+    // Set all buttons to false
+    for (auto p : id_to_btn)
+        typed_btns[p.second] = false;
+}
+
+void set_btn_down(const sf::Mouse::Button& btn)
+{
+    typed_btns[btn] = true;
 }

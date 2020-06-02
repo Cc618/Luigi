@@ -83,8 +83,17 @@ PYBIND11_MODULE(luigi, m)
         py::arg("r"), py::arg("g"), py::arg("b"), py::arg("a")=1);
 
     // --- Input --- //
-    m.def("pressed", &pressed, py::arg("name"));
-    m.def("typed", &typed, py::arg("name"));
+    m.def("pressed", &pressed, py::arg("key"));
+    m.def("typed", &typed, py::arg("key"));
+    m.def("mouse_pressed", &mouse_pressed, py::arg("button"));
+    m.def("mouse_typed", &mouse_typed, py::arg("button"));
+
+    // py::class_<Mouse>(m, "Mouse")
+    //     .def_static("pressed", &Mouse::pressed, py::arg("name"))
+    //     .def_static("typed", &Mouse::typed, py::arg("name"))
+
+    //     .doc() = "Handle the mouse, this class is static"
+    // ;
 
     // --- Maths --- //
     m.attr("pi") = pi;
