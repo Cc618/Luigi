@@ -72,8 +72,8 @@ void Sprite::set_uniforms() const
     shader->set_uniform_mat3(u_tex_transform, tex);
     delete tex;
 
-    // Flip y with -height
-    auto m = Mat3::create_srt(x, y, width, -height, rot);
+    // Flip y with -height and -rot
+    auto m = Mat3::create_srt(x, y, width, -height, -rot);
  
     shader->set_uniform_mat3(u_transform, m);
 

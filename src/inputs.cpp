@@ -84,6 +84,8 @@ unordered_map<std::string, Keyboard::Key> id_to_kbd = {
     { "tab", Keyboard::Tab },
 };
 
+unordered_map<sf::Keyboard::Key, bool> typed_keys;
+
 // To lower
 static inline string name_to_id(const string& name)
 {
@@ -104,4 +106,33 @@ bool pressed(const std::string& name)
 
     // Test key
     return Keyboard::isKeyPressed((*key).second);
+}
+
+bool typed(const std::string& name)
+{
+    // Find key
+    string id = name_to_id(name);
+    auto key = id_to_kbd.find(id);
+
+    Error::check(key != id_to_kbd.end(), "Unknown key with name '" + name + "'");
+
+    // Test key
+    return typed_keys[(*key).second];
+}
+
+void set_key_down(const sf::Keyboard::Key& key)
+{
+    typed_keys[key] = true;
+}
+
+void init_inputs()
+{
+    // TODO : rm
+}
+
+void update_inputs()
+{
+    // Set all keys to false
+    for (auto p : id_to_kbd)
+        typed_keys[p.second] = false;
 }

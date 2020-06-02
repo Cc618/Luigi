@@ -3,7 +3,6 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <SFML/OpenGL.hpp>
 #include "error.h"
@@ -11,6 +10,7 @@
 #include "shader.h"
 #include "buffers.h"
 #include "camera.h"
+#include "inputs.h"
 
 using namespace sf;
 using namespace std;
@@ -26,7 +26,8 @@ Game::Game()
 
 Game::~Game()
 {
-    // TODO : Reset static attributes
+    if (win)
+        delete win;
 }
 
 void Game::run(const std::function<void ()>& construct, const string &title, int width, int height, float fps)
@@ -45,9 +46,10 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
     // settings.minorVersion = 0;
 
     ratio = (float)width / (float)height;
-    Window win(VideoMode(width, height), title, Style::Default, settings);
-    win.setVerticalSyncEnabled(true);
-    win.setActive(true);
+    win = new Window(VideoMode(width, height), title, Style::Default, settings);
+    win->setVerticalSyncEnabled(true);
+    win->setKeyRepeatEnabled(false);
+    win->setActive(true);
 
     // Init glew
     GLenum err = glewInit();
@@ -67,7 +69,7 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
     // TODO : Only allow set_scene
     Scene::current = *Scene::instances.begin();
     Scene::current->start();
-    
+
     bool on_game = true;
     auto clock = Clock();
 
@@ -76,8 +78,10 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
     {
         while (on_game)
         {
+            update_inputs();
+
             Event event;
-            while (win.pollEvent(event))
+            while (win->pollEvent(event))
             {
                 if (event.type == Event::Closed)
                     on_game = false;
@@ -87,6 +91,11 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
                     ratio = (float)event.size.width / (float)event.size.height;
                     
                     Camera::main->update_ratio();
+                }
+                else if (event.type == Event::KeyPressed)
+                {
+                    // TODO : Set repeat
+                    set_key_down(event.key.code);
                 }
             }
 
@@ -108,7 +117,7 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
             update(dt);
             draw();
 
-            win.display();
+            win->display();
         }
     }
     catch (Error &e)
@@ -133,6 +142,8 @@ void Game::start()
     VBO::create_square();
 
     ::Shader::create_main();
+
+    init_inputs();
 }
 
 void Game::update(float dt)

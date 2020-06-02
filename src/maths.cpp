@@ -1,6 +1,8 @@
 #include "maths.h"
 #include <cmath>
 
+float pi = 3.14159265f;
+
 // --- Mat3 --- //
 Mat3 *Mat3::create_tsr(float x, float y, float width, float height, float rot)
 {

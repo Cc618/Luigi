@@ -84,8 +84,11 @@ PYBIND11_MODULE(luigi, m)
 
     // --- Input --- //
     m.def("pressed", &pressed, py::arg("name"));
+    m.def("typed", &typed, py::arg("name"));
 
     // --- Maths --- //
+    m.attr("pi") = pi;
+
     py::class_<Mat3>(m, "Mat3")
         .def_static("create_tsr", &Mat3::create_tsr, py::arg("x"), py::arg("y"), py::arg("width")=1, py::arg("height")=1, py::arg("rot")=0)
         .def_static("create_rst", &Mat3::create_rst, py::arg("x"), py::arg("y"), py::arg("width")=1, py::arg("height")=1, py::arg("rot")=0)

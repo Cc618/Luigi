@@ -4,6 +4,8 @@
 
 #include <GL/glew.h>
 
+extern float pi;
+
 struct Mat3
 {
 public:

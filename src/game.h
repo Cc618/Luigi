@@ -4,11 +4,14 @@
 
 #include <string>
 #include <functional>
+#include <SFML/Window.hpp>
 #include "scene.h"
 #include "camera.h"
 
+// Declared in game_fun.cpp
 void set_clear_color(GLclampf r, GLclampf g, GLclampf b, GLclampf a=1);
 
+// Declared in game.cpp
 class Game
 {
 public:
@@ -59,4 +62,6 @@ private:
 private:
     // Selections
     Scene *selected_scene;
+
+    sf::Window *win;
 };
