@@ -125,11 +125,6 @@ void set_key_down(const sf::Keyboard::Key& key)
     typed_keys[key] = true;
 }
 
-void init_inputs()
-{
-    // TODO : rm
-}
-
 void update_inputs()
 {
     // Set all keys to false

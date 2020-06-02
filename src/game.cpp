@@ -142,8 +142,6 @@ void Game::start()
     VBO::create_square();
 
     ::Shader::create_main();
-
-    init_inputs();
 }
 
 void Game::update(float dt)
