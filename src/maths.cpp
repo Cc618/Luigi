@@ -97,6 +97,11 @@ bool Box::contains(float _x, float _y) const
 {
     return _x >= x && _x <= x + width && _y >= y && _y <= y + height;
 }
+bool Box::collides(const Box& other) const
+{
+    return (x >= other.x && x <= other.x + other.width || other.x >= x && other.x <= x + width) &&
+        (y >= other.y && y <= other.y + other.height || other.y >= y && other.y <= y + height);
+}
 
 std::string Box::__repr__() const
 {

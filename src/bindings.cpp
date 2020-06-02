@@ -121,6 +121,7 @@ PYBIND11_MODULE(luigi, m)
         .def_readwrite("height", &Box::height)
 
         .def("contains", &Box::contains, py::arg("x"), py::arg("y"))
+        .def("collides", &Box::collides, py::arg("other"))
 
         .def("__repr__", &Box::__repr__)
 

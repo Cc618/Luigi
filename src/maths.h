@@ -47,6 +47,9 @@ public:
     // Whether the point is inside the box
     bool contains(float x, float y) const;
 
+    // AABB - AABB collision
+    bool collides(const Box& other) const;
+
 public:
     std::string __repr__() const;
 
