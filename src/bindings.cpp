@@ -53,6 +53,8 @@ PYBIND11_MODULE(luigi, m)
         // TODO : Other constructors
         .def(py::init<const string&, const Box&>(), py::arg("texture_name"), py::arg("rect"))
 
+        .def_static("create", &Region::create, py::arg("texture_name"), py::doc("Creates a region that contains the whole texture"))
+
         .doc() = "A texture region"
     ;
 

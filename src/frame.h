@@ -11,6 +11,10 @@
 class Region
 {
 public:
+    // Creates a region that contains the whole texture
+    static Region *create(const std::string& texture_name);
+
+public:
     Region(const std::string& texture_name, const Box& rect);
     Region(const Texture *texture, const Box& rect);
     virtual ~Region();

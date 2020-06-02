@@ -2,6 +2,15 @@
 #include "error.h"
 
 // --- Region --- //
+Region *Region::create(const std::string& texture_name)
+{
+    auto t = Texture::get(texture_name);
+
+    auto r = new Region(t, Box(0, 0, t->width, t->height));
+
+    return r;
+}
+
 Region::Region(const std::string& texture_name, const Box& rect)
     : Region(Texture::get(texture_name), rect)
 {}
