@@ -6,6 +6,19 @@
 
 using namespace std;
 
+Sprite *Sprite::create(const std::string& texture, const std::string& shader)
+{
+    const Texture *tex = Texture::get(texture);
+
+    auto frame = new Region(tex, Box(0, 0, tex->width, tex->height));
+
+    auto s = new Sprite(frame);
+
+    delete frame;
+
+    return s;
+}
+
 Sprite::Sprite(const Region *frame, const string& shader)
     : frame(frame->copy()), shader(Shader::get(shader))
 {

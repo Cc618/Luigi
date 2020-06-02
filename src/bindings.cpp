@@ -127,6 +127,7 @@ PYBIND11_MODULE(luigi, m)
     // --- Sprite --- //
     py::class_<Sprite, Entity, PyEntityChild<Sprite>>(m, "Sprite")
         .def(py::init<const Region*, string>(), py::arg("frame"), py::arg("shader")="main")
+        .def_static("create", &Sprite::create, py::arg("texture"), py::arg("shader")="main")
 
         .def_readwrite("x", &Sprite::x)
         .def_readwrite("y", &Sprite::y)

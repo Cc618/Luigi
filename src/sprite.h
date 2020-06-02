@@ -2,6 +2,7 @@
 
 // An image mapped to a camera
 
+#include <string>
 #include <GL/glew.h>
 #include "entity.h"
 #include "frame.h"
@@ -9,6 +10,10 @@
 
 class Sprite : public Entity
 {
+public:
+    // Takes the whole texture
+    static Sprite *create(const std::string& texture, const std::string& shader="main");
+
 public:
     Sprite(const Region *frame, const std::string& shader="main");
     virtual ~Sprite();
