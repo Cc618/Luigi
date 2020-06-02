@@ -92,3 +92,14 @@ Mat3 *Box::get_transform() const
 
     return m;
 }
+
+bool Box::contains(float _x, float _y) const
+{
+    return _x >= x && _x <= x + width && _y >= y && _y <= y + height;
+}
+
+std::string Box::__repr__() const
+{
+    return std::string("Box(x=") + std::to_string(x) + ", y=" + std::to_string(y) +
+        ", width=" + std::to_string(width) + ", height=" + std::to_string(height) + ")";
+}

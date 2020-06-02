@@ -7,6 +7,7 @@
 #include "entity.h"
 #include "frame.h"
 #include "shader.h"
+#include "math.h"
 
 class Sprite : public Entity
 {
@@ -26,6 +27,10 @@ public:
 public:
     // Multiplies width and height by factor
     void scale(float factor);
+
+    // Returns the AABB of the sprite
+    // !!! Doesn't take in account the rotation
+    Box rect() const;
 
 public:
     float x = 0;

@@ -2,6 +2,7 @@
 
 // Math classes and functions
 
+#include <string>
 #include <GL/glew.h>
 
 extern float pi;
@@ -42,6 +43,12 @@ public:
     // Returns a transform describing the box
     // Useful to get texture transformation matrix
     Mat3 *get_transform() const;
+
+    // Whether the point is inside the box
+    bool contains(float x, float y) const;
+
+public:
+    std::string __repr__() const;
 
 public:
     GLfloat x, y, width, height;

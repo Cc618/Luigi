@@ -66,6 +66,11 @@ void Sprite::scale(float factor)
     height *= factor;
 }
 
+Box Sprite::rect() const
+{
+    return Box(x - width * .5f, y - height * .5f, width, height);
+}
+
 void Sprite::set_uniforms() const
 {
     auto tex = frame->get_transform();

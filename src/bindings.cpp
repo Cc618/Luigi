@@ -52,7 +52,7 @@ PYBIND11_MODULE(luigi, m)
     py::class_<Region>(m, "Region")
         // TODO : Other constructors
         .def(py::init<const string&, const Box&>(), py::arg("texture_name"), py::arg("rect"))
-        
+
         .doc() = "A texture region"
     ;
 
@@ -118,6 +118,10 @@ PYBIND11_MODULE(luigi, m)
         .def_readwrite("width", &Box::width)
         .def_readwrite("height", &Box::height)
 
+        .def("contains", &Box::contains, py::arg("x"), py::arg("y"))
+
+        .def("__repr__", &Box::__repr__)
+
         .doc() = "A 2D region"
     ;
 
@@ -172,6 +176,7 @@ PYBIND11_MODULE(luigi, m)
         .def("stop", &Sprite::stop)
 
         .def("scale", &Sprite::scale, py::arg("factor"))
+        .def("rect", &Sprite::rect)
 
         .doc() = "An image mapped to a camera"
     ;
