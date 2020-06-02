@@ -112,6 +112,14 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
             draw();
 
             win->display();
+
+            // Parse all events
+            while (!events.empty())
+            {
+                // Call the last event
+                events.top()();
+                events.pop();
+            }
         }
     }
     catch (Error &e)
@@ -174,14 +182,14 @@ void Game::set_scene(const std::string& name, bool create, const std::function<v
     }
     else if (on_game)
     {
-        // TODO : Wait after update : Event manager
+        events.push([name](){
+            Scene::current->stop();
+            delete Scene::current;
 
-        Scene::current->stop();
-        delete Scene::current;
-
-        auto scn = SceneFactory::instances.find(name);
-        Error::check(scn != SceneFactory::instances.end(), "The scene with name '" + name + "' is not found");
-        Scene::current = (*scn).second->spawn();
+            auto scn = SceneFactory::instances.find(name);
+            Error::check(scn != SceneFactory::instances.end(), "The scene with name '" + name + "' is not found");
+            Scene::current = (*scn).second->spawn();
+        });
     }
     else
         default_scene = name;

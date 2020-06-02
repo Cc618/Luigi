@@ -4,6 +4,7 @@
 
 #include <string>
 #include <functional>
+#include <stack>
 #include <SFML/Window.hpp>
 #include "scene.h"
 #include "camera.h"
@@ -70,4 +71,7 @@ private:
 
     // The scene loaded when the game starts
     std::string default_scene;
+
+    // All events to call at the end of the frame
+    std::stack<std::function<void ()>> events;
 };
