@@ -19,12 +19,14 @@ void update_inputs();
 
 void set_btn_down(const sf::Mouse::Button& btn);
 
-// // Static mouse class
-// class Mouse
-// {
-
-//     // TODO : x, y
-
-// public:
-
-// };
+// Used avoid scope issues (like with sf::Mouse)
+namespace lg
+{
+    // Static mouse class
+    class Mouse
+    {
+    public:
+        static std::pair<int, int> get_pos();
+        static void set_pos(const std::pair<int, int>& xy);
+    };
+}

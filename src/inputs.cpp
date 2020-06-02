@@ -171,3 +171,14 @@ void set_btn_down(const sf::Mouse::Button& btn)
 {
     typed_btns[btn] = true;
 }
+
+std::pair<int, int> lg::Mouse::get_pos()
+{
+    auto pos = sf::Mouse::getPosition(*Game::instance->win);
+    return std::make_pair(pos.x, pos.y);
+}
+
+void lg::Mouse::set_pos(const std::pair<int, int>& xy)
+{
+    sf::Mouse::setPosition(Vector2i(xy.first, xy.second), *Game::instance->win);
+}

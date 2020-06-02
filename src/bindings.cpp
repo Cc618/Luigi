@@ -5,6 +5,7 @@
 #include "luigi"
 
 using namespace std;
+using namespace lg;
 namespace py = pybind11;
 
 PYBIND11_MODULE(luigi, m)
@@ -88,12 +89,14 @@ PYBIND11_MODULE(luigi, m)
     m.def("mouse_pressed", &mouse_pressed, py::arg("button"));
     m.def("mouse_typed", &mouse_typed, py::arg("button"));
 
-    // py::class_<Mouse>(m, "Mouse")
-    //     .def_static("pressed", &Mouse::pressed, py::arg("name"))
-    //     .def_static("typed", &Mouse::typed, py::arg("name"))
+    py::class_<Mouse>(m, "Mouse")
+        .def_property_static("pos",
+            [](py::object) { return Mouse::get_pos(); },
+            [](py::object, const std::pair<int, int> xy) { Mouse::set_pos(xy); }
+        )
 
-    //     .doc() = "Handle the mouse, this class is static"
-    // ;
+        .doc() = "Handle the mouse, this class is static"
+    ;
 
     // --- Maths --- //
     m.attr("pi") = pi;

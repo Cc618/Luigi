@@ -46,6 +46,7 @@ public:
 public:
     // Aspect ratio
     float ratio;
+    sf::Window *win;
 
 private:
     // After window creation
@@ -62,6 +63,4 @@ private:
 private:
     // Selections
     Scene *selected_scene;
-
-    sf::Window *win;
 };
