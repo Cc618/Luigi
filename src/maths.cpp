@@ -44,6 +44,20 @@ Mat3 *Mat3::create_srt(float x, float y, float width, float height, float rot)
     return m;
 }
 
+Mat3 *Mat3::create_trs(float x, float y, float width, float height, float rot)
+{
+    Mat3 *m = new Mat3();
+
+    GLfloat i = sinf(rot);
+    GLfloat j = cosf(rot);
+
+    m->data[0] = width * j;     m->data[3] = width * i;     m->data[6] = m->data[0] * x + m->data[3] * y;
+    m->data[1] = -height * i;   m->data[4] = height * j;    m->data[7] = m->data[1] * x + m->data[4] * y;
+    m->data[2] = 0;             m->data[5] = 0;             m->data[8] = 1;
+
+    return m;
+}
+
 Mat3 *Mat3::create_id()
 {
     Mat3 *m = new Mat3();

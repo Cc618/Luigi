@@ -10,7 +10,7 @@ unordered_map<string, Camera*> Camera::instances;
 
 Mat3 *Camera::get_transform() const
 {
-    return Mat3::create_tsr(-x, -y, inv_half_width, inv_half_height, -rot);
+    return Mat3::create_trs(-x, -y, inv_half_width, inv_half_height, -rot);
 }
 
 Camera::Camera(const string& name, float height, float x, float y, float rot)

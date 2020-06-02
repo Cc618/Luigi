@@ -17,6 +17,9 @@ public:
     // Scale -> Rotate -> Translate
     static Mat3 *create_srt(float x, float y, float width=1, float height=1, float rot=0);
 
+    // Translate -> Rotate -> Scale
+    static Mat3 *create_trs(float x, float y, float width=1, float height=1, float rot=0);
+
     // Identity
     static Mat3 *create_id();
 
