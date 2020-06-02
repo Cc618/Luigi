@@ -163,25 +163,20 @@ void Game::draw()
 void Game::stop()
 {
     Scene::current->stop();
-
-    // TODO : Stop all scenes and delete after
 }
 
-void Game::set_scene(const std::string& name, bool create, const std::function<void ()>& factory)
+void Game::set_scene(const std::string& name, bool create, const std::function<void ()>& factory, const std::string& default_cam)
 {
-    // TODO : If not started, just register the name
-
-    // TODO : Spawn
-
     if (create)
     {
         Error::check(!on_game, "Can't create new scenes on game");
 
         // Register the scene, this scene won't be destroyed
-        new SceneFactory(name, factory);
+        new SceneFactory(name, factory, default_cam);
     }
     else if (on_game)
     {
+        // Change scene at the end of the frame
         events.push([name](){
             Scene::current->stop();
             delete Scene::current;
@@ -195,13 +190,12 @@ void Game::set_scene(const std::string& name, bool create, const std::function<v
         default_scene = name;
 }
 
-// TMP
-// void Game::set_layer(const std::string& name, bool create, int z)
-// {
-//     Error::check(current_scene != nullptr, "No scene created, create a scene before creating layers");
+void Game::set_layer(const std::string& name, bool create, int z)
+{
+    Error::check(Scene::current != nullptr, "No scene created, create a scene before creating layers");
 
-//     current_scene->set_layer(name, create, z);
-// }
+    Scene::current->set_layer(name, create, z);
+}
 
 void Game::add(Entity *e)
 {
@@ -209,7 +203,7 @@ void Game::add(Entity *e)
     Scene::current->add(e);
 }
 
-Camera *Game::set_cam(const std::string& name, bool create, float height, bool _default)
+Camera *Game::set_cam(const std::string& name, bool create, float height)
 {
     auto i = Camera::instances.find(name);
 
@@ -221,13 +215,6 @@ Camera *Game::set_cam(const std::string& name, bool create, float height, bool _
         // Create cam
         Camera *cam = new Camera(name, height);
         Camera::instances[name] = cam;
-
-        // TODO :
-        // if (_default)
-        // {
-        //     Error::check(current_scene != nullptr, "A scene must be created before a camera");
-        //     current_scene->default_cam = name;
-        // }
 
         return cam;
     }

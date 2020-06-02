@@ -58,7 +58,7 @@ public:
 
 public:
     // TMP : Binding keep alive
-    SceneFactory(const std::string& name, const std::function<void ()>& factory);
+    SceneFactory(const std::string& name, const std::function<void ()>& factory, const std::string& default_cam);
 
 public:
     // Creates a new scene
@@ -66,6 +66,7 @@ public:
 
 public:
     std::string name;
+    std::string default_cam;
 
     // This is not really a factory but it sets up the scene
     std::function<void ()> factory;

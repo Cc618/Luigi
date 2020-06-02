@@ -105,8 +105,8 @@ void Scene::set_layer(const std::string& name, bool create, int z)
 // --- SceneFactory --- //
 unordered_map<std::string, SceneFactory*> SceneFactory::instances;
 
-SceneFactory::SceneFactory(const std::string& name, const std::function<void ()>& factory)
-    : name(name), factory(factory)
+SceneFactory::SceneFactory(const std::string& name, const std::function<void ()>& factory, const std::string& default_cam)
+    : name(name), factory(factory), default_cam(default_cam)
 {
     auto i = instances.find(name);
     Error::check(i == instances.end(), "A scene with the same name already exists");
@@ -116,8 +116,7 @@ SceneFactory::SceneFactory(const std::string& name, const std::function<void ()>
 
 Scene *SceneFactory::spawn() const
 {
-    // TMP : Default cam
-    Scene *scn = new Scene(name, "main");
+    Scene *scn = new Scene(name, default_cam);
     Scene::current = scn;
     
     factory();

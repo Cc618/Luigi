@@ -30,11 +30,11 @@ public:
     // Selects the current scene to add entities
     // * Used in the construct function pointer in run
     // * When a scene is changed, the next scene is automatically selected
-    void set_scene(const std::string& name, bool create=false, const std::function<void ()>& factory=nullptr);
+    void set_scene(const std::string& name, bool create=false, const std::function<void ()>& factory=nullptr, const std::string& default_cam="main");
 
     // Like set_scene but for a layer within the current selected scene
     // * z is used only for creation
-    // void set_layer(const std::string& name, bool create=false, int index=0);
+    void set_layer(const std::string& name, bool create=false, int index=0);
 
     // Adds an entity to the target scene and layer
     void add(Entity *e);
@@ -43,7 +43,7 @@ public:
 
     // TODO : Global scope
     // TODO : default option
-    Camera *set_cam(const std::string& name, bool create=false, float height=100, bool _default=false);
+    Camera *set_cam(const std::string& name, bool create=false, float height=100);
 
 public:
     // Aspect ratio
@@ -63,9 +63,6 @@ private:
     void stop();
 
 private:
-    // TMP : rm (Scene::current)
-    // Scene *current_scene;
-
     // Whether we are in the main loop
     bool on_game = false;
 
