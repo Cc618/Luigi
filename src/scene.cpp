@@ -50,6 +50,7 @@ void Scene::start()
     auto i = Camera::instances.find(default_cam);
     Error::check(i != Camera::instances.end(), "The default camera named '" + default_cam + "' from the '" + name + "' scene cannot be found");
     Camera::main = (*i).second;
+    Camera::main->update_ratio();
 
     for (auto layer : layers)
         layer->start();
