@@ -173,9 +173,16 @@ void Game::set_scene(const std::string& name, bool create, const std::function<v
         new SceneFactory(name, factory);
     }
     else if (on_game)
-        // TODO : Change scene
-    {}
-        // current_scene = Scene::find(name);
+    {
+        // TODO : Wait after update : Event manager
+
+        Scene::current->stop();
+        delete Scene::current;
+
+        auto scn = SceneFactory::instances.find(name);
+        Error::check(scn != SceneFactory::instances.end(), "The scene with name '" + name + "' is not found");
+        Scene::current = (*scn).second->spawn();
+    }
     else
         default_scene = name;
 }
@@ -207,7 +214,7 @@ Camera *Game::set_cam(const std::string& name, bool create, float height, bool _
         Camera *cam = new Camera(name, height);
         Camera::instances[name] = cam;
 
-        // TODO
+        // TODO :
         // if (_default)
         // {
         //     Error::check(current_scene != nullptr, "A scene must be created before a camera");

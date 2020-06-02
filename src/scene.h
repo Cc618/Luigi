@@ -14,7 +14,7 @@ class Scene : public Entity
 public:
     static Scene *current;
 
-    // TODO : rm ?
+    // TMP : rm ?
     static std::list<Scene*> instances;
 
 public:
