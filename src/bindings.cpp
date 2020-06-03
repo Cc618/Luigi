@@ -10,6 +10,7 @@ namespace py = pybind11;
 PYBIND11_MODULE(luigi, m)
 {
     // Extern functions to have a faster build time
+    extern void bind_camera(py::module &m);
     extern void bind_error(py::module &m);
     extern void bind_maths(py::module &m);
 
@@ -17,40 +18,25 @@ PYBIND11_MODULE(luigi, m)
     m.doc() = "Luigi 2D game engine";
     m.attr("__version__") = LUIGI_VERSION_STR;
 
-//     // --- Camera --- //
-//     py::class_<Camera>(m, "Camera")
-//         .def_readwrite_static("main", &Camera::main)
-
-//         .def_readwrite("name", &Camera::name)
-
-//         .def_property("x", &Camera::get_x, &Camera::set_x)
-//         .def_property("y", &Camera::get_y, &Camera::set_y)
-//         .def_property_readonly("width", &Camera::get_width)
-//         .def_property("height", &Camera::get_height, &Camera::set_height)
-//         .def_property("rot", &Camera::get_rot, &Camera::set_rot)
-//         .def("set", &Camera::set, py::arg("x")=0, py::arg("y")=0, py::arg("height")=-1, py::arg("rot")=-1,
-//             py::doc("If height or rot == -1, then height / rot is not changed"))
-
-//         .doc() = "A 2D camera describing a view"
-//     ;
-
-//     // --- Entity --- //
-//     py::class_<Entity, PyEntity>(m, "Entity")
-//         .def(py::init<>())
-
-//         .def_readwrite("dead", &Entity::dead)
-
-//         .def("start", &Entity::start)
-//         .def("update", &Entity::update, py::arg("dt"))
-//         .def("draw", &Entity::draw)
-//         .def("stop", &Entity::stop)
-
-//         .doc() = "An entity is the most basic (abstract) type for game objects"
-//     ;
+    // --- Camera --- //
+    bind_camera(m);
 
     // --- Error --- //
     bind_error(m);
 
+    // // --- Entity --- //
+    // py::class_<Entity, PyEntity>(m, "Entity")
+    //     .def(py::init<>())
+
+    //     .def_readwrite("dead", &Entity::dead)
+
+    //     .def("start", &Entity::start)
+    //     .def("update", &Entity::update, py::arg("dt"))
+    //     .def("draw", &Entity::draw)
+    //     .def("stop", &Entity::stop)
+
+    //     .doc() = "An entity is the most basic (abstract) type for game objects"
+    // ;
 //     // --- Frame --- //
 //     py::class_<Region>(m, "Region")
 //         // TODO : Other constructors

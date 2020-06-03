@@ -1,6 +1,6 @@
 #include "camera.h"
 #include "error.h"
-#include "game.h"
+// #include "game.h"
 
 using namespace std;
 
@@ -102,6 +102,36 @@ void Camera::update_ratio()
 {
     transform_changed = true;
 
-    width = height * Game::instance->ratio;
+    // WIP : width = height * Game::instance->ratio;
     inv_half_width = 2.f / width;
+}
+
+// --- Bindings --- //
+#include <pybind11/pybind11.h>
+
+namespace py = pybind11;
+
+void bind_camera(py::module &m)
+{
+    py::class_<Camera>(m, "Camera")
+        .def_readwrite_static("main", &Camera::main)
+
+        .def_readwrite("name", &Camera::name)
+
+        .def_property("x", &Camera::get_x, &Camera::set_x)
+        .def_property("y", &Camera::get_y, &Camera::set_y)
+        .def_property_readonly("width", &Camera::get_width)
+        .def_property("height", &Camera::get_height, &Camera::set_height)
+        .def_property("rot", &Camera::get_rot, &Camera::set_rot)
+
+        .def("set", &Camera::set, py::arg("x")=0, py::arg("y")=0, py::arg("height")=-1, py::arg("rot")=-1,
+            R"(
+            Sets properties of the camera
+
+            .. note::
+                If height or rot == -1, then height / rot is not changed
+            )")
+
+        .doc() = "(**camera**) A 2D camera describing a view"
+    ;
 }
