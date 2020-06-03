@@ -134,23 +134,25 @@ void bind_maths(py::module &m)
         .def_static("create_id", &Mat3::create_id,
             "Identity matrix")
 
-        .doc() = "A 3x3 matrix"
+        .doc() = "(**maths**) A 3x3 matrix"
     ;
 
-    // py::class_<Box>(m, "Box")
-    //     // TODO : args
-    //     .def(py::init<GLfloat, GLfloat, GLfloat, GLfloat>())
+    py::class_<Box>(m, "Box")
+        .def(py::init<GLfloat, GLfloat, GLfloat, GLfloat>(), py::arg("x")=0, py::arg("y")=0, py::arg("width")=0, py::arg("height")=0)
 
-    //     .def_readwrite("x", &Box::x)
-    //     .def_readwrite("y", &Box::y)
-    //     .def_readwrite("width", &Box::width)
-    //     .def_readwrite("height", &Box::height)
+        .def_readwrite("x", &Box::x)
+        .def_readwrite("y", &Box::y)
+        .def_readwrite("width", &Box::width)
+        .def_readwrite("height", &Box::height)
 
-    //     .def("contains", &Box::contains, py::arg("x"), py::arg("y"))
-    //     .def("collides", &Box::collides, py::arg("other"))
+        .def("contains", &Box::contains, py::arg("x"), py::arg("y"),
+            "Whether the box contains the point")
 
-    //     .def("__repr__", &Box::__repr__)
+        .def("collides", &Box::collides, py::arg("other"),
+            "Whether the box collides with another box")
 
-    //     .doc() = "A 2D region"
-    // ;
+        .def("__repr__", &Box::__repr__)
+
+        .doc() = "(**maths**) A 2D region describing an axis aligned bounding box"
+    ;
 }
