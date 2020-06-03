@@ -13,6 +13,7 @@ PYBIND11_MODULE(luigi, m)
     extern void bind_camera(py::module &m);
     extern void bind_error(py::module &m);
     extern void bind_maths(py::module &m);
+    extern void bind_entity(py::module &m);
 
     // --- Module --- //
     m.doc() = "Luigi 2D game engine";
@@ -24,19 +25,9 @@ PYBIND11_MODULE(luigi, m)
     // --- Error --- //
     bind_error(m);
 
-    // // --- Entity --- //
-    // py::class_<Entity, PyEntity>(m, "Entity")
-    //     .def(py::init<>())
+    // --- Entity --- //
+    bind_entity(m);
 
-    //     .def_readwrite("dead", &Entity::dead)
-
-    //     .def("start", &Entity::start)
-    //     .def("update", &Entity::update, py::arg("dt"))
-    //     .def("draw", &Entity::draw)
-    //     .def("stop", &Entity::stop)
-
-    //     .doc() = "An entity is the most basic (abstract) type for game objects"
-    // ;
 //     // --- Frame --- //
 //     py::class_<Region>(m, "Region")
 //         // TODO : Other constructors
