@@ -126,12 +126,17 @@ void bind_camera(py::module &m)
 
         .def("set", &Camera::set, py::arg("x")=0, py::arg("y")=0, py::arg("height")=-1, py::arg("rot")=-1,
             R"(
-            Sets properties of the camera
+            Sets the properties of the camera.
 
             .. note::
-                If height or rot == -1, then height / rot is not changed
+                If height or rot == -1, then height / rot is not changed.
             )")
 
-        .doc() = "(**camera**) A 2D camera describing a view"
+        .doc() = R"(
+            (**camera**) A 2D camera describing a view.
+        
+        .. note ::
+            The width of the camera is calculated by its height and the screen aspect ratio.
+        )"
     ;
 }

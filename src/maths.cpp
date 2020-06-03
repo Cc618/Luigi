@@ -120,21 +120,21 @@ void bind_maths(py::module &m)
 
     py::class_<Mat3>(m, "Mat3")
         .def_static("create_tsr", &Mat3::create_tsr, py::arg("x"), py::arg("y"), py::arg("width")=1, py::arg("height")=1, py::arg("rot")=0,
-            "Translate -> Scale -> Rotate")
+            "Translate -> Scale -> Rotate transformation matrix.")
 
         .def_static("create_rst", &Mat3::create_rst, py::arg("x"), py::arg("y"), py::arg("width")=1, py::arg("height")=1, py::arg("rot")=0,
-            "Rotate -> Scale -> Translate")
+            "Rotate -> Scale -> Translate transformation matrix.")
 
         .def_static("create_srt", &Mat3::create_srt, py::arg("x"), py::arg("y"), py::arg("width")=1, py::arg("height")=1, py::arg("rot")=0,
-            "Scale -> Rotate -> Translate")
+            "Scale -> Rotate -> Translate transformation matrix.")
 
         .def_static("create_trs", &Mat3::create_trs, py::arg("x"), py::arg("y"), py::arg("width")=1, py::arg("height")=1, py::arg("rot")=0,
-            "Translate -> Rotate -> Scale")
+            "Translate -> Rotate -> Scale transformation matrix.")
 
         .def_static("create_id", &Mat3::create_id,
-            "Identity matrix")
+            "Identity matrix.")
 
-        .doc() = "(**maths**) A 3x3 matrix"
+        .doc() = "(**maths**) A 3x3 matrix."
     ;
 
     py::class_<Box>(m, "Box")
@@ -146,13 +146,13 @@ void bind_maths(py::module &m)
         .def_readwrite("height", &Box::height)
 
         .def("contains", &Box::contains, py::arg("x"), py::arg("y"),
-            "Whether the box contains the point")
+            "Whether the box contains the point.")
 
         .def("collides", &Box::collides, py::arg("other"),
-            "Whether the box collides with another box")
+            "Whether the box collides with another box.")
 
         .def("__repr__", &Box::__repr__)
 
-        .doc() = "(**maths**) A 2D region describing an axis aligned bounding box"
+        .doc() = "(**maths**) A 2D region describing an axis aligned bounding box."
     ;
 }

@@ -19,5 +19,5 @@ namespace py = pybind11;
 void bind_error(py::module &m)
 {
     py::register_exception<Error>(m, "Error").doc() =
-        "(**error**) A Luigi exception, use it only from C++";
+        "(**error**) A Luigi exception, use it only from C++.";
 }

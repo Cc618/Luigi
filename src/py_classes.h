@@ -4,7 +4,7 @@
 // These classes start with Py and are binding with the c++ name (without py)
 
 #include <pybind11/pybind11.h>
-#include "luigi.h"
+#include "entity.h"
 
 class PyEntity : public Entity
 {
