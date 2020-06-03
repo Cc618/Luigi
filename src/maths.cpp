@@ -108,3 +108,49 @@ std::string Box::__repr__() const
     return std::string("Box(x=") + std::to_string(x) + ", y=" + std::to_string(y) +
         ", width=" + std::to_string(width) + ", height=" + std::to_string(height) + ")";
 }
+
+// --- Bindings --- //
+#include <pybind11/pybind11.h>
+
+namespace py = pybind11;
+
+void bind_maths(py::module &m)
+{
+    m.attr("pi") = pi;
+
+    py::class_<Mat3>(m, "Mat3")
+        .def_static("create_tsr", &Mat3::create_tsr, py::arg("x"), py::arg("y"), py::arg("width")=1, py::arg("height")=1, py::arg("rot")=0,
+            "Translate -> Scale -> Rotate")
+
+        .def_static("create_rst", &Mat3::create_rst, py::arg("x"), py::arg("y"), py::arg("width")=1, py::arg("height")=1, py::arg("rot")=0,
+            "Rotate -> Scale -> Translate")
+
+        .def_static("create_srt", &Mat3::create_srt, py::arg("x"), py::arg("y"), py::arg("width")=1, py::arg("height")=1, py::arg("rot")=0,
+            "Scale -> Rotate -> Translate")
+
+        .def_static("create_trs", &Mat3::create_trs, py::arg("x"), py::arg("y"), py::arg("width")=1, py::arg("height")=1, py::arg("rot")=0,
+            "Translate -> Rotate -> Scale")
+
+        .def_static("create_id", &Mat3::create_id,
+            "Identity matrix")
+
+        .doc() = "A 3x3 matrix"
+    ;
+
+    // py::class_<Box>(m, "Box")
+    //     // TODO : args
+    //     .def(py::init<GLfloat, GLfloat, GLfloat, GLfloat>())
+
+    //     .def_readwrite("x", &Box::x)
+    //     .def_readwrite("y", &Box::y)
+    //     .def_readwrite("width", &Box::width)
+    //     .def_readwrite("height", &Box::height)
+
+    //     .def("contains", &Box::contains, py::arg("x"), py::arg("y"))
+    //     .def("collides", &Box::collides, py::arg("other"))
+
+    //     .def("__repr__", &Box::__repr__)
+
+    //     .doc() = "A 2D region"
+    // ;
+}

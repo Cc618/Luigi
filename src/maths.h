@@ -56,4 +56,3 @@ public:
 public:
     GLfloat x, y, width, height;
 };
-
