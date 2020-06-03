@@ -9,6 +9,8 @@ namespace py = pybind11;
 
 PYBIND11_MODULE(luigi, m)
 {
+    // Extern functions to have a faster build time
+    extern void bind_error(py::module &m);
     extern void bind_maths(py::module &m);
 
     // --- Module --- //
@@ -46,8 +48,8 @@ PYBIND11_MODULE(luigi, m)
 //         .doc() = "An entity is the most basic (abstract) type for game objects"
 //     ;
 
-//     // --- Error --- //
-//     py::register_exception<Error>(m, "Error");
+    // --- Error --- //
+    bind_error(m);
 
 //     // --- Frame --- //
 //     py::class_<Region>(m, "Region")
