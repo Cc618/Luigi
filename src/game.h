@@ -39,7 +39,14 @@ namespace lg
         // - pixel : No blur when scaling the texture (nearest)
         // - blur : Blur when scaling the texture (linear)
         // TODO : returns Texture + chg doc
-        void add_texture(const std::string& name, const std::string& file, const std::string& mode="pixel") const;
+        // TODO : rm mode
+        void add_texture(const std::string& name, const std::string& file) const;
+
+        // Sets the filter mode for textures created after this call
+        // Mode :
+        // - pixel : No blur when scaling the texture (nearest)
+        // - blur : Blur when scaling the texture (linear)
+        void set_texture_filter(const std::string& filter) const;
 
     public: // Shader
         // Like Shader::create but without return

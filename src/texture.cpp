@@ -27,17 +27,28 @@ static GLuint genTexture(const unsigned char *data, size_t width, size_t height,
 }
 
 std::unordered_map<std::string, Texture*> Texture::instances;
+GLenum Texture::filter = GL_NEAREST;
 
-void Game::add_texture(const std::string& name, const std::string& file, const std::string& mode) const
+void Game::add_texture(const std::string& name, const std::string& file) const
 {
-    Texture::create(name, file, mode);
+    Texture::create(name, file);
 }
 
-Texture *Texture::create(const std::string& name, const std::string& file, const std::string& mode)
+void Game::set_texture_filter(const std::string& filter) const
+{
+    if (filter == "pixel")
+        Texture::filter = GL_NEAREST;
+    else if (filter == "blur")
+        Texture::filter = GL_LINEAR;
+    else
+        throw Error("Filter '" + filter + "' invalid, use either 'pixel' or 'blur'");
+}
+
+Texture *Texture::create(const std::string& name, const std::string& file)
 {
     Error::check(instances.find(name) == instances.end(), "Texture with name '" + name + "' already exists");
 
-    auto t = new Texture(name, file, mode);
+    auto t = new Texture(name, file);
 
     instances[name] = t;
 
@@ -53,7 +64,7 @@ Texture *Texture::get(const std::string& name)
     return (*result).second;
 }
 
-Texture::Texture(const std::string &name, const std::string &file, const std::string &mode)
+Texture::Texture(const std::string &name, const std::string &file)
     : name(name)
 {
     // Load
@@ -65,16 +76,8 @@ Texture::Texture(const std::string &name, const std::string &file, const std::st
     width = size.x;
     height = size.y;
 
-    GLenum usage;
-    if (mode == "pixel")
-        usage = GL_NEAREST;
-    else if (mode == "blur")
-        usage = GL_LINEAR;
-    else
-        throw Error("Mode '" + mode + "' invalid, use either 'pixel' or 'blur'");
-
     // Send to GPU
-    id = genTexture(img.getPixelsPtr(), width, height, usage);
+    id = genTexture(img.getPixelsPtr(), width, height, filter);
 }
 
 Texture::~Texture()
@@ -96,5 +99,4 @@ namespace py = pybind11;
 
 void bind_texture(py::module &m)
 {
-    // TODO : Add texture class
 }

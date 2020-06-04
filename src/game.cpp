@@ -269,17 +269,21 @@ void bind_game(py::module &m)
             )")
 
         // Texture
-        .def("add_texture", &Game::add_texture, py::arg("name"), py::arg("file"), py::arg("mode")="pixel",
-            py::doc(R"(
-                (**texture**) Creates a new texture.
-                
-                :param mode: The filter applied to the texture.
+        .def("add_texture", &Game::add_texture, py::arg("name"), py::arg("file"),
+            "Creates a new texture.")
+
+        .def("set_texture_filter", &Game::set_texture_filter, py::arg("filter"),
+            R"(
+                Sets the filter mode for textures created after this call.
+
+                :param filter: The filter applied to the texture.
 
                 **Filter types** :
 
                 * pixel : No blur when scaling the texture (nearest).
                 * blur : Blur when scaling the texture (linear).
-            )"))
+            )")
+
 
         // Game
         .def("set_clear_color", &Game::set_clear_color,

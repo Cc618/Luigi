@@ -12,7 +12,10 @@ namespace lg
     class Texture
     {
     public:
-        static Texture *create(const std::string& name, const std::string& file, const std::string& mode="pixel");
+        static GLenum filter;
+
+    public:
+        static Texture *create(const std::string& name, const std::string& file);
         static Texture *get(const std::string& name);
 
     public:
@@ -32,7 +35,7 @@ namespace lg
         // Mode :
         // - pixel : No blur when scaling the texture (nearest)
         // - blur : Blur when scaling the texture (linear)
-        Texture(const std::string &name, const std::string &file, const std::string &mode="pixel");
+        Texture(const std::string &name, const std::string &file);
 
     private:
         GLuint id;
