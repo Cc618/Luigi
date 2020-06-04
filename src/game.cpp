@@ -242,16 +242,24 @@ Camera *Game::set_cam(const std::string& name, bool create, float height)
 namespace py = pybind11;
 using namespace std;
 
-py::class_<Game> *class_game;
-
 void bind_game(py::module &m)
 {
-    class_game = new py::class_<Game>(m, "Game");
-    
-    (*class_game)
+    py::class_<Game>(m, "Game")
         .def(py::init<>())
 
-        // TMP : inputs
+        // Inputs
+        .def("pressed", &Game::pressed, py::arg("key"),
+            "Whether a key is down.")
+
+        .def("typed", &Game::typed, py::arg("key"),
+            "Whether a key is typed (is down and was up the last frame).")
+
+        .def("mouse_pressed", &Game::mouse_pressed, py::arg("button"),
+            "Whether a mouse button is down.")
+
+        .def("mouse_typed", &Game::mouse_typed, py::arg("button"),
+            "Whether a mouse button is clicked.")
+
 
         // Texture
         .def("add_texture", &Game::add_texture, py::arg("name"), py::arg("file"), py::arg("mode")="pixel",

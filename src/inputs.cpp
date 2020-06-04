@@ -198,24 +198,6 @@ using namespace std;
 
 void bind_inputs(py::module &m)
 {
-    // Defined in game.cpp
-    extern py::class_<Game> *class_game;
-
-    // Game
-    (*class_game)
-        .def("pressed", &Game::pressed, py::arg("key"),
-            "Whether a key is down.")
-
-        .def("typed", &Game::typed, py::arg("key"),
-        "Whether a key is typed (is down and was up the last frame).")
-
-        .def("mouse_pressed", &Game::mouse_pressed, py::arg("button"),
-        "Whether a mouse button is down.")
-
-        .def("mouse_typed", &Game::mouse_typed, py::arg("button"),
-        "Whether a mouse button is clicked.")
-    ;
-
     // Mouse
     py::class_<lg::Mouse>(m, "Mouse")
         .def_property_static("pos",
