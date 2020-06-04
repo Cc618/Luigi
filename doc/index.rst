@@ -12,6 +12,8 @@ Welcome to Luigi's documentation!
 
    luigi
 
+   inputs
+
 Indices and tables
 ==================
 

@@ -276,7 +276,9 @@ void bind_game(py::module &m)
         .def("set_cam", &Game::set_cam, py::arg("name"), py::arg("create")=false, py::arg("height")=100, py::return_value_policy::reference,
             "Sets / adds a camera.")
 
-        .doc() = "(**game**) Handles the window and the game environment."
+        .doc() = R"(
+        (**game**) Handles the window and the game environment.
+        )"
     ;
 
     // TODO : mv
