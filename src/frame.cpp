@@ -58,6 +58,27 @@ void Region::create_transform()
 }
 
 // --- Frame --- //
+Frame *Frame::tape(const std::string& texture_name, Box first, int count, float fps, bool horizontal)
+{
+    // TMP : Binding return !!!
+
+    auto tex = Texture::get(texture_name);
+    std::vector<Box> regions;
+    regions.reserve(count);
+
+    for (size_t i = 0; i < count; ++i)
+    {
+        regions.emplace_back(first);
+
+        if (horizontal)
+            first.x += first.width;
+        else
+            first.y += first.height;
+    }
+
+    return new Frame(tex, regions, fps);
+}
+
 Frame::Frame(const std::string& texture_name, const Box& region)
     : Frame(Texture::get(texture_name), region)
 {}
@@ -169,7 +190,19 @@ void bind_frame(py::module &m)
     py::class_<Frame, Region>(m, "Frame")
         // TODO : Other constructors
         .def(py::init<const string&, const std::vector<Box>&, float>(), py::arg("texture_name"), py::arg("regions"), py::arg("fps"))
-        
+
+        .def_static("tape", &Frame::tape, py::arg("texture_name"), py::arg("first"), py::arg("count"), py::arg("fps"), py::arg("horizontal")=true,
+            R"(
+                Creates a frame from ``count`` regions placed at the same x / y level.
+
+                :param first: The first region, if horizontal, this is the left most region, otherwise
+                    this is the top most region.
+                
+                :param count: Number of regions.
+
+                :param horizontal: True if the regions share the same x, False if they share the same y level.
+            )")
+
         .doc() = "(**frame**) An animated texture region."
     ;
 }

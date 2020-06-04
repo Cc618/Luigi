@@ -48,6 +48,10 @@ namespace lg
     class Frame : public Region
     {
     public:
+        // Creates a frame with 'count' regions with the same shape of 'first'
+        static Frame *tape(const std::string& texture_name, Box first, int count, float fps, bool horizontal=true);
+
+    public:
         Frame(const std::string& texture_name, const Box& region);
         Frame(const std::string& texture_name, const std::vector<Box>& regions, float fps);
         Frame(const Texture *texture, const Box& region);
