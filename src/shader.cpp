@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "error.h"
 #include "io.h"
+#include "game.h"
 
 using namespace std;
 using namespace lg;
@@ -115,7 +116,7 @@ static GLuint gen_shader(const char *vert, const char *frag,
 // --- Static --- //
 unordered_map<string, Shader *> Shader::instances;
 
-void new_shader(const string &name, const string &vertex_file, const string &fragment_file, const std::list<std::string> &uniforms)
+void Game::add_shader(const string &name, const string &vertex_file, const string &fragment_file, const std::list<std::string> &uniforms) const
 {
     Shader::create(name, vertex_file, fragment_file, uniforms);
 }
@@ -258,13 +259,6 @@ namespace py = pybind11;
 
 void bind_shader(py::module &m)
 {
-    m.def("new_shader", &new_shader, py::arg("name"), py::arg("vertex_file"), py::arg("fragment_file"), py::arg("uniforms"),
-        R"(
-            Creates a new shader.
-
-            :arg uniforms: The list of all uniforms names.
-        )");
-
     py::class_<Shader>(m, "Shader")
         .def_static("get", &Shader::get, py::arg("name"),
             "Returns the shader associated to this name.")

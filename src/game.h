@@ -16,7 +16,7 @@ namespace lg
         // --- Modules --- //
         // Game handles also global methods because
         // some arguments or returns must be keeped alive
-    public: // inputs.cpp
+    public: // Inputs
         // Whether a key is down
         bool pressed(const std::string& key) const;
 
@@ -33,13 +33,20 @@ namespace lg
 
         void set_btn_down(const sf::Mouse::Button& btn) const;
 
-    public: // texture.cpp
+    public: // Texture
         // Like Texture::create but without return
         // Mode :
         // - pixel : No blur when scaling the texture (nearest)
         // - blur : Blur when scaling the texture (linear)
-        // TODO : Rename to add_texture
+        // TODO : returns Texture + chg doc
         void add_texture(const std::string& name, const std::string& file, const std::string& mode="pixel") const;
+
+    public: // Shader
+        // Like Shader::create but without return
+        // TODO : returns Shader + chg doc
+        void add_shader(const std::string& name, const std::string& vertex_file,
+            const std::string& fragment_file, const std::list<std::string>& uniforms) const;
+
 
     public:
         void set_clear_color(GLclampf r, GLclampf g, GLclampf b, GLclampf a=1) const;

@@ -9,11 +9,6 @@
 #include <GL/glew.h>
 #include "maths.h"
 
-// Like Shader::create but without return
-// TODO : Rename to add_shader + mv to game + returns Shader
-void new_shader(const std::string& name, const std::string& vertex_file,
-    const std::string& fragment_file, const std::list<std::string>& uniforms);
-
 namespace lg
 {
     class Shader

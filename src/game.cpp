@@ -259,7 +259,14 @@ void bind_game(py::module &m)
 
         .def("mouse_typed", &Game::mouse_typed, py::arg("button"),
             "Whether a mouse button is clicked.")
+        
+        // Shader
+        .def("add_shader", &Game::add_shader, py::arg("name"), py::arg("vertex_file"), py::arg("fragment_file"), py::arg("uniforms"),
+            R"(
+                Creates a new shader.
 
+                :arg uniforms: The list of all uniforms names.
+            )")
 
         // Texture
         .def("add_texture", &Game::add_texture, py::arg("name"), py::arg("file"), py::arg("mode")="pixel",
