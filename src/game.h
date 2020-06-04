@@ -11,6 +11,8 @@
 
 namespace lg
 {
+    class Shader;
+
     class Game
     {
         // --- Modules --- //
@@ -33,13 +35,13 @@ namespace lg
 
         void set_btn_down(const sf::Mouse::Button& btn) const;
 
+    public: // Shader
+        // Like Shader::create
+        Shader *add_shader(const std::string& name, const std::string& vertex_file,
+            const std::string& fragment_file, const std::list<std::string>& uniforms) const;
+
     public: // Texture
         // Like Texture::create but without return
-        // Mode :
-        // - pixel : No blur when scaling the texture (nearest)
-        // - blur : Blur when scaling the texture (linear)
-        // TODO : returns Texture + chg doc
-        // TODO : rm mode
         void add_texture(const std::string& name, const std::string& file) const;
 
         // Sets the filter mode for textures created after this call
@@ -47,13 +49,6 @@ namespace lg
         // - pixel : No blur when scaling the texture (nearest)
         // - blur : Blur when scaling the texture (linear)
         void set_texture_filter(const std::string& filter) const;
-
-    public: // Shader
-        // Like Shader::create but without return
-        // TODO : returns Shader + chg doc
-        void add_shader(const std::string& name, const std::string& vertex_file,
-            const std::string& fragment_file, const std::list<std::string>& uniforms) const;
-
 
     public:
         void set_clear_color(GLclampf r, GLclampf g, GLclampf b, GLclampf a=1) const;

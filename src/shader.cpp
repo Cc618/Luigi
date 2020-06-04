@@ -116,9 +116,9 @@ static GLuint gen_shader(const char *vert, const char *frag,
 // --- Static --- //
 unordered_map<string, Shader *> Shader::instances;
 
-void Game::add_shader(const string &name, const string &vertex_file, const string &fragment_file, const std::list<std::string> &uniforms) const
+Shader *Game::add_shader(const string &name, const string &vertex_file, const string &fragment_file, const std::list<std::string> &uniforms) const
 {
-    Shader::create(name, vertex_file, fragment_file, uniforms);
+    return Shader::create(name, vertex_file, fragment_file, uniforms);
 }
 
 Shader *Shader::create(const string &name, const string &vertex_file, const string &fragment_file, const std::list<std::string> &uniforms)
