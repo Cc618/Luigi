@@ -212,21 +212,9 @@ void Game::add_layer(const std::string& name, int z)
     Scene::current->add_layer(name, z);
 }
 
-Camera *Game::set_cam(const std::string& name, bool create, float height)
+Camera *Game::set_cam(const std::string& name)
 {
     auto i = Camera::instances.find(name);
-
-    if (create)
-    {
-        // Ensure no camera with the same name exists
-        Error::check(i == Camera::instances.end(), "Camera '" + name + "' already exists");
-
-        // Create cam
-        Camera *cam = new Camera(name, height);
-        Camera::instances[name] = cam;
-
-        return cam;
-    }
 
     // Ensure the name matches a camera
     Error::check(i != Camera::instances.end(), "Camera '" + name + "' doesn't exists (use create=True)");
@@ -235,6 +223,20 @@ Camera *Game::set_cam(const std::string& name, bool create, float height)
     Camera::main->update_ratio();
 
     return Camera::main;
+}
+
+Camera *Game::add_cam(const std::string& name, float height)
+{
+    auto i = Camera::instances.find(name);
+
+    // Ensure no camera with the same name exists
+    Error::check(i == Camera::instances.end(), "Camera '" + name + "' already exists");
+
+    // Create cam
+    Camera *cam = new Camera(name, height);
+    Camera::instances[name] = cam;
+
+    return cam;
 }
 
 void Game::add(Entity *e)
@@ -342,8 +344,15 @@ void bind_game(py::module &m)
         .def("add", &Game::add, py::arg("entity"), py::keep_alive<1, 2>(),
             "Adds an entity.")
         
-        .def("set_cam", &Game::set_cam, py::arg("name"), py::arg("create")=false, py::arg("height")=100, py::return_value_policy::reference,
-            "Sets / adds a camera.")
+        .def("set_cam", &Game::set_cam, py::arg("name"), py::return_value_policy::reference,
+            R"(
+                Sets the current camera.
+
+                :return: The current camera, which is Camera.main.
+            )")
+
+        .def("add_cam", &Game::add_cam, py::arg("name"), py::arg("height")=100, py::return_value_policy::reference,
+            "Adds a camera.")
 
         .doc() = R"(
         (**game**) Handles the window and the game environment.

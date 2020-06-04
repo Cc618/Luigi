@@ -80,8 +80,11 @@ namespace lg
         void add_layer(const std::string& name, int index=0);
 
     public:
-        // TODO : add_cam
-        Camera *set_cam(const std::string& name, bool create=false, float height=100);
+        // Sets the current camera
+        Camera *set_cam(const std::string& name);
+
+        // Creates a camera
+        Camera *add_cam(const std::string& name, float height=100);
 
     public:
         // Adds an entity to the target scene and layer
