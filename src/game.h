@@ -33,6 +33,14 @@ namespace lg
 
         void set_btn_down(const sf::Mouse::Button& btn) const;
 
+    public: // texture.cpp
+        // Like Texture::create but without return
+        // Mode :
+        // - pixel : No blur when scaling the texture (nearest)
+        // - blur : Blur when scaling the texture (linear)
+        // TODO : Rename to add_texture
+        void add_texture(const std::string& name, const std::string& file, const std::string& mode="pixel") const;
+
     public:
         void set_clear_color(GLclampf r, GLclampf g, GLclampf b, GLclampf a=1) const;
 

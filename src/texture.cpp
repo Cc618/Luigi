@@ -1,6 +1,7 @@
 #include "texture.h"
 #include <SFML/Graphics.hpp>
 #include "error.h"
+#include "game.h"
 
 using namespace std;
 using namespace lg;
@@ -27,7 +28,7 @@ static GLuint genTexture(const unsigned char *data, size_t width, size_t height,
 
 std::unordered_map<std::string, Texture*> Texture::instances;
 
-void new_texture(const std::string& name, const std::string& file, const std::string& mode)
+void Game::add_texture(const std::string& name, const std::string& file, const std::string& mode) const
 {
     Texture::create(name, file, mode);
 }
@@ -96,16 +97,4 @@ namespace py = pybind11;
 void bind_texture(py::module &m)
 {
     // TODO : Add texture class
-
-    m.def("new_texture", &new_texture, py::arg("name"), py::arg("file"), py::arg("mode")="pixel",
-        py::doc(R"(
-            (**texture**) Creates a new texture.
-            
-            :param mode: The filter applied to the texture.
-
-            **Filter types** :
-
-            * pixel : No blur when scaling the texture (nearest).
-            * blur : Blur when scaling the texture (linear).
-        )"));
 }

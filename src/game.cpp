@@ -251,6 +251,22 @@ void bind_game(py::module &m)
     (*class_game)
         .def(py::init<>())
 
+        // TMP : inputs
+
+        // Texture
+        .def("add_texture", &Game::add_texture, py::arg("name"), py::arg("file"), py::arg("mode")="pixel",
+            py::doc(R"(
+                (**texture**) Creates a new texture.
+                
+                :param mode: The filter applied to the texture.
+
+                **Filter types** :
+
+                * pixel : No blur when scaling the texture (nearest).
+                * blur : Blur when scaling the texture (linear).
+            )"))
+
+        // Game
         .def("set_clear_color", &Game::set_clear_color,
             py::arg("r"), py::arg("g"), py::arg("b"), py::arg("a")=1,
             "Sets the background color.")
