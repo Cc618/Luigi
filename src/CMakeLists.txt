@@ -18,12 +18,12 @@ set_target_properties(luigi
 )
 
 add_subdirectory(pybind11)
-find_package(SFML 2.5 COMPONENTS system window graphics REQUIRED)
+find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
 find_package(OpenGL REQUIRED)
 
 target_link_libraries(luigi
     pybind11::module
-    sfml-graphics sfml-window sfml-system
+    sfml-graphics sfml-window sfml-system sfml-audio
     GL GLEW
 )
 
