@@ -231,6 +231,8 @@ Camera *Game::set_cam(const std::string& name, bool create, float height)
 
 // --- Bindings --- //
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include <pybind11/functional.h>
 
 namespace py = pybind11;
 using namespace std;
@@ -242,7 +244,6 @@ void bind_game(py::module &m)
 
         .def_readonly_static("instance", &Game::instance)
 
-        // TODO : Args
         .def("run", &Game::run, py::arg("construct"), py::arg("title"), py::arg("width"), py::arg("height"), py::arg("fps")=60,
             R"(
                 Launches a window and runs the game.

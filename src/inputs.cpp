@@ -189,6 +189,7 @@ void lg::Mouse::set_pos(const std::pair<int, int>& xy)
 
 // --- Bindings --- //
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 
 namespace py = pybind11;
 using namespace std;

@@ -14,6 +14,7 @@ void Entity::stop()
 
 // --- Bindings --- //
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 #include "py_classes.h"
 
 namespace py = pybind11;

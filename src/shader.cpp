@@ -252,6 +252,7 @@ Shader *Shader::set_uniform_mat3(GLint id, const Mat3 *mat)
 
 // --- Bindings --- //
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 
 namespace py = pybind11;
 
