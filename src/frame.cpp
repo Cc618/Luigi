@@ -60,8 +60,6 @@ void Region::create_transform()
 // --- Frame --- //
 Frame *Frame::tape(const std::string& texture_name, Box first, int count, float fps, bool horizontal)
 {
-    // TMP : Binding return !!!
-
     auto tex = Texture::get(texture_name);
     std::vector<Box> regions;
     regions.reserve(count);
@@ -192,6 +190,7 @@ void bind_frame(py::module &m)
         .def(py::init<const string&, const std::vector<Box>&, float>(), py::arg("texture_name"), py::arg("regions"), py::arg("fps"))
 
         .def_static("tape", &Frame::tape, py::arg("texture_name"), py::arg("first"), py::arg("count"), py::arg("fps"), py::arg("horizontal")=true,
+            py::return_value_policy::reference,
             R"(
                 Creates a frame from ``count`` regions placed at the same x / y level.
 
