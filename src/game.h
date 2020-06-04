@@ -65,6 +65,9 @@ namespace lg
         // Construct is called to create scenes, layers and
         void run(const std::function<void ()>& construct, const std::string& title, int width, int height, float fps=60);
 
+        // Exits the application
+        void exit();
+
     public:
         // Changes the current scene
         void set_scene(const std::string& name);
@@ -72,24 +75,21 @@ namespace lg
         // Adds a new scene factory
         void add_scene(const std::string& name, const std::function<void ()>& factory=nullptr, const std::string& default_cam="main");
 
-    public:
         // Selects the layer to add entities
         void set_layer(const std::string& name);
 
         // Creates a layer at index z
         void add_layer(const std::string& name, int index=0);
 
-    public:
         // Sets the current camera
         Camera *set_cam(const std::string& name);
 
         // Creates a camera
         Camera *add_cam(const std::string& name, float height=100);
 
-    public:
         // Adds an entity to the target scene and layer
         void add(Entity *e);
-    
+
     public:
         // Aspect ratio
         float ratio;

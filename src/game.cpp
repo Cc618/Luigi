@@ -64,14 +64,11 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
 
     // Set first scene
     Error::check(SceneFactory::instances.size() > 0, "No scene created");
-
     auto first_scene = SceneFactory::instances.find(default_scene);
     Error::check(first_scene != SceneFactory::instances.end(), "The default scene '" + default_scene + "' is not found");
-
     Scene::current = (*first_scene).second->spawn();
 
-
-    auto clock = Clock();
+    Clock clock;
 
     // Main loop
     try
@@ -142,6 +139,11 @@ void Game::run(const std::function<void ()>& construct, const string &title, int
     stop();
 }
 
+void Game::exit()
+{
+    on_game = false;
+}
+
 void Game::start()
 {
     // Init blending
@@ -171,7 +173,6 @@ void Game::stop()
     Scene::current->stop();
 }
 
-// TMP : mv
 void Game::set_scene(const std::string& name)
 {
     if (on_game)
@@ -309,6 +310,9 @@ void bind_game(py::module &m)
                 :param construct: This function is called when the game is initialized,
                     used to create scenes, cameras and set properties.                   
             )")
+
+        .def("exit", &Game::exit,
+            "Terminates the game and closes the window.")
 
         .def("set_scene", &Game::set_scene, py::arg("name"),
             R"(
