@@ -3,6 +3,7 @@
 // For SFX / musics
 
 #include <string>
+#include <unordered_map>
 #include <SFML/Audio.hpp>
 
 namespace lg
@@ -10,6 +11,9 @@ namespace lg
     // SFX
     class Sound
     {
+    public:
+        static std::unordered_map<std::string, Sound*> instances;
+
     public:
         Sound(const std::string& name, const std::string &file);
     

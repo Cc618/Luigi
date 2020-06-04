@@ -11,6 +11,7 @@
 #include "buffers.h"
 #include "camera.h"
 #include "inputs.h"
+#include "audio.h"
 
 using namespace sf;
 using namespace std;
@@ -246,6 +247,19 @@ void Game::add(Entity *e)
     Scene::current->add(e);
 }
 
+lg::Sound *Game::add_sound(const std::string& name, const std::string& file)
+{
+    auto i = lg::Sound::instances.find(name);
+    Error::check(i == lg::Sound::instances.end(), "The sound with name '" + name + "' already exists");
+
+    // Create and register sound
+    Sound *s = new Sound(name, file);
+    Sound::instances[name] = s;
+
+    return s;
+}
+
+
 // --- Bindings --- //
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
@@ -258,6 +272,10 @@ void bind_game(py::module &m)
 {
     py::class_<Game>(m, "Game")
         .def(py::init<>())
+
+        // Adio
+        .def("play", &Game::play, py::arg("name"),
+            "Plays a sound or a music")
 
         // Inputs
         .def("pressed", &Game::pressed, py::arg("key"),
@@ -345,9 +363,6 @@ void bind_game(py::module &m)
                     within the other layer.
             )")
 
-        .def("add", &Game::add, py::arg("entity"), py::keep_alive<1, 2>(),
-            "Adds an entity.")
-        
         .def("set_cam", &Game::set_cam, py::arg("name"), py::return_value_policy::reference,
             R"(
                 Sets the current camera.
@@ -358,8 +373,15 @@ void bind_game(py::module &m)
         .def("add_cam", &Game::add_cam, py::arg("name"), py::arg("height")=100, py::return_value_policy::reference,
             "Adds a camera.")
 
+        .def("add", &Game::add, py::arg("entity"), py::keep_alive<1, 2>(),
+            "Adds an entity.")
+
+        // TODO : Doc
+        .def("add_sound", &Game::add_sound, py::arg("name"), py::arg("file"), py::return_value_policy::reference,
+            "Adds a sound.")
+        
         .doc() = R"(
-        (**game**) Handles the window and the game environment.
+            (**game**) Handles the window and the game environment.
         )"
     ;
 }

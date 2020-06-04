@@ -1,9 +1,12 @@
 #include "audio.h"
 #include "error.h"
+#include "game.h"
 
 using namespace std;
 using namespace lg;
 using namespace sf;
+
+std::unordered_map<std::string, lg::Sound*> lg::Sound::instances;
 
 lg::Sound::Sound(const std::string& name, const std::string& file)
     : name(name)
@@ -25,6 +28,17 @@ void lg::Sound::set_volume(float val)
 void lg::Sound::set_pos(float val)
 {
     snd.setPosition(val, 0, 0);
+}
+
+// --- Game --- //
+void Game::play(const std::string& name)
+{
+    // TODO : Music
+    auto i = Sound::instances.find(name);
+
+    Error::check(i != Sound::instances.end(), "The sound or music named '" + name + "' is not found");
+
+    (*i).second->play();
 }
 
 // --- Bindings --- //

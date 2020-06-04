@@ -12,12 +12,17 @@
 namespace lg
 {
     class Shader;
+    class Sound;
 
     class Game
     {
         // --- Modules --- //
         // Game handles also global methods because
         // some arguments or returns must be keeped alive
+    public: // Audio
+        // Plays a sound or a music
+        void play(const std::string& name);
+    
     public: // Inputs
         // Whether a key is down
         bool pressed(const std::string& key) const;
@@ -89,6 +94,9 @@ namespace lg
 
         // Adds an entity to the target scene and layer
         void add(Entity *e);
+
+        // TODO : get sound
+        Sound *add_sound(const std::string& name, const std::string& file);
 
     public:
         // Aspect ratio
