@@ -237,9 +237,13 @@ Camera *Game::set_cam(const std::string& name, bool create, float height)
 namespace py = pybind11;
 using namespace std;
 
+py::class_<Game> *class_game;
+
 void bind_game(py::module &m)
 {
-    py::class_<Game>(m, "Game")
+    class_game = new py::class_<Game>(m, "Game");
+    
+    (*class_game)
         .def(py::init<>())
 
         .def_readonly_static("instance", &Game::instance)

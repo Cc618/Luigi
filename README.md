@@ -28,9 +28,18 @@ luigi.version
 > '<luigi version>'
 ```
 
+To compile the documentation (require sphinx and sphinx_rtd_theme) :
+
+```sh
+cd doc
+make html
+```
+
 ## Dependencies
 
 - CMake (cmake for apt)
 - SFML (libsfml-dev for apt)
 - OpenGL
-- pybind11 (run ```git submodule update --remote```, no need to install it)
+- pybind11 (just headers, run ```git submodule init && git submodule update --remote```)
+- Sphinx (optional, to generate the documentation)
+- Sphinx-rtd-theme (optional, to generate the documentation)

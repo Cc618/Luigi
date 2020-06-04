@@ -4,7 +4,6 @@
 #include "config.h"
 
 using namespace std;
-// using namespace lg;
 namespace py = pybind11;
 
 PYBIND11_MODULE(luigi, m)
@@ -22,40 +21,18 @@ PYBIND11_MODULE(luigi, m)
     extern void bind_shader(py::module &m);
     extern void bind_sprite(py::module &m);
 
-    // --- Module --- //
     m.doc() = "Luigi 2D game engine";
     m.attr("__version__") = LUIGI_VERSION_STR;
 
-    // --- Camera --- //
     bind_camera(m);
-
-    // --- Error --- //
     bind_error(m);
-
-    // --- Entity --- //
     bind_entity(m);
-
-    // --- Frame --- //
     bind_frame(m);
-
-    // --- Game --- //
     bind_game(m);
-
-    // --- Inputs --- //
     bind_inputs(m);
-
-    // --- Maths --- //
     bind_maths(m);
-
-    // --- Scene --- //
     bind_scene(m);
-
-    // --- Shader --- //
     bind_shader(m);
-
-    // --- Sprite --- //
     bind_sprite(m);
-
-    // --- Texture --- //
     bind_texture(m);
 }

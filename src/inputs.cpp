@@ -106,7 +106,8 @@ static inline string name_to_id(const string& name)
     return result;
 }
 
-bool pressed(const std::string& name)
+// --- Inputs --- //
+bool Game::pressed(const std::string& name)
 {
     // Find key
     string id = name_to_id(name);
@@ -118,7 +119,7 @@ bool pressed(const std::string& name)
     return Keyboard::isKeyPressed((*key).second);
 }
 
-bool typed(const std::string& name)
+bool Game::typed(const std::string& name)
 {
     // Find key
     string id = name_to_id(name);
@@ -130,12 +131,12 @@ bool typed(const std::string& name)
     return typed_keys[(*key).second];
 }
 
-void set_key_down(const sf::Keyboard::Key& key)
+void Game::set_key_down(const sf::Keyboard::Key& key)
 {
     typed_keys[key] = true;
 }
 
-bool mouse_pressed(const std::string& name)
+bool Game::mouse_pressed(const std::string& name)
 {
     // Find key
     string id = name_to_id(name);
@@ -146,7 +147,7 @@ bool mouse_pressed(const std::string& name)
     return sf::Mouse::isButtonPressed((*btn).second);
 }
 
-bool mouse_typed(const std::string& name)
+bool Game::mouse_typed(const std::string& name)
 {
     // Find key
     string id = name_to_id(name);
@@ -157,7 +158,7 @@ bool mouse_typed(const std::string& name)
     return typed_btns[(*btn).second];
 }
 
-void update_inputs()
+void Game::update_inputs()
 {
     // Set all keys to false
     for (auto p : id_to_key)
@@ -168,11 +169,12 @@ void update_inputs()
         typed_btns[p.second] = false;
 }
 
-void set_btn_down(const sf::Mouse::Button& btn)
+void Game::set_btn_down(const sf::Mouse::Button& btn)
 {
     typed_btns[btn] = true;
 }
 
+// --- Mouse --- //
 std::pair<int, int> lg::Mouse::get_pos()
 {
     Error::check(Game::instance != nullptr && Game::instance->win != nullptr,
@@ -196,20 +198,25 @@ using namespace std;
 
 void bind_inputs(py::module &m)
 {
-    // TMP : Doc, key names
+    // Defined in game.cpp
+    extern py::class_<Game> *class_game;
 
-    m.def("pressed", &pressed, py::arg("key"),
-        "Whether a key is down.");
+    // Game
+    (*class_game)
+        .def("pressed", &Game::pressed, py::arg("key"),
+            "Whether a key is down.")
 
-    m.def("typed", &typed, py::arg("key"),
-        "Whether a key is typed (is down and was up the last frame).");
+        .def("typed", &Game::typed, py::arg("key"),
+        "Whether a key is typed (is down and was up the last frame).")
 
-    m.def("mouse_pressed", &mouse_pressed, py::arg("button"),
-        "Whether a mouse button is down.");
+        .def("mouse_pressed", &Game::mouse_pressed, py::arg("button"),
+        "Whether a mouse button is down.")
 
-    m.def("mouse_typed", &mouse_typed, py::arg("button"),
-        "Whether a mouse button is clicked.");
+        .def("mouse_typed", &Game::mouse_typed, py::arg("button"),
+        "Whether a mouse button is clicked.")
+    ;
 
+    // Mouse
     py::class_<lg::Mouse>(m, "Mouse")
         .def_property_static("pos",
             [](py::object) -> std::pair<int, int> { return lg::Mouse::get_pos(); },
