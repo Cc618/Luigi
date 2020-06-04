@@ -4,6 +4,10 @@ Inputs
 To check whether a key or a button is pressed you can use the ``pressed`` / ``typed``
 methods of ``Game``.
 
+The mouse is tested with the ``mouse_pressed`` and ``mouse_typed`` methods.
+
+To retrieve or set the mouse position, use the ``Mouse.pos`` static property.
+
 The name of the input can be in upper or lower case, here is a list of all inputs :
 
 ====
