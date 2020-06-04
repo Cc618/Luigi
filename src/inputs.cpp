@@ -107,7 +107,7 @@ static inline string name_to_id(const string& name)
 }
 
 // --- Inputs --- //
-bool Game::pressed(const std::string& name)
+bool Game::pressed(const std::string& name) const
 {
     // Find key
     string id = name_to_id(name);
@@ -119,7 +119,7 @@ bool Game::pressed(const std::string& name)
     return Keyboard::isKeyPressed((*key).second);
 }
 
-bool Game::typed(const std::string& name)
+bool Game::typed(const std::string& name) const
 {
     // Find key
     string id = name_to_id(name);
@@ -131,12 +131,12 @@ bool Game::typed(const std::string& name)
     return typed_keys[(*key).second];
 }
 
-void Game::set_key_down(const sf::Keyboard::Key& key)
+void Game::set_key_down(const sf::Keyboard::Key& key) const
 {
     typed_keys[key] = true;
 }
 
-bool Game::mouse_pressed(const std::string& name)
+bool Game::mouse_pressed(const std::string& name) const
 {
     // Find key
     string id = name_to_id(name);
@@ -147,7 +147,7 @@ bool Game::mouse_pressed(const std::string& name)
     return sf::Mouse::isButtonPressed((*btn).second);
 }
 
-bool Game::mouse_typed(const std::string& name)
+bool Game::mouse_typed(const std::string& name) const
 {
     // Find key
     string id = name_to_id(name);
@@ -158,7 +158,7 @@ bool Game::mouse_typed(const std::string& name)
     return typed_btns[(*btn).second];
 }
 
-void Game::update_inputs()
+void Game::update_inputs() const
 {
     // Set all keys to false
     for (auto p : id_to_key)
@@ -169,7 +169,7 @@ void Game::update_inputs()
         typed_btns[p.second] = false;
 }
 
-void Game::set_btn_down(const sf::Mouse::Button& btn)
+void Game::set_btn_down(const sf::Mouse::Button& btn) const
 {
     typed_btns[btn] = true;
 }

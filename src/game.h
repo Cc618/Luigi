@@ -9,10 +9,6 @@
 #include "scene.h"
 #include "camera.h"
 
-// Declared in game_fun.cpp
-// TODO : rm functional part
-void set_clear_color(GLclampf r, GLclampf g, GLclampf b, GLclampf a=1);
-
 namespace lg
 {
     class Game
@@ -22,20 +18,23 @@ namespace lg
         // some arguments or returns must be keeped alive
     public: // inputs.cpp
         // Whether a key is down
-        bool pressed(const std::string& key);
+        bool pressed(const std::string& key) const;
 
         // Whether a key is down and was up the last frame
-        bool typed(const std::string& key);
+        bool typed(const std::string& key) const;
 
-        void set_key_down(const sf::Keyboard::Key& key);
+        void set_key_down(const sf::Keyboard::Key& key) const;
 
-        bool mouse_pressed(const std::string& btn);
+        bool mouse_pressed(const std::string& btn) const;
 
-        bool mouse_typed(const std::string& btn);
+        bool mouse_typed(const std::string& btn) const;
 
-        void update_inputs();
+        void update_inputs() const;
 
-        void set_btn_down(const sf::Mouse::Button& btn);
+        void set_btn_down(const sf::Mouse::Button& btn) const;
+
+    public:
+        void set_clear_color(GLclampf r, GLclampf g, GLclampf b, GLclampf a=1) const;
 
     public:
         static Game *instance;

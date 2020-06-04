@@ -18,6 +18,11 @@ using namespace lg;
 
 Game *Game::instance = nullptr;
 
+void Game::set_clear_color(GLclampf r, GLclampf g, GLclampf b, GLclampf a) const
+{
+    glClearColor(r, g, b, a);
+}
+
 Game::Game()
 {
     Error::check(instance == nullptr, "Only one game can be created");
@@ -246,6 +251,10 @@ void bind_game(py::module &m)
     (*class_game)
         .def(py::init<>())
 
+        .def("set_clear_color", &Game::set_clear_color,
+            py::arg("r"), py::arg("g"), py::arg("b"), py::arg("a")=1,
+            "Sets the background color.")
+
         .def_readonly_static("instance", &Game::instance)
 
         .def("run", &Game::run, py::arg("construct"), py::arg("title"), py::arg("width"), py::arg("height"), py::arg("fps")=60,
@@ -286,10 +295,4 @@ void bind_game(py::module &m)
         (**game**) Handles the window and the game environment.
         )"
     ;
-
-    // TODO : mv
-    // game_fun
-    m.def("set_clear_color", &set_clear_color,
-        py::arg("r"), py::arg("g"), py::arg("b"), py::arg("a")=1,
-        "Sets the background color.");
 }
