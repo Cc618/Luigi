@@ -3,31 +3,34 @@
 // An entity is the most basic (abstract) type for game objects
 // Provides main lifetime functions
 
-class Entity
+namespace lg
 {
-public:
-    Entity() = default;
-    virtual ~Entity() = default;
+    class Entity
+    {
+    public:
+        Entity() = default;
+        virtual ~Entity() = default;
 
-public:
-    // !!! Must be called by children
-    virtual void start();
+    public:
+        // !!! Must be called by children
+        virtual void start();
 
-    // Called each frame
-    virtual void update(float dt)
-    {}
+        // Called each frame
+        virtual void update(float dt)
+        {}
 
-    virtual void draw()
-    {}
+        virtual void draw()
+        {}
 
-    // !!! Must be called by children
-    virtual void stop();
+        // !!! Must be called by children
+        virtual void stop();
 
-public:
-    // Change this to true to remove it
-    bool dead = false;
+    public:
+        // Change this to true to remove it
+        bool dead = false;
 
-protected:
-    // Whether start has been called
-    bool started = false;
-};
+    protected:
+        // Whether start has been called
+        bool started = false;
+    };
+}

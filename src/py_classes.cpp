@@ -1,5 +1,7 @@
 #include "py_classes.h"
 
+using namespace lg;
+
 // --- PyEntity --- //
 void PyEntity::start()
 {

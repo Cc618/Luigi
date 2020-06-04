@@ -14,6 +14,7 @@
 
 using namespace sf;
 using namespace std;
+using namespace lg;
 
 Game *Game::instance = nullptr;
 
@@ -145,7 +146,7 @@ void Game::start()
     // Init buffers
     VBO::create_square();
 
-    ::Shader::create_main();
+    lg::Shader::create_main();
 }
 
 void Game::update(float dt)
@@ -155,7 +156,7 @@ void Game::update(float dt)
 
 void Game::draw()
 {
-    Camera::main->update(::Shader::set_main_cam);
+    Camera::main->update(lg::Shader::set_main_cam);
 
     Scene::current->draw();
 }

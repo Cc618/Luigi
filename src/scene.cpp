@@ -4,6 +4,7 @@
 #include "camera.h"
 
 using namespace std;
+using namespace lg;
 
 // Compares 2 layers by their z index
 static bool layer_cmp(Layer* a, Layer *b)

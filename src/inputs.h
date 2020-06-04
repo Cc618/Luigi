@@ -3,6 +3,8 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 
+// TODO : Game methods
+
 // Whether a key is down
 bool pressed(const std::string& key);
 

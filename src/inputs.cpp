@@ -8,6 +8,7 @@
 
 using namespace std;
 using namespace sf;
+using namespace lg;
 
 // Use lower case ids separated by spaces
 unordered_map<std::string, Keyboard::Key> id_to_key = {
@@ -88,9 +89,9 @@ unordered_map<std::string, Keyboard::Key> id_to_key = {
 unordered_map<sf::Keyboard::Key, bool> typed_keys;
 
 std::unordered_map<std::string, sf::Mouse::Button> id_to_btn = {
-    { "left", Mouse::Button::Left },
-    { "right", Mouse::Button::Right },
-    { "middle", Mouse::Button::Middle },
+    { "left", sf::Mouse::Button::Left },
+    { "right", sf::Mouse::Button::Right },
+    { "middle", sf::Mouse::Button::Middle },
 };
 
 std::unordered_map<sf::Mouse::Button, bool> typed_btns;

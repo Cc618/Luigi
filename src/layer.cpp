@@ -1,6 +1,7 @@
 #include "layer.h"
 
 using namespace std;
+using namespace lg;
 
 Layer::Layer(const std::string& name, int z)
     : name(name), z(z)

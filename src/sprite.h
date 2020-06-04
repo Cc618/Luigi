@@ -9,44 +9,47 @@
 #include "shader.h"
 #include "math.h"
 
-class Sprite : public Entity
+namespace lg
 {
-public:
-    // Takes the whole texture
-    static Sprite *create(const std::string& texture, const std::string& shader="main");
+    class Sprite : public Entity
+    {
+    public:
+        // Takes the whole texture
+        static Sprite *create(const std::string& texture, const std::string& shader="main");
 
-public:
-    Sprite(const Region *frame, const std::string& shader="main");
-    virtual ~Sprite();
+    public:
+        Sprite(const Region *frame, const std::string& shader="main");
+        virtual ~Sprite();
 
-public:
-    virtual void start() override;
-    virtual void update(float dt) override;
-    virtual void draw() override;
+    public:
+        virtual void start() override;
+        virtual void update(float dt) override;
+        virtual void draw() override;
 
-public:
-    // Multiplies width and height by factor
-    void scale(float factor);
+    public:
+        // Multiplies width and height by factor
+        void scale(float factor);
 
-    // Returns the AABB of the sprite
-    // !!! Doesn't take in account the rotation
-    Box rect() const;
+        // Returns the AABB of the sprite
+        // !!! Doesn't take in account the rotation
+        Box rect() const;
 
-public:
-    float x = 0;
-    float y = 0;
-    float rot = 0;
-    float width = 1;
-    float height = 1;
+    public:
+        float x = 0;
+        float y = 0;
+        float rot = 0;
+        float width = 1;
+        float height = 1;
 
-private:
-    void set_uniforms() const;
+    private:
+        void set_uniforms() const;
 
-private:
-    Region *frame;
-    Shader *shader;
-    
-    // Uniform locations
-    GLint u_transform;
-    GLint u_tex_transform;
-};
+    private:
+        Region *frame;
+        Shader *shader;
+        
+        // Uniform locations
+        GLint u_transform;
+        GLint u_tex_transform;
+    };
+}

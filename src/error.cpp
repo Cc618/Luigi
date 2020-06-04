@@ -1,6 +1,7 @@
 #include "error.h"
 
 using namespace std;
+using namespace lg;
 
 Error::Error(const std::string& msg)
     : msg("(Luigi) " + msg)

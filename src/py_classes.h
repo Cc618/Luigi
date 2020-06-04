@@ -6,62 +6,65 @@
 #include <pybind11/pybind11.h>
 #include "entity.h"
 
-class PyEntity : public Entity
+namespace lg
 {
-public:
-    using Entity::Entity;
-
-public:
-    void start() override;
-    void update(float) override;
-    void draw() override;
-    void stop() override;
-};
-
-// To add a binding for an Entity, declare py::class_<T, Entity, PyEntityChild<T>>
-// With T the c++ class name
-template <class T=Entity>
-class PyEntityChild : public T
-{
-public:
-    // Constructors
-    using T::T;
-
-public:
-    void start() override
+    class PyEntity : public Entity
     {
-        PYBIND11_OVERLOAD(
-            void,
-            T,
-            start,
-        );
-    }
+    public:
+        using Entity::Entity;
 
-    void update(float dt) override
-    {
-        PYBIND11_OVERLOAD(
-            void,
-            T,
-            update,
-            dt
-        );
-    }
+    public:
+        void start() override;
+        void update(float) override;
+        void draw() override;
+        void stop() override;
+    };
 
-    void draw() override
+    // To add a binding for an Entity, declare py::class_<T, Entity, PyEntityChild<T>>
+    // With T the c++ class name
+    template <class T=Entity>
+    class PyEntityChild : public T
     {
-        PYBIND11_OVERLOAD(
-            void,
-            T,
-            draw,
-        );
-    }
+    public:
+        // Constructors
+        using T::T;
 
-    void stop() override
-    {
-        PYBIND11_OVERLOAD(
-            void,
-            T,
-            stop,
-        );
-    }
-};
+    public:
+        void start() override
+        {
+            PYBIND11_OVERLOAD(
+                void,
+                T,
+                start,
+            );
+        }
+
+        void update(float dt) override
+        {
+            PYBIND11_OVERLOAD(
+                void,
+                T,
+                update,
+                dt
+            );
+        }
+
+        void draw() override
+        {
+            PYBIND11_OVERLOAD(
+                void,
+                T,
+                draw,
+            );
+        }
+
+        void stop() override
+        {
+            PYBIND11_OVERLOAD(
+                void,
+                T,
+                stop,
+            );
+        }
+    };
+}

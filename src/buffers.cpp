@@ -2,6 +2,8 @@
 
 constexpr size_t SQUARE_VERTEX_SIZE = 4;
 
+using namespace lg;
+
 // --- VBO --- //
 VBO *VBO::square = nullptr;
 

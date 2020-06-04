@@ -3,6 +3,7 @@
 #include "error.h"
 
 using namespace std;
+using namespace lg;
 
 std::string read_txt_file(const std::string& path)
 {

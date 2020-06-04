@@ -14,32 +14,35 @@
 // TODO : Rename to add_texture
 void new_texture(const std::string& name, const std::string& file, const std::string& mode="pixel");
 
-class Texture
+namespace lg
 {
-public:
-    static Texture *create(const std::string& name, const std::string& file, const std::string& mode="pixel");
-    static Texture *get(const std::string& name);
+    class Texture
+    {
+    public:
+        static Texture *create(const std::string& name, const std::string& file, const std::string& mode="pixel");
+        static Texture *get(const std::string& name);
 
-public:
-    ~Texture();
+    public:
+        ~Texture();
 
-public:
-    void use() const;
+    public:
+        void use() const;
 
-public:
-    unsigned int width;
-    unsigned int height;
+    public:
+        unsigned int width;
+        unsigned int height;
 
-private:
-    static std::unordered_map<std::string, Texture*> instances;
+    private:
+        static std::unordered_map<std::string, Texture*> instances;
 
-private:
-    // Mode :
-    // - pixel : No blur when scaling the texture (nearest)
-    // - blur : Blur when scaling the texture (linear)
-    Texture(const std::string &name, const std::string &file, const std::string &mode="pixel");
+    private:
+        // Mode :
+        // - pixel : No blur when scaling the texture (nearest)
+        // - blur : Blur when scaling the texture (linear)
+        Texture(const std::string &name, const std::string &file, const std::string &mode="pixel");
 
-private:
-    GLuint id;
-    std::string name;
-};
+    private:
+        GLuint id;
+        std::string name;
+    };
+}

@@ -5,6 +5,7 @@
 #include "buffers.h"
 
 using namespace std;
+using namespace lg;
 
 Sprite *Sprite::create(const std::string& texture, const std::string& shader)
 {

@@ -4,6 +4,7 @@
 #include "io.h"
 
 using namespace std;
+using namespace lg;
 
 // --- Internal --- //
 //  Default shaders

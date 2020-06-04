@@ -1,5 +1,7 @@
 #include "entity.h"
 
+using namespace lg;
+
 void Entity::start()
 {
     started = true;

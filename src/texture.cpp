@@ -3,6 +3,7 @@
 #include "error.h"
 
 using namespace std;
+using namespace lg;
 
 // Generates a texture on GPU and returns the handle to this texture
 // * Format is RGBA8

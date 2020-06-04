@@ -1,6 +1,8 @@
 #include "maths.h"
 #include <cmath>
 
+using namespace lg;
+
 float pi = 3.14159265f;
 
 // --- Mat3 --- //

@@ -1,6 +1,8 @@
 #include "frame.h"
 #include "error.h"
 
+using namespace lg;
+
 // --- Region --- //
 Region *Region::create(const std::string& texture_name)
 {
