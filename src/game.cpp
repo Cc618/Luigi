@@ -198,17 +198,18 @@ void Game::add_scene(const std::string& name, const std::function<void ()>& fact
     new SceneFactory(name, factory, default_cam);
 }
 
-void Game::set_layer(const std::string& name, bool create, int z)
+void Game::set_layer(const std::string& name)
+{
+    Error::check(Scene::current != nullptr, "No scene created, create a scene before setting layers");
+
+    Scene::current->set_layer(name);
+}
+
+void Game::add_layer(const std::string& name, int z)
 {
     Error::check(Scene::current != nullptr, "No scene created, create a scene before creating layers");
 
-    Scene::current->set_layer(name, create, z);
-}
-
-void Game::add(Entity *e)
-{
-    Error::check(Scene::current != nullptr, "No scene created, create a scene and a layer before adding entities");
-    Scene::current->add(e);
+    Scene::current->add_layer(name, z);
 }
 
 Camera *Game::set_cam(const std::string& name, bool create, float height)
@@ -234,6 +235,12 @@ Camera *Game::set_cam(const std::string& name, bool create, float height)
     Camera::main->update_ratio();
 
     return Camera::main;
+}
+
+void Game::add(Entity *e)
+{
+    Error::check(Scene::current != nullptr, "No scene created, create a scene and a layer before adding entities");
+    Scene::current->add(e);
 }
 
 // --- Bindings --- //
@@ -302,7 +309,12 @@ void bind_game(py::module &m)
             )")
 
         .def("set_scene", &Game::set_scene, py::arg("name"),
-            "Sets a scene.")
+            R"(
+                Sets a scene.
+
+                .. note:: If this function is called in construct,
+                    it sets the default scene (the first scene to create).
+            )")
         
         .def("add_scene", &Game::add_scene, py::arg("name"), py::arg("factory")=nullptr, py::arg("default_cam")="main", py::keep_alive<1, 3>(),
             R"(
@@ -315,15 +327,18 @@ void bind_game(py::module &m)
                     in the ``factory`` function.
             )")
 
-        .def("set_layer", &Game::set_layer, py::arg("name"), py::arg("create")=false, py::arg("z")=0,
+        .def("set_layer", &Game::set_layer, py::arg("name"),
+            "Selects the layer to add entities.")
+        
+        .def("add_layer", &Game::add_layer, py::arg("name"), py::arg("z")=0,
             R"(
-                Sets / adds a layer.
+                Adds a layer.
 
                 :param z: The z index of the layer, if a layer has a greater z than another layer,
                     then all drawable entities within this layer will be drawn above the entities
                     within the other layer.
             )")
-        
+
         .def("add", &Game::add, py::arg("entity"), py::keep_alive<1, 2>(),
             "Adds an entity.")
         

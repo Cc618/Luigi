@@ -84,24 +84,22 @@ void Scene::add(Entity *e)
     selected_layer->add(e);
 }
 
-void Scene::set_layer(const std::string& name, bool create, int z)
+void Scene::set_layer(const std::string& name)
 {
-    if (create)
-    {
-        Error::check(!started, "Can't create layers when a scene has started");
+    auto result = find_if(layers.begin(), layers.end(), [name](const Layer* l) { return l->name == name; });
 
-        selected_layer = new Layer(name, z);
-        layers.insert(selected_layer);
-    }
-    else
-    {
-        auto result = find_if(layers.begin(), layers.end(), [name](const Layer* l) { return l->name == name; });
+    Error::check(result != layers.end(), "Could not find layer with name '" + name +
+        "' in scene '" + this->name + "'");
 
-        Error::check(result != layers.end(), "Could not find layer with name '" + name +
-            "' in scene '" + this->name + "', add create=True to create a new layer");
+    selected_layer = *result;
+}
 
-        selected_layer = *result;
-    }
+void Scene::add_layer(const std::string& name, int z)
+{
+    Error::check(!started, "Can't create layers when a scene has started");
+
+    selected_layer = new Layer(name, z);
+    layers.insert(selected_layer);
 }
 
 // --- SceneFactory --- //
@@ -140,9 +138,11 @@ void bind_scene(py::module &m)
     py::class_<Scene>(m, "Scene")
         .def_readonly_static("current", &Scene::current)
 
-        // TODO : Doc when renamed
-        .def("set_layer", &Scene::set_layer, py::arg("name"), py::arg("create")=false, py::arg("z")=0,
-            "Sets or adds a layer.")
+        .def("set_layer", &Scene::set_layer, py::arg("name"),
+            "Sets a layer.")
+        
+        .def("add_layer", &Scene::add_layer, py::arg("name"), py::arg("z")=0,
+            "Adds a layer with index z.")
         
         .def("add", &Scene::add, py::arg("entity"), py::keep_alive<1, 2>(),
             "Adds an entity to the current layer.")

@@ -67,25 +67,26 @@ namespace lg
 
     public:
         // Changes the current scene
-        // * When a scene is changed, the next scene is automatically selected
         void set_scene(const std::string& name);
 
         // Adds a new scene factory
         void add_scene(const std::string& name, const std::function<void ()>& factory=nullptr, const std::string& default_cam="main");
 
     public:
-        // Like set_scene but for a layer within the current selected scene
-        // * z is used only for creation
-        void set_layer(const std::string& name, bool create=false, int index=0);
+        // Selects the layer to add entities
+        void set_layer(const std::string& name);
+
+        // Creates a layer at index z
+        void add_layer(const std::string& name, int index=0);
+
+    public:
+        // TODO : add_cam
+        Camera *set_cam(const std::string& name, bool create=false, float height=100);
 
     public:
         // Adds an entity to the target scene and layer
         void add(Entity *e);
     
-    public:
-        // TODO : add_cam
-        Camera *set_cam(const std::string& name, bool create=false, float height=100);
-
     public:
         // Aspect ratio
         float ratio;

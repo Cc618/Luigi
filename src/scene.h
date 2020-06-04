@@ -41,9 +41,11 @@ namespace lg
     public:
         void add(Entity *e);
 
-        // TODO : Separate add and set layer
         // Like Game::set_layer
-        void set_layer(const std::string& name, bool create=false, int z=0);
+        void set_layer(const std::string& name);
+
+        // Like Game::add_layer
+        void add_layer(const std::string& name, int z=0);
 
     public:
         std::string name;
