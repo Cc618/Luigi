@@ -171,16 +171,10 @@ void Game::stop()
     Scene::current->stop();
 }
 
-void Game::set_scene(const std::string& name, bool create, const std::function<void ()>& factory, const std::string& default_cam)
+// TMP : mv
+void Game::set_scene(const std::string& name)
 {
-    if (create)
-    {
-        Error::check(!on_game, "Can't create new scenes on game");
-
-        // Register the scene, this scene won't be destroyed
-        new SceneFactory(name, factory, default_cam);
-    }
-    else if (on_game)
+    if (on_game)
     {
         // Change scene at the end of the frame
         events.push([name](){
@@ -194,6 +188,14 @@ void Game::set_scene(const std::string& name, bool create, const std::function<v
     }
     else
         default_scene = name;
+}
+
+void Game::add_scene(const std::string& name, const std::function<void ()>& factory, const std::string& default_cam)
+{
+    Error::check(!on_game, "Can't create new scenes on game");
+
+    // Register the scene, this object won't be destroyed
+    new SceneFactory(name, factory, default_cam);
 }
 
 void Game::set_layer(const std::string& name, bool create, int z)
@@ -284,7 +286,6 @@ void bind_game(py::module &m)
                 * blur : Blur when scaling the texture (linear).
             )")
 
-
         // Game
         .def("set_clear_color", &Game::set_clear_color,
             py::arg("r"), py::arg("g"), py::arg("b"), py::arg("a")=1,
@@ -300,9 +301,12 @@ void bind_game(py::module &m)
                     used to create scenes, cameras and set properties.                   
             )")
 
-        .def("set_scene", &Game::set_scene, py::arg("name"), py::arg("create")=false, py::arg("factory")=nullptr, py::arg("default_cam")="main", py::keep_alive<1, 4>(),
+        .def("set_scene", &Game::set_scene, py::arg("name"),
+            "Sets a scene.")
+        
+        .def("add_scene", &Game::add_scene, py::arg("name"), py::arg("factory")=nullptr, py::arg("default_cam")="main", py::keep_alive<1, 3>(),
             R"(
-                Sets / adds a scene.
+                Adds a scene factory.
             
                 :param factory: This function is called when the scene is loaded, used to add entities to the scene.
 
@@ -310,7 +314,7 @@ void bind_game(py::module &m)
                     in the ``construct`` function when :func:`run` is called and set cameras' properties
                     in the ``factory`` function.
             )")
-        
+
         .def("set_layer", &Game::set_layer, py::arg("name"), py::arg("create")=false, py::arg("z")=0,
             R"(
                 Sets / adds a layer.
