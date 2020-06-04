@@ -177,7 +177,7 @@ void Game::set_btn_down(const sf::Mouse::Button& btn) const
 // --- Mouse --- //
 std::pair<int, int> lg::Mouse::get_pos()
 {
-    Error::check(Game::instance != nullptr && Game::instance->win != nullptr,
+    Error::check(Game::instance != nullptr && win != nullptr,
         "A game must be running to use this function");
 
     auto pos = sf::Mouse::getPosition(*Game::instance->win);

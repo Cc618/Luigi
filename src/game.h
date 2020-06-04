@@ -1,6 +1,6 @@
 #pragma once
 
-// Handles the window and the game environment
+// Handles the window and all Luigi functions
 
 #include <string>
 #include <functional>
