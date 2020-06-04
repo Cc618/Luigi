@@ -126,3 +126,28 @@ Scene *SceneFactory::spawn() const
 
     return scn;
 }
+
+// --- Bindings --- //
+#include <pybind11/pybind11.h>
+
+namespace py = pybind11;
+using namespace std;
+
+void bind_scene(py::module &m)
+{
+    py::class_<Scene>(m, "Scene")
+        .def_readonly_static("current", &Scene::current)
+
+        // TODO : Doc when renamed
+        .def("set_layer", &Scene::set_layer, py::arg("name"), py::arg("create")=false, py::arg("z")=0,
+            "Sets or adds a layer.")
+        
+        .def("add", &Scene::add, py::arg("entity"), py::keep_alive<1, 2>(),
+            "Adds an entity to the current layer.")
+
+        // TMP .def("set_main_cam", &Game::set_main_cam, py::arg("height"), py::arg("x")=0, py::arg("y")=0, py::arg("rot")=0)
+        // .def("set_cam", &Scene::set_cam, py::arg("name"), py::arg("create")=false, py::arg("height")=100, py::arg("default")=true, py::return_value_policy::reference)
+
+        .doc() = "Gathers multiple layers of entities, created with a scene factory."
+    ;
+}

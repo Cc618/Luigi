@@ -39,6 +39,7 @@ public:
 public:
     void add(Entity *e);
 
+    // TODO : Separate add and set layer
     // Like Game::set_layer
     void set_layer(const std::string& name, bool create=false, int z=0);
 

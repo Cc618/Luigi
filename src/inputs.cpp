@@ -174,6 +174,9 @@ void set_btn_down(const sf::Mouse::Button& btn)
 
 std::pair<int, int> lg::Mouse::get_pos()
 {
+    Error::check(Game::instance != nullptr && Game::instance->win != nullptr,
+        "A game must be running to use this function");
+
     auto pos = sf::Mouse::getPosition(*Game::instance->win);
     return std::make_pair(pos.x, pos.y);
 }
@@ -181,4 +184,41 @@ std::pair<int, int> lg::Mouse::get_pos()
 void lg::Mouse::set_pos(const std::pair<int, int>& xy)
 {
     sf::Mouse::setPosition(Vector2i(xy.first, xy.second), *Game::instance->win);
+}
+
+// --- Bindings --- //
+#include <pybind11/pybind11.h>
+
+namespace py = pybind11;
+using namespace std;
+
+void bind_inputs(py::module &m)
+{
+    // TMP : Doc, key names
+
+    m.def("pressed", &pressed, py::arg("key"),
+        "Whether a key is down.");
+
+    m.def("typed", &typed, py::arg("key"),
+        "Whether a key is typed (is down and was up the last frame).");
+
+    m.def("mouse_pressed", &mouse_pressed, py::arg("button"),
+        "Whether a mouse button is down.");
+
+    m.def("mouse_typed", &mouse_typed, py::arg("button"),
+        "Whether a mouse button is clicked.");
+
+    py::class_<lg::Mouse>(m, "Mouse")
+        .def_property_static("pos",
+            [](py::object) -> std::pair<int, int> { return lg::Mouse::get_pos(); },
+            [](py::object, const std::pair<int, int>& xy) { lg::Mouse::set_pos(xy); }
+        )
+
+        .doc() = R"(
+            (**inputs**) Handles the mouse, this class is static.
+
+            :property pos: Describes the mouse position in a int 2-tuple.
+        )"
+    ;
+
 }

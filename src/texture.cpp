@@ -85,3 +85,25 @@ void Texture::use() const
     glBindTexture(GL_TEXTURE_2D, id);
     glActiveTexture(GL_TEXTURE0);
 }
+
+// --- Bindings --- //
+#include <pybind11/pybind11.h>
+
+namespace py = pybind11;
+
+void bind_texture(py::module &m)
+{
+    // TODO : Add texture class
+
+    m.def("new_texture", &new_texture, py::arg("name"), py::arg("file"), py::arg("mode")="pixel",
+        py::doc(R"(
+            (**texture**) Creates a new texture.
+            
+            :param mode: The filter applied to the texture.
+
+            **Filter types** :
+
+            * pixel : No blur when scaling the texture (nearest).
+            * blur : Blur when scaling the texture (linear).
+        )"));
+}

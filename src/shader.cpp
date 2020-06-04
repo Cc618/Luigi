@@ -248,3 +248,45 @@ Shader *Shader::set_uniform_mat3(GLint id, const Mat3 *mat)
 
     return this;
 }
+
+// --- Bindings --- //
+#include <pybind11/pybind11.h>
+
+namespace py = pybind11;
+
+void bind_shader(py::module &m)
+{
+    m.def("new_shader", &new_shader, py::arg("name"), py::arg("vertex_file"), py::arg("fragment_file"), py::arg("uniforms"),
+        R"(
+            Creates a new shader.
+
+            :arg uniforms: The list of all uniforms names.
+        )");
+
+    py::class_<Shader>(m, "Shader")
+        .def_static("get", &Shader::get, py::arg("name"),
+            "Returns the shader associated to this name.")
+
+        .def("get_uniform", &Shader::get_uniform, py::arg("name"),
+            "Retrieves the id of the uniform.")
+
+        .def("set_uniform_1f", &Shader::set_uniform_1f, py::arg("id"), py::arg("x"))
+        .def("set_uniform_2f", &Shader::set_uniform_2f, py::arg("id"), py::arg("x"), py::arg("y"))
+        .def("set_uniform_3f", &Shader::set_uniform_3f, py::arg("id"), py::arg("x"), py::arg("y"), py::arg("z"))
+        .def("set_uniform_4f", &Shader::set_uniform_4f, py::arg("id"), py::arg("r"), py::arg("g"), py::arg("b"), py::arg("a"))
+        .def("set_uniform_mat3", &Shader::set_uniform_mat3, py::arg("id"), py::arg("mat"))
+        .def("set_1f", &Shader::set_1f, py::arg("name"), py::arg("x"))
+        .def("set_2f", &Shader::set_2f, py::arg("name"), py::arg("x"), py::arg("y"))
+        .def("set_3f", &Shader::set_3f, py::arg("name"), py::arg("x"), py::arg("y"), py::arg("z"))
+        .def("set_4f", &Shader::set_4f, py::arg("name"), py::arg("r"), py::arg("g"), py::arg("b"), py::arg("a"))
+        .def("set_mat3", &Shader::set_mat3, py::arg("name"), py::arg("mat"))
+
+        .doc() = R"(
+            (**shader**) A GPU program.
+
+            To set uniforms, call ``set_<type>`` with the name of the uniform.
+            This method is less efficient than setting a uniform by its id retrieved
+            with :func:`get_uniform`, after that, call ``set_uniform_<type>``.
+        )"
+    ;
+}

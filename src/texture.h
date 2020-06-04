@@ -11,6 +11,7 @@
 // Mode :
 // - pixel : No blur when scaling the texture (nearest)
 // - blur : Blur when scaling the texture (linear)
+// TODO : Rename to add_texture
 void new_texture(const std::string& name, const std::string& file, const std::string& mode="pixel");
 
 class Texture

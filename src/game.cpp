@@ -227,3 +227,61 @@ Camera *Game::set_cam(const std::string& name, bool create, float height)
 
     return Camera::main;
 }
+
+// --- Bindings --- //
+#include <pybind11/pybind11.h>
+
+namespace py = pybind11;
+using namespace std;
+
+void bind_game(py::module &m)
+{
+    py::class_<Game>(m, "Game")
+        .def(py::init<>())
+
+        .def_readonly_static("instance", &Game::instance)
+
+        // TODO : Args
+        .def("run", &Game::run, py::arg("construct"), py::arg("title"), py::arg("width"), py::arg("height"), py::arg("fps")=60,
+            R"(
+                Launches a window and runs the game.
+
+                :param construct: This function is called when the game is initialized,
+                    used to create scenes, cameras and set properties.                   
+            )")
+
+        .def("set_scene", &Game::set_scene, py::arg("name"), py::arg("create")=false, py::arg("factory")=nullptr, py::arg("default_cam")="main", py::keep_alive<1, 4>(),
+            R"(
+                Sets / adds a scene.
+            
+                :param factory: This function is called when the scene is loaded, used to add entities to the scene.
+
+                .. warning:: Don't add cameras to the scene in the factory function, add cameras
+                    in the ``construct`` function when :func:`run` is called and set cameras' properties
+                    in the ``factory`` function.
+            )")
+        
+        .def("set_layer", &Game::set_layer, py::arg("name"), py::arg("create")=false, py::arg("z")=0,
+            R"(
+                Sets / adds a layer.
+
+                :param z: The z index of the layer, if a layer has a greater z than another layer,
+                    then all drawable entities within this layer will be drawn above the entities
+                    within the other layer.
+            )")
+        
+        .def("add", &Game::add, py::arg("entity"), py::keep_alive<1, 2>(),
+            "Adds an entity.")
+        
+        .def("set_cam", &Game::set_cam, py::arg("name"), py::arg("create")=false, py::arg("height")=100, py::return_value_policy::reference,
+            "Sets / adds a camera.")
+
+        .doc() = "(**game**) Handles the window and the game environment."
+    ;
+
+    // TODO : mv
+    // game_fun
+    m.def("set_clear_color", &set_clear_color,
+        py::arg("r"), py::arg("g"), py::arg("b"), py::arg("a")=1,
+        "Sets the background color.");
+}

@@ -84,3 +84,49 @@ void Sprite::set_uniforms() const
 
     delete m;
 }
+
+// --- Bindings --- //
+#include <pybind11/pybind11.h>
+#include "py_classes.h"
+
+namespace py = pybind11;
+using namespace std;
+
+void bind_sprite(py::module &m)
+{
+    py::class_<Sprite, Entity, PyEntityChild<Sprite>>(m, "Sprite")
+        .def(py::init<const Region*, string>(), py::arg("frame"), py::arg("shader")="main")
+
+        // TODO : Test return deletion (after scope)
+        .def_static("create", &Sprite::create, py::arg("texture"), py::arg("shader")="main",
+            "Creates a new sprite with the whole texture.")
+
+        .def_readwrite("x", &Sprite::x)
+        .def_readwrite("y", &Sprite::y)
+        .def_readwrite("width", &Sprite::width)
+        .def_readwrite("height", &Sprite::height)
+        .def_readwrite("rot", &Sprite::rot)
+
+        // TODO : Ref to inherited methods + try without these lines
+        .def("start", &Sprite::start)
+        .def("update", &Sprite::update, py::arg("dt"))
+        .def("draw", &Sprite::draw)
+        .def("stop", &Sprite::stop)
+
+        .def("scale", &Sprite::scale, py::arg("factor"),
+            "Multiplies width and height by a factor.")
+
+        .def("rect", &Sprite::rect,
+            R"(
+                Returns the AABB of the sprite.
+            
+            .. warning:: Doesn't take in account the rotation.
+            )")
+
+        .doc() = R"(
+            (**sprite**) A drawable entity, drawn with a shader, a texture region and a camera (the main camera).
+
+            The sprite's position describes the center of the texture region.
+        )"
+    ;
+}

@@ -175,3 +175,6 @@ epub_exclude_files = ['search.html']
 
 
 # -- Extension configuration -------------------------------------------------
+
+# Autodoc #
+autoclass_content = 'both'

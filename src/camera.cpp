@@ -1,6 +1,6 @@
 #include "camera.h"
 #include "error.h"
-// #include "game.h"
+#include "game.h"
 
 using namespace std;
 
@@ -102,7 +102,7 @@ void Camera::update_ratio()
 {
     transform_changed = true;
 
-    // WIP : width = height * Game::instance->ratio;
+    width = height * Game::instance->ratio;
     inv_half_width = 2.f / width;
 }
 

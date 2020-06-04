@@ -144,3 +144,29 @@ Mat3 *Frame::get_transform() const
 {
     return new Mat3(**current);
 }
+
+// --- Bindings --- //
+#include <pybind11/pybind11.h>
+
+namespace py = pybind11;
+using namespace std;
+
+void bind_frame(py::module &m)
+{
+    py::class_<Region>(m, "Region")
+        // TODO : Other constructors
+        .def(py::init<const string&, const Box&>(), py::arg("texture_name"), py::arg("rect"))
+
+        .def_static("create", &Region::create, py::arg("texture_name"),
+            "Creates a region that contains the whole texture.")
+
+        .doc() = "(**frame**) Describes an (axis aligned) rectangle in a texture."
+    ;
+
+    py::class_<Frame, Region>(m, "Frame")
+        // TODO : Other constructors
+        .def(py::init<const string&, const std::vector<Box>&, float>(), py::arg("texture_name"), py::arg("regions"), py::arg("fps"))
+        
+        .doc() = "(**frame**) An animated texture region."
+    ;
+}

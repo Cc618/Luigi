@@ -19,7 +19,6 @@ void update_inputs();
 
 void set_btn_down(const sf::Mouse::Button& btn);
 
-// Used avoid scope issues (like with sf::Mouse)
 namespace lg
 {
     // Static mouse class

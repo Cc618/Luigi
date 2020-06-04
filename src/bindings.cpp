@@ -11,9 +11,16 @@ PYBIND11_MODULE(luigi, m)
 {
     // Extern functions to have a faster build time
     extern void bind_camera(py::module &m);
-    extern void bind_error(py::module &m);
-    extern void bind_maths(py::module &m);
     extern void bind_entity(py::module &m);
+    extern void bind_error(py::module &m);
+    extern void bind_frame(py::module &m);
+    extern void bind_game(py::module &m);
+    extern void bind_inputs(py::module &m);
+    extern void bind_maths(py::module &m);
+    extern void bind_texture(py::module &m);
+    extern void bind_scene(py::module &m);
+    extern void bind_shader(py::module &m);
+    extern void bind_sprite(py::module &m);
 
     // --- Module --- //
     m.doc() = "Luigi 2D game engine";
@@ -28,119 +35,27 @@ PYBIND11_MODULE(luigi, m)
     // --- Entity --- //
     bind_entity(m);
 
-//     // --- Frame --- //
-//     py::class_<Region>(m, "Region")
-//         // TODO : Other constructors
-//         .def(py::init<const string&, const Box&>(), py::arg("texture_name"), py::arg("rect"))
+    // --- Frame --- //
+    bind_frame(m);
 
-//         .def_static("create", &Region::create, py::arg("texture_name"), py::doc("Creates a region that contains the whole texture"))
+    // --- Game --- //
+    bind_game(m);
 
-//         .doc() = "A texture region"
-//     ;
-
-//     py::class_<Frame, Region>(m, "Frame")
-//         // TODO : Other constructors
-//         .def(py::init<const string&, const std::vector<Box>&, float>(), py::arg("texture_name"), py::arg("regions"), py::arg("fps"))
-        
-//         .doc() = "An animated texture region"
-//     ;
-
-//     // --- Game --- //
-//     py::class_<Game>(m, "Game")
-//         .def(py::init<>())
-
-//         .def_readonly_static("instance", &Game::instance)
-
-//         .def("run", &Game::run) // TODO : Args
-//         .def("set_scene", &Game::set_scene, py::arg("name"), py::arg("create")=false, py::arg("factory")=nullptr, py::arg("default_cam")="main", py::keep_alive<1, 4>())
-//         .def("set_layer", &Game::set_layer, py::arg("name"), py::arg("create")=false, py::arg("z")=0)
-//         .def("add", &Game::add, py::arg("entity"), py::keep_alive<1, 2>())
-//         .def("set_cam", &Game::set_cam, py::arg("name"), py::arg("create")=false, py::arg("height")=100, py::return_value_policy::reference)
-
-//         .doc() = "Handles the window and the game environment"
-//     ;
-
-//     // game_fun
-//     m.def("set_clear_color", &set_clear_color,
-//         py::arg("r"), py::arg("g"), py::arg("b"), py::arg("a")=1);
-
-//     // --- Input --- //
-//     m.def("pressed", &pressed, py::arg("key"));
-//     m.def("typed", &typed, py::arg("key"));
-//     m.def("mouse_pressed", &mouse_pressed, py::arg("button"));
-//     m.def("mouse_typed", &mouse_typed, py::arg("button"));
-
-//     py::class_<Mouse>(m, "Mouse")
-//         .def_property_static("pos",
-//             [](py::object) { return Mouse::get_pos(); },
-//             [](py::object, const std::pair<int, int> xy) { Mouse::set_pos(xy); }
-//         )
-
-//         .doc() = "Handle the mouse, this class is static"
-//     ;
+    // --- Inputs --- //
+    bind_inputs(m);
 
     // --- Maths --- //
     bind_maths(m);
 
-//     // --- Scene --- //
-//     py::class_<Scene>(m, "Scene")
-//         .def_readonly_static("current", &Scene::current)
+    // --- Scene --- //
+    bind_scene(m);
 
-//         .def("set_layer", &Scene::set_layer, py::arg("name"), py::arg("create")=false, py::arg("z")=0)
-//         .def("add", &Scene::add, py::arg("entity"), py::keep_alive<1, 2>())
+    // --- Shader --- //
+    bind_shader(m);
 
+    // --- Sprite --- //
+    bind_sprite(m);
 
-//         // TMP .def("set_main_cam", &Game::set_main_cam, py::arg("height"), py::arg("x")=0, py::arg("y")=0, py::arg("rot")=0)
-//         // .def("set_cam", &Scene::set_cam, py::arg("name"), py::arg("create")=false, py::arg("height")=100, py::arg("default")=true, py::return_value_policy::reference)
-
-//     ;
-
-//     // --- Shader --- //
-//     m.def("new_shader", &new_shader, py::arg("name"), py::arg("vertex_file"), py::arg("fragment_file"), py::arg("uniforms"));
-
-//     py::class_<Shader>(m, "Shader")
-//         .def_static("get", &Shader::get, py::arg("name"))
-
-//         .def("get_uniform", &Shader::get_uniform, py::arg("name"))
-//         .def("set_uniform_1f", &Shader::set_uniform_1f, py::arg("id"), py::arg("x"))
-//         .def("set_uniform_2f", &Shader::set_uniform_2f, py::arg("id"), py::arg("x"), py::arg("y"))
-//         .def("set_uniform_3f", &Shader::set_uniform_3f, py::arg("id"), py::arg("x"), py::arg("y"), py::arg("z"))
-//         .def("set_uniform_4f", &Shader::set_uniform_4f, py::arg("id"), py::arg("r"), py::arg("g"), py::arg("b"), py::arg("a"))
-//         .def("set_uniform_mat3", &Shader::set_uniform_mat3, py::arg("id"), py::arg("mat"))
-//         .def("set_1f", &Shader::set_1f, py::arg("name"), py::arg("x"))
-//         .def("set_2f", &Shader::set_2f, py::arg("name"), py::arg("x"), py::arg("y"))
-//         .def("set_3f", &Shader::set_3f, py::arg("name"), py::arg("x"), py::arg("y"), py::arg("z"))
-//         .def("set_4f", &Shader::set_4f, py::arg("name"), py::arg("r"), py::arg("g"), py::arg("b"), py::arg("a"))
-//         .def("set_mat3", &Shader::set_mat3, py::arg("name"), py::arg("mat"))
-
-//         .doc() = "A GPU program"
-//     ;
-
-//     // --- Sprite --- //
-//     py::class_<Sprite, Entity, PyEntityChild<Sprite>>(m, "Sprite")
-//         .def(py::init<const Region*, string>(), py::arg("frame"), py::arg("shader")="main")
-//         .def_static("create", &Sprite::create, py::arg("texture"), py::arg("shader")="main")
-
-//         .def_readwrite("x", &Sprite::x)
-//         .def_readwrite("y", &Sprite::y)
-//         .def_readwrite("width", &Sprite::width)
-//         .def_readwrite("height", &Sprite::height)
-//         .def_readwrite("rot", &Sprite::rot)
-
-//         .def("start", &Sprite::start)
-//         .def("update", &Sprite::update, py::arg("dt"))
-//         .def("draw", &Sprite::draw)
-//         .def("stop", &Sprite::stop)
-
-//         .def("scale", &Sprite::scale, py::arg("factor"))
-//         .def("rect", &Sprite::rect)
-
-//         .doc() = "An image mapped to a camera"
-//     ;
-
-//     // --- Texture --- //
-//     m.def("new_texture", &new_texture, py::arg("name"), py::arg("file"), py::arg("mode")="pixel",
-//         py::doc(R"(Mode :
-// - pixel : No blur when scaling the texture (nearest)
-// - blur : Blur when scaling the texture (linear))"));
+    // --- Texture --- //
+    bind_texture(m);
 }
