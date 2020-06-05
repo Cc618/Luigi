@@ -26,12 +26,14 @@ void lg::stop_audio()
 
 // --- Sound --- //
 std::unordered_map<std::string, lg::Sound*> lg::Sound::instances;
+float lg::Sound::default_volume = 80;
 
 lg::Sound::Sound(const std::string& name, const std::string& file)
     : name(name)
 {
     Error::check(buf.loadFromFile(file), "Can't load sound '" + name + "' with file '" + file + "'");
     snd.setBuffer(buf);
+    set_volume(default_volume);
 }
 
 void lg::Sound::play()
@@ -41,6 +43,8 @@ void lg::Sound::play()
 
 void lg::Sound::set_volume(float val)
 {
+    Error::check(val >= 0 && val <= 100, "Volume must be between 0 and 100");
+
     snd.setVolume(val);
 }
 
@@ -51,6 +55,7 @@ void lg::Sound::set_pos(float val)
 
 // --- Music --- //
 std::unordered_map<std::string, lg::Music*> lg::Music::instances;
+float lg::Music::default_volume = 60;
 
 lg::Music *lg::Music::current = nullptr;
 lg::Music *lg::Music::previous = nullptr;
@@ -60,6 +65,7 @@ lg::Music::Music(const std::string& name, const std::string& file)
 {
     Error::check(stream.openFromFile(file), "Can't load music '" + name + "' with file '" + file + "'");
     stream.setLoop(true);
+    set_volume(default_volume);
 }
 
 void lg::Music::play()
@@ -88,6 +94,8 @@ void lg::Music::stop(bool fade_out)
 
 void lg::Music::set_volume(float val)
 {
+    Error::check(val >= 0 && val <= 100, "Volume must be between 0 and 100");
+
     stream.setVolume(val);
 }
 
@@ -235,6 +243,15 @@ void Game::set_fade_duration(float seconds)
         seconds += 1e-4;
 
     Transition::duration = seconds;
+}
+
+void Game::set_default_volume(float sounds, float musics)
+{
+    if (sounds >= 0)
+        lg::Sound::default_volume = sounds;
+
+    if (musics >= 0)
+        lg::Music::default_volume = musics;
 }
 
 // --- Bindings --- //

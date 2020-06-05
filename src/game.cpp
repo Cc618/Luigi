@@ -294,6 +294,13 @@ void bind_game(py::module &m)
         .def("set_fade_duration", &Game::set_fade_duration, py::arg("seconds"),
             "Sets the music transition duration.")
 
+        .def("set_default_volume", &Game::set_default_volume, py::arg("sounds")=-1, py::arg("musics")=-1,
+            R"(
+                Sets the default volume for sounds and musics.
+
+                .. note:: A value of -1 describes an unchanged default volume.
+            )")
+
         // Inputs
         .def("pressed", &Game::pressed, py::arg("key"),
             "Whether a key is down.")

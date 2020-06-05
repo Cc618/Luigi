@@ -18,6 +18,9 @@ namespace lg
     public:
         static std::unordered_map<std::string, Sound*> instances;
 
+        // 80 by default
+        static float default_volume;
+
     public:
         Sound(const std::string& name, const std::string &file);
     
@@ -42,6 +45,9 @@ namespace lg
     public:
         static std::unordered_map<std::string, Music*> instances;
         static Music *current;
+
+        // 60 by default
+        static float default_volume;
 
     public:
         Music(const std::string& name, const std::string& file);

@@ -26,6 +26,10 @@ namespace lg
 
         // Music transition duration
         void set_fade_duration(float seconds);
+
+        // Sets the default volume for audio
+        // * -1 describes an unchanged default volume
+        void set_default_volume(float sounds=-1, float musics=-1);
     
     public: // Inputs
         // Whether a key is down
