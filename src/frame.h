@@ -77,13 +77,28 @@ namespace lg
         void set_i(size_t i);
         size_t get_i() const;
 
-    private:
+    protected:
         std::vector<Mat3*> transforms;
         size_t i;
     };
 
+    // An animated texture region
+    class AnimatedFrame : public IndexedFrame
+    {
+    public:
+        AnimatedFrame(const std::string &texture, const std::vector<Box>& regions, float fps, size_t i=0);
+        AnimatedFrame(const AnimatedFrame &other);
+        virtual ~AnimatedFrame() = default;
 
+    public:
+        virtual void update(float dt) override;
 
+        virtual Frame *copy() const override;
+    
+    private:
+        float time = 0;
+        float frame_duration;
+    };
 
 
 

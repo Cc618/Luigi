@@ -55,7 +55,7 @@ Region::~Region()
 {
     delete transform;
 }
-    
+
 const Mat3 *Region::get_transform() const
 {
     return transform;
@@ -117,6 +117,40 @@ size_t IndexedFrame::get_i() const
     return i;
 }
 
+// --- Animated Frame --- //
+AnimatedFrame::AnimatedFrame(const std::string &texture, const std::vector<Box>& regions, float fps, size_t i)
+    : IndexedFrame(texture, regions, i)
+{
+    Error::check(fps > 0, "fps must be greater than 0");
+
+    frame_duration = 1.f / fps;
+}
+
+AnimatedFrame::AnimatedFrame(const AnimatedFrame &other)
+    : IndexedFrame(other), frame_duration(other.frame_duration), time(other.time)
+{}
+
+void AnimatedFrame::update(float dt)
+{
+    time += dt;
+
+    // Next frame
+    if (time >= frame_duration)
+    {
+        time -= frame_duration;
+
+        ++i;
+
+        // Loop
+        if (i >= transforms.size())
+            i = 0;
+    }
+}
+
+Frame *AnimatedFrame::copy() const
+{
+    return new AnimatedFrame(*this);
+}
 
 
 
@@ -329,7 +363,7 @@ void bind_frame(py::module &m)
 
                 :param first: The first region, if horizontal, this is the left most region, otherwise
                     this is the top most region.
-                
+
                 :param count: Number of regions.
 
                 :param horizontal: True if the regions share the same x, False if they share the same y level.
@@ -364,7 +398,7 @@ void bind_frame(py::module &m)
 
         .doc() = "(**frame**) Base class for texture regions."
     ;
-    
+
     py::class_<Region, Frame>(m, "Region")
         .def(py::init<const string&>(), py::arg("texture_name"))
         .def(py::init<const string&, const Box&>(), py::arg("texture_name"), py::arg("rect"))
@@ -379,7 +413,7 @@ void bind_frame(py::module &m)
         .def_readonly("texture", &Frame::texture)
 
         .def_readonly("rect", &Frame::rect)
-        
+
         .doc() = R"(
             (**frame**) Describes an (axis aligned) rectangle in a texture.
 
@@ -387,7 +421,7 @@ void bind_frame(py::module &m)
             the entire texture.
         )"
     ;
-        
+
     py::class_<IndexedFrame, Frame>(m, "IndexedFrame")
         .def(py::init<const std::string&, const std::vector<Box>&, size_t>(), py::arg("texture_name"), py::arg("regions"), py::arg("i")=0)
 
@@ -403,9 +437,31 @@ void bind_frame(py::module &m)
         .def_readonly("rect", &Frame::rect)
 
         .def_property("i", &IndexedFrame::get_i, &IndexedFrame::set_i)
-        
+
         .doc() = R"(
             (**frame**) Like :class:`Region` but the region can be changed with the index ``i``.
+        )"
+    ;
+
+    py::class_<AnimatedFrame, IndexedFrame>(m, "AnimatedFrame")
+        .def(py::init<const std::string&, const std::vector<Box>&, float, size_t>(), py::arg("texture_name"), py::arg("regions"), py::arg("fps"), py::arg("i")=0)
+
+        // From Frame
+        .def("get_transform", &Frame::get_transform,
+            "Returns the texture coordinates transform for the current region.")
+
+        .def("copy", &Frame::copy,
+            "Clones itself.")
+
+        .def_readonly("texture", &Frame::texture)
+
+        .def_readonly("rect", &Frame::rect)
+
+        // From IndexedFrame
+        .def_property("i", &IndexedFrame::get_i, &IndexedFrame::set_i)
+
+        .doc() = R"(
+            (**frame**) An animated texture region.
         )"
     ;
 }
