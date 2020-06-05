@@ -10,6 +10,80 @@
 
 namespace lg
 {
+    // Base class for all objects describing a texture region / animation...
+    class Frame
+    {
+    public:
+        Frame(const std::string& texture, const Box &rect);
+        explicit Frame(const std::string& texture);
+        Frame(const Texture *texture, const Box &rect);
+        Frame(const Texture *texture);
+        virtual ~Frame() = default;
+
+    public:
+        virtual void update(float dt)
+        {}
+
+        // Returns the texture coordinates transform
+        virtual const Mat3 *get_transform() const = 0;
+
+        virtual Frame *copy() const = 0;
+
+    public:
+        const Texture *texture;
+        // Describes the first rect around the texture
+        Box rect;
+    
+    protected:
+        // Creates the transform describing this rect
+        Mat3 *create_transform(const Box &rect) const;
+    };
+
+    // A simple texture region
+    class Region : public Frame
+    {
+    public:
+        // Takes the whole texture
+        explicit Region(const std::string &texture_name);
+        Region(const std::string &texture_name, const Box &rect);
+        Region(const Region &other);
+        virtual ~Region();
+
+    public:
+        // Returns the texture coordinates transform
+        virtual const Mat3 *get_transform() const override;
+    
+        virtual Frame *copy() const override;
+
+    private:
+        Mat3 *transform;
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
     class Region
     {
     public:
@@ -77,4 +151,5 @@ namespace lg
         // 1 / fps
         float frame_duration;
     };
+    */
 }

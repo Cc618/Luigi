@@ -3,6 +3,73 @@
 
 using namespace lg;
 
+// --- Frame --- //
+Frame::Frame(const std::string& texture, const Box& rect)
+    : Frame(Texture::get(texture), rect)
+{}
+
+Frame::Frame(const std::string& texture)
+    : texture(Texture::get(texture))
+{}
+
+Frame::Frame(const Texture *texture, const Box& rect)
+    : texture(texture), rect(rect)
+{}
+
+Frame::Frame(const Texture *texture)
+    : texture(texture)
+{}
+
+Mat3 *Frame::create_transform(const Box &rect) const
+{
+    Box box(rect);
+    float inv_width = 1.f / texture->width;
+    float inv_height = 1.f / texture->height;
+
+    // Normalize to have UV coordinates
+    box.x *= inv_width;
+    box.width *= inv_width;
+    box.y *= inv_height;
+    box.height *= inv_height;
+
+    return box.get_transform();
+}
+
+// --- Region --- //
+Region::Region(const std::string& texture_name)
+    : Frame(texture_name), transform(Mat3::create_id())
+{
+    rect.width = texture->width;
+    rect.height = texture->height;
+}
+
+Region::Region(const std::string& texture_name, const Box& rect)
+    : Frame(texture_name, rect), transform(create_transform(rect))
+{}
+
+Region::Region(const Region &other)
+    : Frame(other.texture, other.rect), transform(new Mat3(*other.transform))
+{}
+
+Region::~Region()
+{
+    delete transform;
+}
+    
+const Mat3 *Region::get_transform() const
+{
+    return transform;
+}
+
+Frame *Region::copy() const
+{
+    return new Region(*this);
+}
+
+
+
+
+/*
 // --- Region --- //
 Region *Region::create(const std::string& texture_name)
 {
@@ -203,5 +270,44 @@ void bind_frame(py::module &m)
             )")
 
         .doc() = "(**frame**) An animated texture region."
+    ;
+}
+
+*/
+
+
+// --- Bindings --- //
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+
+namespace py = pybind11;
+using namespace std;
+
+void bind_frame(py::module &m)
+{
+    py::class_<Frame>(m, "Frame")
+        .def("get_transform", &Frame::get_transform,
+            "Returns the texture coordinates transform for the current region.")
+
+        .def("copy", &Frame::copy,
+            "Clones itself.")
+
+        .def_readonly("texture", &Frame::texture)
+
+        .def_readonly("rect", &Frame::rect)
+
+        .doc() = "(**frame**) Base class for texture regions."
+    ;
+    
+    py::class_<Region, Frame>(m, "Region")
+        .def(py::init<const string&>(), py::arg("texture_name"))
+        .def(py::init<const string&, const Box&>(), py::arg("texture_name"), py::arg("rect"))
+
+        .doc() = R"(
+            (**frame**) Describes an (axis aligned) rectangle in a texture.
+
+            The constructor can take only the texture name to create a region over
+            the entire texture.
+        )"
     ;
 }

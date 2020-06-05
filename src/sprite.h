@@ -18,7 +18,7 @@ namespace lg
         static Sprite *create(const std::string& texture, const std::string& shader="main");
 
     public:
-        Sprite(const Region *frame, const std::string& shader="main");
+        Sprite(const Frame *frame, const std::string& shader="main");
         virtual ~Sprite();
 
     public:
@@ -45,7 +45,7 @@ namespace lg
         void set_uniforms() const;
 
     private:
-        Region *frame;
+        Frame *frame;
         Shader *shader;
         
         // Uniform locations

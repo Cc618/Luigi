@@ -9,18 +9,10 @@ using namespace lg;
 
 Sprite *Sprite::create(const std::string& texture, const std::string& shader)
 {
-    const Texture *tex = Texture::get(texture);
-
-    auto frame = new Region(tex, Box(0, 0, tex->width, tex->height));
-
-    auto s = new Sprite(frame);
-
-    delete frame;
-
-    return s;
+    return new Sprite(new Region(texture));
 }
 
-Sprite::Sprite(const Region *frame, const string& shader)
+Sprite::Sprite(const Frame *frame, const string& shader)
     : frame(frame->copy()), shader(Shader::get(shader))
 {
     width = this->frame->rect.width;
@@ -74,9 +66,7 @@ Box Sprite::rect() const
 
 void Sprite::set_uniforms() const
 {
-    auto tex = frame->get_transform();
-    shader->set_uniform_mat3(u_tex_transform, tex);
-    delete tex;
+    shader->set_uniform_mat3(u_tex_transform, frame->get_transform());
 
     // Flip y with -height and -rot
     auto m = Mat3::create_srt(x, y, width, -height, -rot);
@@ -97,7 +87,7 @@ using namespace std;
 void bind_sprite(py::module &m)
 {
     py::class_<Sprite, Entity, PyEntityChild<Sprite>>(m, "Sprite")
-        .def(py::init<const Region*, string>(), py::arg("frame"), py::arg("shader")="main")
+        .def(py::init<const Frame*, string>(), py::arg("frame"), py::arg("shader")="main")
 
         // TODO : Test return deletion (after scope)
         .def_static("create", &Sprite::create, py::arg("texture"), py::arg("shader")="main",
