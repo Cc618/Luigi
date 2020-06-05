@@ -3,6 +3,7 @@
 // Math classes and functions
 
 #include <string>
+#include <vector>
 #include <GL/glew.h>
 
 extern float pi;
@@ -41,6 +42,9 @@ namespace lg
 
     struct Box
     {
+    public:
+        static std::vector<Box> tape(GLfloat x, GLfloat y, GLfloat width, GLfloat height, size_t n, bool horizontal=true);
+
     public:
         Box(GLfloat x=0, GLfloat y=0, GLfloat width=0, GLfloat height=0);
 

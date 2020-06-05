@@ -87,6 +87,24 @@ std::string Mat3::__repr__() const
 }
 
 // --- Box --- //
+std::vector<Box> Box::tape(float x, float y, float width, float height, size_t n, bool horizontal)
+{
+    std::vector<Box> regions;
+    regions.reserve(n);
+
+    for (size_t i = 0; i < n; ++i)
+    {
+        regions.emplace_back(x, y, width, height);
+
+        if (horizontal)
+            x += width;
+        else
+            y += height;
+    }
+
+    return regions;
+}
+
 Box::Box(GLfloat x, GLfloat y, GLfloat width, GLfloat height)
     : x(x), y(y), width(width), height(height)
 {}
@@ -151,6 +169,16 @@ void bind_maths(py::module &m)
 
     py::class_<Box>(m, "Box")
         .def(py::init<GLfloat, GLfloat, GLfloat, GLfloat>(), py::arg("x")=0, py::arg("y")=0, py::arg("width")=0, py::arg("height")=0)
+    
+        .def_static("tape", &Box::tape, py::arg("x"), py::arg("y"), py::arg("width"), py::arg("height"), py::arg("n"), py::arg("horizontal")=true,
+            R"(
+                Creates a list of boxes from ``n`` regions placed at the same x / y level.
+
+                The first region is Box(x, y, width, height).
+                
+                :param n: Number of regions.
+                :param horizontal: True if the regions share the same y level, False if they share the same x level.
+            )")
 
         .def_readwrite("x", &Box::x)
         .def_readwrite("y", &Box::y)
