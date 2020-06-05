@@ -36,7 +36,7 @@ namespace lg
     
     protected:
         // Creates the transform describing this rect
-        Mat3 *create_transform(const Box &rect) const;
+        Mat3 *create_transform(Box rect) const;
     };
 
     // A simple texture region
@@ -59,7 +59,28 @@ namespace lg
         Mat3 *transform;
     };
 
+    // Like a region but can be changed with an index
+    class IndexedFrame : public Frame
+    {
+    public:
+        IndexedFrame(const std::string &texture, const std::vector<Box>& regions, size_t i=0);
+        IndexedFrame(const IndexedFrame &other);
+        virtual ~IndexedFrame();
 
+    public:
+        // Returns the texture coordinates transform
+        virtual const Mat3 *get_transform() const override;
+    
+        virtual Frame *copy() const override;
+
+    public:
+        void set_i(size_t i);
+        size_t get_i() const;
+
+    private:
+        std::vector<Mat3*> transforms;
+        size_t i;
+    };
 
 
 

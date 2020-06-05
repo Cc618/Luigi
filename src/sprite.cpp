@@ -98,6 +98,7 @@ void bind_sprite(py::module &m)
         .def_readwrite("width", &Sprite::width)
         .def_readwrite("height", &Sprite::height)
         .def_readwrite("rot", &Sprite::rot)
+        .def_readwrite("frame", &Sprite::frame)
 
         // TODO : Ref to inherited methods + try without these lines
         .def("start", &Sprite::start)

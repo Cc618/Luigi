@@ -40,12 +40,12 @@ namespace lg
         float rot = 0;
         float width = 1;
         float height = 1;
+        Frame *frame;
 
     private:
         void set_uniforms() const;
 
     private:
-        Frame *frame;
         Shader *shader;
         
         // Uniform locations
