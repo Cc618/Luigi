@@ -88,7 +88,6 @@ namespace lg
         virtual ~Transition();
     
     public:
-        void run();
         void stop();
         // Set default volume for each music
         void reset_volume();

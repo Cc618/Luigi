@@ -8,6 +8,9 @@ using namespace sf;
 
 void lg::stop_audio()
 {
+    if (Transition::instance != nullptr)
+        delete Transition::instance;
+
     for (auto i : lg::Sound::instances)
         delete i.second;
 
@@ -16,9 +19,6 @@ void lg::stop_audio()
         i.second->stop(false);
         delete i.second;
     }
-
-    if (Transition::instance != nullptr)
-        delete Transition::instance;
 
     lg::Sound::instances.clear();
     lg::Music::instances.clear();
@@ -40,7 +40,7 @@ void lg::Sound::play()
 }
 
 void lg::Sound::set_volume(float val)
-{
+{    
     snd.setVolume(val);
 }
 
@@ -67,17 +67,23 @@ void lg::Music::play()
     previous = current;
     current = this;
 
-    // TODO : Fade in
-    stream.play();
+    if (previous != current)
+        Transition::push(current, previous);
 
-    Transition::push(this, previous);
+    if (stream.getStatus() != sf::SoundSource::Playing)
+        stream.play();
 }
 
 void lg::Music::stop(bool fade_out)
 {
-    // TODO : fade_out
-
-    stream.stop();
+    if (fade_out)
+    {
+        current = nullptr;
+        previous = this;
+        Transition::push(current, previous);
+    }
+    else
+        stream.stop();
 }
 
 void lg::Music::set_volume(float val)
@@ -125,78 +131,53 @@ void fade()
             break;
         }
 
+        // Set volume
         if (Transition::instance->fade_in)
             Transition::instance->fade_in->set_volume(Transition::instance->fade_in_vol * ratio);
 
         if (Transition::instance->fade_out)
             Transition::instance->fade_out->set_volume(Transition::instance->fade_out_vol * (1 - ratio));
 
-
+        // Wait
         std::this_thread::sleep_for(FADE_DT);
     }
 }
 
 Transition *Transition::instance = nullptr;
 
-float Transition::duration = 4;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#include <iostream>
-
-
+float Transition::duration = 1;
 
 void Transition::push(lg::Music *fade_in, lg::Music *fade_out)
 {
     if (instance != nullptr)
-    {
-        std::cout << instance->fade_in_vol << std::endl;
-        
         delete instance;
-    }
     
-    instance = new Transition(fade_in, fade_out);
-    instance->run();
+    // Run new instance
+    new Transition(fade_in, fade_out);
 }
 
 Transition::Transition(Music *fade_in, Music *fade_out)
     : fade_in(fade_in), fade_out(fade_out)
 {
+    Error::check(instance == nullptr, "Two transitions are playing");
+    instance = this;
+
     if (fade_in != nullptr)
         fade_in_vol = fade_in->get_volume();
 
     if (fade_out != nullptr)
         fade_out_vol = fade_out->get_volume();
+
+    // Start transition
+    running = true;
+    volume_callback = new thread(fade);
 }
 
 Transition::~Transition()
 {
-    if (running)
-        stop();
+    stop();
     
     instance = nullptr;
-}
-
-void Transition::run()
-{
-    running = true;
-    volume_callback = new thread(fade);
 }
 
 void Transition::stop()
@@ -205,17 +186,22 @@ void Transition::stop()
     {
         running = false;
         volume_callback->join();
+        reset_volume();
     }
 
-    delete volume_callback;
+    if (volume_callback != nullptr)
+    {
+        volume_callback = nullptr;
+        delete volume_callback;
+    }
 }
 
 void Transition::reset_volume()
 {
-    if (fade_in)
+    if (fade_in != nullptr)
         fade_in->set_volume(fade_in_vol);
 
-    if (fade_out)
+    if (fade_out != nullptr)
     {
         fade_out->set_volume(fade_out_vol);
         fade_out->stop(false);
