@@ -10,12 +10,15 @@ void lg::stop_audio()
 {
     for (auto i : lg::Sound::instances)
         delete i.second;
-    
+
     for (auto i : lg::Music::instances)
     {
         i.second->stop(false);
         delete i.second;
     }
+
+    if (Transition::instance != nullptr)
+        delete Transition::instance;
 
     lg::Sound::instances.clear();
     lg::Music::instances.clear();
@@ -64,12 +67,10 @@ void lg::Music::play()
     previous = current;
     current = this;
 
-    // TODO : Fade out
-    if (previous != nullptr)
-        previous->stop();
-
-    // TODO : Fade in 
+    // TODO : Fade in
     stream.play();
+
+    Transition::push(this, previous);
 }
 
 void lg::Music::stop(bool fade_out)
@@ -92,6 +93,133 @@ void lg::Music::set_pos(float val)
 void lg::Music::set_loop(bool loop)
 {
     stream.setLoop(loop);
+}
+
+float lg::Music::get_volume() const
+{
+    return stream.getVolume();
+}
+
+// --- Transition --- //
+// A thread which changes the volume of both musics
+void fade()
+{
+    using namespace std::literals::chrono_literals;
+
+    constexpr auto FADE_DT = 10ms;
+
+    Clock clock;
+
+    while (Transition::instance->running)
+    {
+        float elapsed = clock.getElapsedTime().asSeconds();
+
+        // Transition elapsed time ratio
+        float ratio = elapsed / Transition::duration;
+
+        if (ratio >= 1)
+        {
+            Transition::instance->reset_volume();
+
+            Transition::instance->running = false;
+            break;
+        }
+
+        if (Transition::instance->fade_in)
+            Transition::instance->fade_in->set_volume(Transition::instance->fade_in_vol * ratio);
+
+        if (Transition::instance->fade_out)
+            Transition::instance->fade_out->set_volume(Transition::instance->fade_out_vol * (1 - ratio));
+
+
+        std::this_thread::sleep_for(FADE_DT);
+    }
+}
+
+Transition *Transition::instance = nullptr;
+
+float Transition::duration = 4;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#include <iostream>
+
+
+
+void Transition::push(lg::Music *fade_in, lg::Music *fade_out)
+{
+    if (instance != nullptr)
+    {
+        std::cout << instance->fade_in_vol << std::endl;
+        
+        delete instance;
+    }
+    
+    instance = new Transition(fade_in, fade_out);
+    instance->run();
+}
+
+Transition::Transition(Music *fade_in, Music *fade_out)
+    : fade_in(fade_in), fade_out(fade_out)
+{
+    if (fade_in != nullptr)
+        fade_in_vol = fade_in->get_volume();
+
+    if (fade_out != nullptr)
+        fade_out_vol = fade_out->get_volume();
+}
+
+Transition::~Transition()
+{
+    if (running)
+        stop();
+    
+    instance = nullptr;
+}
+
+void Transition::run()
+{
+    running = true;
+    volume_callback = new thread(fade);
+}
+
+void Transition::stop()
+{
+    if (running)
+    {
+        running = false;
+        volume_callback->join();
+    }
+
+    delete volume_callback;
+}
+
+void Transition::reset_volume()
+{
+    if (fade_in)
+        fade_in->set_volume(fade_in_vol);
+
+    if (fade_out)
+    {
+        fade_out->set_volume(fade_out_vol);
+        fade_out->stop(false);
+    }
 }
 
 // --- Game --- //
@@ -148,7 +276,7 @@ void bind_audio(py::module &m)
 
         .def("stop", &lg::Music::stop, py::arg("fade_out")=true,
             "Stops the music, a transition is also played if ``fade_out``.")
-        
+
         .def("set_volume", &lg::Music::set_volume, py::arg("vol"),
             R"(
                 Changes the sound volume.
@@ -158,7 +286,7 @@ void bind_audio(py::module &m)
 
         .def("set_pos", &lg::Music::set_pos, py::arg("x"),
             "Changes the 1D position of the music.")
-        
+
         .def("set_loop", &lg::Music::set_loop, py::arg("loop")=false,
             "Sets whether the music is a loop.")
 
