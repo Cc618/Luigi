@@ -172,6 +172,8 @@ void Game::draw()
 void Game::stop()
 {
     Scene::current->stop();
+
+    stop_audio();
 }
 
 void Game::set_scene(const std::string& name)
@@ -259,6 +261,18 @@ lg::Sound *Game::add_sound(const std::string& name, const std::string& file)
     return s;
 }
 
+lg::Music *Game::add_music(const std::string& name, const std::string& file)
+{
+    // TODO : Find also for sounds
+    auto i = lg::Music::instances.find(name);
+    Error::check(i == lg::Music::instances.end(), "The music with name '" + name + "' already exists");
+
+    // Create and register sound
+    Music *s = new Music(name, file);
+    Music::instances[name] = s;
+
+    return s;
+}
 
 // --- Bindings --- //
 #include <pybind11/pybind11.h>
@@ -379,6 +393,8 @@ void bind_game(py::module &m)
         // TODO : Doc
         .def("add_sound", &Game::add_sound, py::arg("name"), py::arg("file"), py::return_value_policy::reference,
             "Adds a sound.")
+        .def("add_music", &Game::add_music, py::arg("name"), py::arg("file"), py::return_value_policy::reference,
+            "Adds a music.")
         
         .doc() = R"(
             (**game**) Handles the window and the game environment.

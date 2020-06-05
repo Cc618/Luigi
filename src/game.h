@@ -13,6 +13,7 @@ namespace lg
 {
     class Shader;
     class Sound;
+    class Music;
 
     class Game
     {
@@ -97,6 +98,8 @@ namespace lg
 
         // TODO : get sound
         Sound *add_sound(const std::string& name, const std::string& file);
+
+        Music *add_music(const std::string& name, const std::string& file);
 
     public:
         // Aspect ratio
