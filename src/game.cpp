@@ -287,9 +287,12 @@ void bind_game(py::module &m)
     py::class_<Game>(m, "Game")
         .def(py::init<>())
 
-        // Adio
+        // Audio
         .def("play", &Game::play, py::arg("name"),
-            "Plays a sound or a music")
+            "Plays a sound or a music.")
+
+        .def("set_fade_duration", &Game::set_fade_duration, py::arg("seconds"),
+            "Sets the music transition duration.")
 
         // Inputs
         .def("pressed", &Game::pressed, py::arg("key"),

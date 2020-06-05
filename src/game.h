@@ -23,6 +23,9 @@ namespace lg
     public: // Audio
         // Plays a sound or a music
         void play(const std::string& name);
+
+        // Music transition duration
+        void set_fade_duration(float seconds);
     
     public: // Inputs
         // Whether a key is down

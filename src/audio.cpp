@@ -40,7 +40,7 @@ void lg::Sound::play()
 }
 
 void lg::Sound::set_volume(float val)
-{    
+{
     snd.setVolume(val);
 }
 
@@ -151,7 +151,7 @@ void Transition::push(lg::Music *fade_in, lg::Music *fade_out)
 {
     if (instance != nullptr)
         delete instance;
-    
+
     // Run new instance
     new Transition(fade_in, fade_out);
 }
@@ -176,7 +176,7 @@ Transition::Transition(Music *fade_in, Music *fade_out)
 Transition::~Transition()
 {
     stop();
-    
+
     instance = nullptr;
 }
 
@@ -224,6 +224,17 @@ void Game::play(const std::string& name)
 
         (*i).second->play();
     }
+}
+
+void Game::set_fade_duration(float seconds)
+{
+    Error::check(seconds >= 0, "The duration must be positive");
+
+    // Avoid zero division
+    if (seconds == 0)
+        seconds += 1e-4;
+
+    Transition::duration = seconds;
 }
 
 // --- Bindings --- //
