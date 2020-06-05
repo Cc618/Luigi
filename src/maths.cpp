@@ -78,6 +78,13 @@ Mat3 *Mat3::create_id()
 
     return m;
 }
+       
+std::string Mat3::__repr__() const
+{
+    return  std::to_string(data[0]) + " " + std::to_string(data[3]) + " " + std::to_string(data[6]) + "\n" +
+            std::to_string(data[1]) + " " + std::to_string(data[4]) + " " + std::to_string(data[7]) + "\n" +
+            std::to_string(data[2]) + " " + std::to_string(data[5]) + " " + std::to_string(data[8]);
+}
 
 // --- Box --- //
 Box::Box(GLfloat x, GLfloat y, GLfloat width, GLfloat height)
@@ -136,6 +143,8 @@ void bind_maths(py::module &m)
 
         .def_static("create_id", &Mat3::create_id,
             "Identity matrix.")
+
+        .def("__repr__", &Mat3::__repr__)
 
         .doc() = "(**maths**) A 3x3 matrix."
     ;

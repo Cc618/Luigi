@@ -29,6 +29,9 @@ namespace lg
         static Mat3 *create_id();
 
     public:
+        std::string __repr__() const;
+
+    public:
         // Matrix representation in GPU :
         // 0 3 6
         // 1 4 7
