@@ -8,6 +8,7 @@ speed = 150
 gravity = 2000
 
 # Bird
+# TODO : Bird width = 140
 bird_width, bird_height = 256, 128
 bird_scale = .5
 
@@ -15,7 +16,7 @@ bird_scale = .5
 pipe_width, pipe_height = 128, 896
 
 # Random height range
-pipe_range = 384
+pipe_range = 256
 
 # Gap between two pipe pairs for x
 # Gap between two pipes in a pair for y
@@ -24,8 +25,8 @@ pipe_gap_x, pipe_gap_y = 384, 256
 
 class Player(lg.Sprite):
     # Global variables
-    jump_force = 800
-    death_jump_force = 1500
+    jump_force = 600
+    death_jump_force = 1200
 
     # To access the current player from outside of the Player class
     instance = None
@@ -82,10 +83,7 @@ class Player(lg.Sprite):
         if self.y <= -bird_height / 2 * bird_scale and self.controllable:
             self.hit()
         elif self.y <= bottom - bird_height * bird_scale / 2 and not self.controllable:
-                # TODO : Change scene
-        # TODO : DEATH : Anim + Change scene after
-                # game.exit()
-                pass
+            game.set_scene('menu')
 
     def hit(self):
         '''

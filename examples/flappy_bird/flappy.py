@@ -26,7 +26,7 @@ def construct():
     game.add_scene('game', game_scene.create, default_cam='game')
 
     # Cameras
-    game.add_cam('game', height=height) \
+    game.add_cam('game', height=height - bottom) \
         .set(x=width / 2, y=height / 2 + bottom)
     
     game.add_cam('menu', height=height) \
