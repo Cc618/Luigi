@@ -106,7 +106,6 @@ namespace lg
     class CompoundFrame : public Frame
     {
     public:
-        // !!! BINDING
         // Frames are not copied
         CompoundFrame(const std::unordered_map<std::string, Frame*> frames, const std::string& first);
         CompoundFrame(const CompoundFrame &other);

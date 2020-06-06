@@ -307,10 +307,11 @@ void bind_frame(py::module &m)
 
         .def_readonly("rect", &Frame::rect)
 
-        .def_property("current", &CompoundFrame::get_current, &CompoundFrame::set_current)
+        .def_property("current", &CompoundFrame::get_current, &CompoundFrame::set_current,
+            "Changes the current frame by its name.")
 
         .doc() = R"(
-            (**frame**) Gathers multiple frames.
+            (**frame**) Gathers multiple frames, they can be changed with the ``current`` property.
 
             .. note:: Useful to make animations with instances of :class:`AnimatedFrame`.
         )"
