@@ -1,22 +1,23 @@
 from random import randint
 import luigi as lg
-from flappy import game, width, height, bottom
+from flappy import game, width, height
 
 
 # Game
 speed = 150
 gravity = 2000
+ground_y = 128
 
 # Bird
-# TODO : Bird width = 140
-bird_width, bird_height = 256, 128
+bird_width, bird_height = 90, 70
+bird_tex_width, bird_tex_height = 256, 128
 bird_scale = .5
 
 # Pipes
 pipe_width, pipe_height = 128, 896
 
 # Random height range
-pipe_range = 256
+pipe_range = height * .3
 
 # Gap between two pipe pairs for x
 # Gap between two pipes in a pair for y
@@ -37,8 +38,8 @@ class Player(lg.Sprite):
         '''
         super().__init__(lg.CompoundFrame(
         {
-            'blue': lg.IndexedFrame('flappy', lg.Box.tape(0, 0, bird_width, bird_height, 3, horizontal=False)),
-            'red': lg.IndexedFrame('flappy', lg.Box.tape(bird_width, 0, bird_width, bird_height, 3, horizontal=False)),
+            'blue': lg.IndexedFrame('flappy', lg.Box.tape(0, 0, bird_tex_width, bird_tex_height, 3, horizontal=False)),
+            'red': lg.IndexedFrame('flappy', lg.Box.tape(bird_tex_width, 0, bird_tex_width, bird_tex_height, 3, horizontal=False)),
         }, skin))
 
         self.x = x
@@ -50,8 +51,6 @@ class Player(lg.Sprite):
 
         # False for the death animation
         self.controllable = True
-
-        self.score = 0
 
         # Singleton
         Player.instance = self
@@ -80,9 +79,11 @@ class Player(lg.Sprite):
 
         # Update position
         self.y += self.vel_y * dt
-        if self.y <= -bird_height / 2 * bird_scale and self.controllable:
+        if (self.y - bird_height / 2 * bird_scale <= ground_y or self.y + bird_height / 2 * bird_scale >= height) and self.controllable:
+            # Touches ground / top
             self.hit()
-        elif self.y <= bottom - bird_height * bird_scale / 2 and not self.controllable:
+        elif self.y - bird_height * bird_scale / 2 <= 0 and not self.controllable:
+            # Outside screen
             game.set_scene('menu')
 
     def hit(self):
@@ -95,14 +96,14 @@ class Player(lg.Sprite):
 
         PipeManager.instance.enabled = False
 
-    def inc_score(self):
+    def hitbox(self):
         '''
-            Increments the score
+            We use a custom hitbox instead of rect to have a smaller region
         '''
-        game.play('point')
-        self.score += 1
+        x = self.x - bird_width / 2
+        y = self.y - bird_height / 2
 
-        print(f'Score : {self.score:03d}')
+        return lg.Box(x, y, bird_width, bird_height)
 
 
 class Image(lg.Sprite):
@@ -136,7 +137,7 @@ class Trigger(lg.Entity):
         self.x -= speed * dt
 
         if self.x <= Player.instance.x:
-            Player.instance.inc_score()
+            ScoreManager.instance.inc_score()
             self.dead = True
 
 
@@ -152,7 +153,7 @@ class PipeManager(lg.Entity):
         # All spawned pipes
         self.pipes = []
 
-        # How much distance the bird has done 
+        # How much distance the bird has done
         self.dist = 0
 
         # When we exceed this distance, a new pipe pair spawns
@@ -181,7 +182,7 @@ class PipeManager(lg.Entity):
                 pipe.x -= dt * speed
 
                 # Test bird collision
-                if pipe.rect().collides(Player.instance.rect()):
+                if pipe.rect().collides(Player.instance.hitbox()):
                     Player.instance.hit()
 
         # Spawn a new pair of pipes
@@ -195,7 +196,7 @@ class PipeManager(lg.Entity):
         '''
         game.set_layer('main')
         x = width + pipe_width
-        y = height / 2 + randint(-pipe_range // 2, pipe_range // 2)
+        y = (height + ground_y) / 2 + randint(-pipe_range // 2, pipe_range // 2)
 
         # Top
         pipe_top = Image(x, y + pipe_height / 2 + pipe_gap_y / 2, lg.Region('flappy', lg.Box(512, 128, pipe_width, pipe_height)))
@@ -211,3 +212,44 @@ class PipeManager(lg.Entity):
         # Score trigger
         trigger = Trigger(x)
         game.add(trigger)
+
+
+class ScoreManager(lg.Entity):
+    '''
+        Displays the score.
+    '''
+    instance = None
+
+    def __init__(self):
+        super().__init__()
+
+        self.score = 0
+
+        ScoreManager.instance = self
+
+    def start(self):
+        super().start()
+
+        x, y = width / 2, height * (5 / 6)
+        w = 100
+
+        self.digits = [
+            Image(x - w, y, lg.IndexedFrame('flappy', lg.Box.tape(512, 0, 128, 128, 10))),
+            Image(x, y, lg.IndexedFrame('flappy', lg.Box.tape(512, 0, 128, 128, 10))),
+            Image(x + w, y, lg.IndexedFrame('flappy', lg.Box.tape(512, 0, 128, 128, 10))),
+        ]
+
+        game.set_layer('ui')
+        for d in self.digits:
+            game.add(d)
+
+    def inc_score(self):
+        game.play('point')
+        self.score += 1
+
+        # Update digits
+        digits = [ord(c) - ord('0') for c in f'{self.score:03d}']
+
+        self.digits[0].frame.i = digits[0]
+        self.digits[1].frame.i = digits[1]
+        self.digits[2].frame.i = digits[2]

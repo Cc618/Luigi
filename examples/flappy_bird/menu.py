@@ -1,5 +1,6 @@
 import luigi as lg
 from flappy import game, width, height
+from game_entities import Image
 
 
 class Play(lg.Sprite):
@@ -37,8 +38,8 @@ class Play(lg.Sprite):
 
 
 def create():
-    # TODO : Background
-    game.set_clear_color(.9, .95, 1)
-
     game.add(Play())
-    pass
+
+    # Background
+    game.add_layer('background', z=-100)
+    game.add(Image(width / 2, height / 2, lg.Region('flappy', lg.Box(1536, 1280, 512, 768))))

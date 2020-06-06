@@ -4,9 +4,6 @@ import luigi as lg
 width, height = 512, 768
 game = lg.Game()
 
-# Bottom of the screen Y position 
-bottom = -128
-
 
 def construct():
     # We import scenes here since we need the game variable in all scenes
@@ -26,8 +23,8 @@ def construct():
     game.add_scene('game', game_scene.create, default_cam='game')
 
     # Cameras
-    game.add_cam('game', height=height - bottom) \
-        .set(x=width / 2, y=height / 2 + bottom)
+    game.add_cam('game', height=height) \
+        .set(x=width / 2, y=height / 2)
     
     game.add_cam('menu', height=height) \
         .set(x=width / 2, y=height / 2)
