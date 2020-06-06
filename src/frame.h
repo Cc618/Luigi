@@ -124,6 +124,9 @@ namespace lg
         std::string get_current() const
         { return current_str; }
 
+        Frame *get() const
+        { return current; }
+
     private:
         Frame *current;
         std::string current_str;

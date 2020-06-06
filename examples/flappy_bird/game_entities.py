@@ -13,7 +13,7 @@ class Player(lg.Sprite):
     def __init__(self, x, y):
         super().__init__(lg.CompoundFrame(
         {
-            'blue': lg.IndexedFrame('flappy', lg.Box.tape(0, 0, 32, 16, 3, horizontal=False)),
+            'blue': lg.IndexedFrame('flappy', lg.Box.tape(0, 0, 256, 128, 3, horizontal=False)),
             'red': lg.IndexedFrame('flappy', lg.Box.tape(32, 0, 32, 16, 3, horizontal=False)),
         }, 'blue'))
 
@@ -22,8 +22,16 @@ class Player(lg.Sprite):
 
         # Y velocity
         self.vel_y = 0
+        self.frame.i = 1
+
+
+    def start(self):
+        super().start()
+
+        print('Ok')
 
     def update(self, dt):
+        # Don't forget to call super
         super().update(dt)
 
         # # Jump / Gravity

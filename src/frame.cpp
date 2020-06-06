@@ -310,6 +310,9 @@ void bind_frame(py::module &m)
         .def_property("current", &CompoundFrame::get_current, &CompoundFrame::set_current,
             "Changes the current frame by its name.")
 
+        .def("get", &CompoundFrame::get, py::return_value_policy::reference,
+            "Returns the current frame.")
+
         .doc() = R"(
             (**frame**) Gathers multiple frames, they can be changed with the ``current`` property.
 
