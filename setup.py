@@ -5,12 +5,20 @@ from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 import sys
 import setuptools
-import pybind11
 import glob
 
 
 LUIGI_VERSION_MAJOR = 0
 LUIGI_VERSION_MINOR = 1
+
+
+class Includes:
+    '''
+        Used to install pybind11 before making str()
+    '''
+    def __str__(self):
+        import pybind11
+        return pybind11.get_include()
 
 
 def get_src():
@@ -33,15 +41,15 @@ def mk_conf():
     print('Generated src/config.h')
 
 
+# Generate config file
 mk_conf()
-
 
 ext_modules = [
     Extension(
         'luigi',
         sorted(get_src()),
         include_dirs=[
-            pybind11.get_include()
+            Includes()
         ],
         language='c++',
         libraries=['sfml-window', 'sfml-system', 'sfml-graphics', 'sfml-audio', 'GLEW', 'GL']
