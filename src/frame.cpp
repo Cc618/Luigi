@@ -152,6 +152,53 @@ Frame *AnimatedFrame::copy() const
     return new AnimatedFrame(*this);
 }
 
+// --- Compound Frame --- //
+CompoundFrame::CompoundFrame(const std::unordered_map<std::string, Frame*> frames, const std::string& first)
+{
+    Error::check(!frames.empty(), "No frames found");
+
+    // Copy frames
+    for (auto f : frames)
+        this->frames[f.first] = f.second->copy();
+
+    texture = (*frames.begin()).second->texture;
+    rect = (*frames.begin()).second->rect;
+
+    set_current(first);
+}
+
+CompoundFrame::CompoundFrame(const CompoundFrame &other)
+    : Frame(other.texture, other.rect), current(other.current)
+{
+    // Copy frames
+    for (auto f : other.frames)
+        frames[f.first] = f.second->copy();
+}
+
+void CompoundFrame::update(float dt)
+{
+    current->update(dt);
+}
+
+const Mat3 *CompoundFrame::get_transform() const
+{
+    return current->get_transform();
+}
+
+Frame *CompoundFrame::copy() const
+{
+    return new CompoundFrame(*this);
+}
+
+void CompoundFrame::set_current(const std::string &name)
+{
+    auto i = frames.find(name);
+    Error::check(i != frames.end(), "No frame named '" + name + "' found");
+
+    current = (*i).second;
+    current_str = name;
+}
+
 // --- Bindings --- //
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
@@ -238,6 +285,34 @@ void bind_frame(py::module &m)
 
         .doc() = R"(
             (**frame**) An animated texture region.
+        )"
+    ;
+
+    py::class_<CompoundFrame, Frame>(m, "CompoundFrame")
+        .def(py::init<const std::unordered_map<std::string, Frame*>, const std::string&>(),
+            py::arg("frames"), py::arg("first"), py::keep_alive<1, 2>(),
+            R"(
+                :param frames: A dict of frames.
+                :param first: The name of the first frame.
+            )")
+
+        // From Frame
+        .def("get_transform", &Frame::get_transform,
+            "Returns the texture coordinates transform for the current region.")
+
+        .def("copy", &Frame::copy,
+            "Clones itself.")
+
+        .def_readonly("texture", &Frame::texture)
+
+        .def_readonly("rect", &Frame::rect)
+
+        .def_property("current", &CompoundFrame::get_current, &CompoundFrame::set_current)
+
+        .doc() = R"(
+            (**frame**) Gathers multiple frames.
+
+            .. note:: Useful to make animations with instances of :class:`AnimatedFrame`.
         )"
     ;
 }

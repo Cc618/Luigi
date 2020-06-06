@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <unordered_map>
 #include "texture.h"
 #include "maths.h"
 
@@ -14,6 +15,7 @@ namespace lg
     class Frame
     {
     public:
+        Frame() = default;
         Frame(const std::string& texture, const Box &rect);
         explicit Frame(const std::string& texture);
         Frame(const Texture *texture, const Box &rect);
@@ -30,7 +32,7 @@ namespace lg
         virtual Frame *copy() const = 0;
 
     public:
-        const Texture *texture;
+        const Texture *texture = nullptr;
         // Describes the first rect around the texture
         Box rect;
     
@@ -100,92 +102,32 @@ namespace lg
         float frame_duration;
     };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
-    class Region
+    // Gathers multiple frames
+    class CompoundFrame : public Frame
     {
     public:
-        // Creates a region that contains the whole texture
-        static Region *create(const std::string& texture_name);
-
-    public:
-        Region(const std::string& texture_name, const Box& rect);
-        Region(const Texture *texture, const Box& rect);
-        virtual ~Region();
-        Region(const Region& other);
-
-    public:
-        virtual void update(float dt)
-        {}
-
-        virtual Region *copy() const;
-
-        // Returns the texture coordinates transform
-        virtual Mat3 *get_transform() const;
-
-    public:
-        const Texture *texture;
-
-        Box rect;
-
-    private:
-        // Create transform from rect
-        void create_transform();
-
-    private:
-        Mat3 *transform;
-    };
-
-    // Animated region
-    class Frame : public Region
-    {
-    public:
-        // Creates a frame with 'count' regions with the same shape of 'first'
-        static Frame *tape(const std::string& texture_name, Box first, int count, float fps, bool horizontal=true);
-
-    public:
-        Frame(const std::string& texture_name, const Box& region);
-        Frame(const std::string& texture_name, const std::vector<Box>& regions, float fps);
-        Frame(const Texture *texture, const Box& region);
-        Frame(const Texture *texture, const std::vector<Box>& regions, float fps);
-        Frame(const Frame& other);
-        virtual ~Frame() = default;
-
+        // !!! BINDING
+        // Frames are not copied
+        CompoundFrame(const std::unordered_map<std::string, Frame*> frames, const std::string& first);
+        CompoundFrame(const CompoundFrame &other);
+        virtual ~CompoundFrame() = default;
+    
     public:
         virtual void update(float dt) override;
 
-        virtual Region *copy() const override;
+        virtual const Mat3 *get_transform() const override;
 
-        virtual Mat3 *get_transform() const override;
+        virtual Frame *copy() const override;
+
+    public:
+        void set_current(const std::string &name);
+
+        std::string get_current() const
+        { return current_str; }
 
     private:
-        // All transforms describing regions
-        std::vector<std::unique_ptr<Mat3>> transforms;
-        
-        // Current region transform
-        std::vector<std::unique_ptr<Mat3>>::const_iterator current;
-
-        float time = 0;
-        // 1 / fps
-        float frame_duration;
+        Frame *current;
+        std::string current_str;
+        std::unordered_map<std::string, Frame*> frames;
     };
-    */
 }
