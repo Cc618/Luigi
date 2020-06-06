@@ -14,6 +14,23 @@ namespace lg
     class Shader;
     class Sound;
     class Music;
+    class Game;
+
+    class ScreenConfig
+    {
+        friend class Game;
+
+    public:
+        // TODO : Fullscreen
+        ScreenConfig(const std::string& title, int width, int height, float fps, bool resizable=true);
+
+    private:
+        std::string title;
+        int width;
+        int height;
+        float fps;
+        bool resizable;
+    };
 
     class Game
     {
@@ -74,9 +91,8 @@ namespace lg
         virtual ~Game();
 
     public:
-        // TODO : Use config (for fullscreen...)
         // Construct is called to create scenes, layers and
-        void run(const std::function<void ()>& construct, const std::string& title, int width, int height, float fps=60);
+        void run(const std::function<void ()>& construct, const ScreenConfig& screen);
 
         // Exits the application
         void exit();

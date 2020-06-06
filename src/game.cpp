@@ -17,6 +17,15 @@ using namespace sf;
 using namespace std;
 using namespace lg;
 
+// --- Screen Config --- //
+ScreenConfig::ScreenConfig(const std::string& title, int width, int height, float fps, bool resizable)
+    : title(title), width(width), height(height), fps(fps), resizable(resizable)
+{
+    Error::check(width > 0 && height > 0,  "Dimensions must be positive");
+    Error::check(fps > 0, "FPS must be greater than 0");
+}
+
+// --- Game --- //
 Game *Game::instance = nullptr;
 
 void Game::set_clear_color(GLclampf r, GLclampf g, GLclampf b, GLclampf a) const
@@ -37,19 +46,18 @@ Game::~Game()
         delete win;
 }
 
-void Game::run(const std::function<void ()>& construct, const string &title, int width, int height, float fps)
+void Game::run(const std::function<void ()>& construct, const ScreenConfig& screen)
 {
-    Error::check(fps > 0.f, "FPS must be greater than 0");
-
     // Target delta time
-    float target_dt = 1.f / fps;
+    float target_dt = 1.f / screen.fps;
 
     ContextSettings settings;
     settings.majorVersion = 3;
     settings.minorVersion = 3;
 
-    ratio = (float)width / (float)height;
-    win = new Window(VideoMode(width, height), title, Style::Default, settings);
+    ratio = (float)screen.width / (float)screen.height;
+    win = new Window(VideoMode(screen.width, screen.height), screen.title,
+        screen.resizable ? Style::Default : (Style::Default & (~Style::Resize)), settings);
     win->setVerticalSyncEnabled(true);
     win->setKeyRepeatEnabled(false);
     win->setActive(true);
@@ -263,7 +271,6 @@ lg::Sound *Game::add_sound(const std::string& name, const std::string& file)
 
 lg::Music *Game::add_music(const std::string& name, const std::string& file)
 {
-    // TODO : Find also for sounds
     auto i = lg::Music::instances.find(name);
     Error::check(i == lg::Music::instances.end(), "The music with name '" + name + "' already exists");
 
@@ -284,6 +291,13 @@ using namespace std;
 
 void bind_game(py::module &m)
 {
+    py::class_<ScreenConfig>(m, "ScreenConfig")
+        .def(py::init<const std::string&, int, int, float, bool>(), py::arg("title"), py::arg("width"), py::arg("height"),
+            py::arg("fps"), py::arg("resizable")=true)
+
+        .doc() = "(**game**) Describes the window / the screen, used to run the game."
+    ;
+
     py::class_<Game>(m, "Game")
         .def(py::init<>())
 
@@ -313,7 +327,7 @@ void bind_game(py::module &m)
 
         .def("mouse_typed", &Game::mouse_typed, py::arg("button"),
             "Whether a mouse button is clicked.")
-        
+
         // Shader
         .def("add_shader", &Game::add_shader, py::arg("name"), py::arg("vertex_file"), py::arg("fragment_file"), py::arg("uniforms"),
             R"(
@@ -345,12 +359,12 @@ void bind_game(py::module &m)
 
         .def_readonly_static("instance", &Game::instance)
 
-        .def("run", &Game::run, py::arg("construct"), py::arg("title"), py::arg("width"), py::arg("height"), py::arg("fps")=60,
+        .def("run", &Game::run, py::arg("construct"), py::arg("screen"),
             R"(
                 Launches a window and runs the game.
 
                 :param construct: This function is called when the game is initialized,
-                    used to create scenes, cameras and set properties.                   
+                    used to create scenes, cameras and set properties.
             )")
 
         .def("exit", &Game::exit,
@@ -363,11 +377,11 @@ void bind_game(py::module &m)
                 .. note:: If this function is called in construct,
                     it sets the default scene (the first scene to create).
             )")
-        
+
         .def("add_scene", &Game::add_scene, py::arg("name"), py::arg("factory")=nullptr, py::arg("default_cam")="main", py::keep_alive<1, 3>(),
             R"(
                 Adds a scene factory.
-            
+
                 :param factory: This function is called when the scene is loaded, used to add entities to the scene.
 
                 .. warning:: Don't add cameras to the scene in the factory function, add cameras
@@ -377,7 +391,7 @@ void bind_game(py::module &m)
 
         .def("set_layer", &Game::set_layer, py::arg("name"),
             "Selects the layer to add entities.")
-        
+
         .def("add_layer", &Game::add_layer, py::arg("name"), py::arg("z")=0,
             R"(
                 Adds a layer.
@@ -405,7 +419,7 @@ void bind_game(py::module &m)
             "Adds a sound.")
         .def("add_music", &Game::add_music, py::arg("name"), py::arg("file"), py::return_value_policy::reference,
             "Adds a music.")
-        
+
         .doc() = R"(
             (**game**) Handles the window and the game environment.
         )"
