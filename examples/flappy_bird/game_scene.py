@@ -2,7 +2,7 @@
 
 import luigi as lg
 from flappy import game, width, height
-from game_entities import Player, Image
+from game_entities import Player, Image, PipeManager
 
 
 def create():
@@ -10,6 +10,9 @@ def create():
 
     # Player
     game.add(Player(width / 3, height / 2, skin='blue'))
+
+    # Manager
+    game.add(PipeManager())
 
     # Next entities will be over player and pipes
     game.add_layer('overlay', z=10)
