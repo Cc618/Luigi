@@ -1,12 +1,17 @@
 import luigi as lg
 
 
-width, height = 512, 256 * 3
+width, height = 512, 768
 game = lg.Game()
 
 def construct():
     # We import scenes here since we need the game variable in all scenes
     import game_scene
+
+    # Sounds
+    game.add_sound('wing', 'res/wing.ogg')
+    game.add_sound('point', 'res/point.ogg')
+    game.add_sound('hit', 'res/hit.ogg')
 
     # Textures
     game.add_texture('flappy', 'res/flappy.png')
@@ -15,7 +20,8 @@ def construct():
     game.add_scene('game', game_scene.create, default_cam='game')
 
     # Cameras
-    game.add_cam('game', height=100)
+    game.add_cam('game', height=1000) \
+        .set(x=width / 2, y=height / 2)
 
     # Set entry scene
     # TODO : Menu

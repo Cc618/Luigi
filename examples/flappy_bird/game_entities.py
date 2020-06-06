@@ -3,18 +3,18 @@ from flappy import game
 
 
 speed = 10
-gravity = 10
+gravity = 2000
 
 
 class Player(lg.Sprite):
     # Global variables
-    jump_force = 10
+    jump_force = 800
 
     def __init__(self, x, y):
         super().__init__(lg.CompoundFrame(
         {
             'blue': lg.IndexedFrame('flappy', lg.Box.tape(0, 0, 256, 128, 3, horizontal=False)),
-            'red': lg.IndexedFrame('flappy', lg.Box.tape(32, 0, 32, 16, 3, horizontal=False)),
+            'red': lg.IndexedFrame('flappy', lg.Box.tape(256, 0, 256, 128, 3, horizontal=False)),
         }, 'blue'))
 
         self.x = x
@@ -22,33 +22,30 @@ class Player(lg.Sprite):
 
         # Y velocity
         self.vel_y = 0
-        self.frame.i = 1
-
-
-    def start(self):
-        super().start()
-
-        print('Ok')
 
     def update(self, dt):
         # Don't forget to call super
         super().update(dt)
 
-        # # Jump / Gravity
-        # if game.typed('space') or game.mouse_typed('left'):
-        #     self.vy = self.jump_force
+        # TODO : 
+        self.frame.get().i = 1
 
-        #     # Sound
-        #     # snd_jump.set_volume(140)
-        #     # snd_jump.set_pos(self.x / 30)
-        #     game.play('jump')
-        # else:
-        #     self.vy -= 9.81 * dt
 
-        # self.y += self.vy
-        # if self.y <= 0:
-        #     self.y = 0
-        #     self.vy = 0
+        if game.typed('space') or game.mouse_typed('left'):
+            # Fly
+            self.vel_y = Player.jump_force
+
+            # Sound
+            game.play('wing')
+        else:
+            # Gravity
+            self.vel_y -= gravity * dt
+
+        self.y += self.vel_y * dt
+        if self.y <= 0:
+            # TODO : DEATH : Anim + Change scene after
+            self.dead = True
+            game.play('hit')
 
         # # Movements
         # if game.pressed('a'):
