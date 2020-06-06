@@ -1,0 +1,4 @@
+import flappy
+
+
+flappy.run()
