@@ -21,7 +21,7 @@ def construct():
 
     # Cameras
     game.add_cam('game', height=1000) \
-        .set(x=width / 2, y=height / 2)
+        .set(x=width / 2, y=height / 2 - 128)
 
     # Set entry scene
     # TODO : Menu

@@ -9,19 +9,26 @@ gravity = 2000
 class Player(lg.Sprite):
     # Global variables
     jump_force = 800
+    death_jump_force = 1500
 
-    def __init__(self, x, y):
+    def __init__(self, x, y, skin):
+        '''
+            :param skin: Either red or blue, the color of the bird.
+        '''
         super().__init__(lg.CompoundFrame(
         {
             'blue': lg.IndexedFrame('flappy', lg.Box.tape(0, 0, 256, 128, 3, horizontal=False)),
             'red': lg.IndexedFrame('flappy', lg.Box.tape(256, 0, 256, 128, 3, horizontal=False)),
-        }, 'blue'))
+        }, skin))
 
         self.x = x
         self.y = y
 
         # Y velocity
         self.vel_y = 0
+
+        # False for the death animation
+        self.controllable = True
 
     def update(self, dt):
         # Don't forget to call super
@@ -31,7 +38,7 @@ class Player(lg.Sprite):
         self.frame.get().i = 1
 
 
-        if game.typed('space') or game.mouse_typed('left'):
+        if self.controllable and game.typed('space') or game.mouse_typed('left'):
             # Fly
             self.vel_y = Player.jump_force
 
@@ -41,26 +48,22 @@ class Player(lg.Sprite):
             # Gravity
             self.vel_y -= gravity * dt
 
+        # Update position
         self.y += self.vel_y * dt
-        if self.y <= 0:
-            # TODO : DEATH : Anim + Change scene after
-            self.dead = True
-            game.play('hit')
+        if self.y <= 0 and self.controllable:
+                # TODO : DEATH : Anim + Change scene after
+                # self.dead = True
+                self.controllable = False
+                self.vel_y = Player.death_jump_force
+                game.play('hit')
+        elif self.y <= -200 and not self.controllable:
+                # TODO : Change scene
+                game.exit()
+                pass
 
-        # # Movements
-        # if game.pressed('a'):
-        #     self.x -= self.speed * dt
-        # if game.pressed('d'):
-        #     self.x += self.speed * dt
-
-        # # Rotation
-        # alpha = .5
-        # self.rot = self.rot * (1 - alpha) + alpha * self.vy * .3
-
-        # # Kill
-        # if game.pressed('k'):
-        #     music.stop(True)
-        #     self.dead = True
+        # Update rotation (using a linear interpolation)
+        alpha = .5
+        self.rot = self.rot * (1 - alpha) + alpha * self.vel_y * 1e-3
 
         # # Change skin
         # if game.typed('t'):
@@ -83,8 +86,14 @@ class Player(lg.Sprite):
         # #     game.set_clear_color(0, 1, 0)
 
 
+class Image(lg.Sprite):
+    '''
+        A simple image.
+    '''
+    def __init__(self, x, y, frame, scale=1):
+        super().__init__(frame)
 
-
-
-
+        self.x = x
+        self.y = y
+        self.scale(scale)
 
