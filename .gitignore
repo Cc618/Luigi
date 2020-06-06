@@ -16,3 +16,4 @@ bin
 .TMP
 tst
 tmp
+.eggs
