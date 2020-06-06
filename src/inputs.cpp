@@ -181,12 +181,14 @@ std::pair<int, int> lg::Mouse::get_pos()
         "A game must be running to use this function");
 
     auto pos = sf::Mouse::getPosition(*Game::instance->win);
-    return std::make_pair(pos.x, pos.y);
+    auto size = Game::instance->win->getSize();
+    return std::make_pair(pos.x, size.y - pos.y);
 }
 
 void lg::Mouse::set_pos(const std::pair<int, int>& xy)
 {
-    sf::Mouse::setPosition(Vector2i(xy.first, xy.second), *Game::instance->win);
+    auto size = Game::instance->win->getSize();
+    sf::Mouse::setPosition(Vector2i(xy.first, size.y - xy.second), *Game::instance->win);
 }
 
 // --- Bindings --- //
@@ -202,7 +204,8 @@ void bind_inputs(py::module &m)
     py::class_<lg::Mouse>(m, "Mouse")
         .def_property_static("pos",
             [](py::object) -> std::pair<int, int> { return lg::Mouse::get_pos(); },
-            [](py::object, const std::pair<int, int>& xy) { lg::Mouse::set_pos(xy); }
+            [](py::object, const std::pair<int, int>& xy) { lg::Mouse::set_pos(xy); },
+            "The position is from the bottom left corner of the window."
         )
 
         .doc() = R"(

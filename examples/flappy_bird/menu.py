@@ -6,9 +6,8 @@ class Play(lg.Sprite):
     def __init__(self):
         super().__init__(lg.Region('flappy', lg.Box(640, 128, 256, 128)))
 
-        # TODO : Mouse pos reverse
         self.x = width / 2
-        self.y = height / 2
+        self.y = height / 3
     
         self.start_width, self.start_height = self.width, self.height
 
