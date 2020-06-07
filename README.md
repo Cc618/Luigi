@@ -34,6 +34,10 @@ You can add --user as option to avoid root permissions.
 
 If you want to build Luigi as a developer, go to section Build which uses CMake for faster compilation times.
 
+## Documentation
+
+The documentation is hosted on [read the docs](https://luigi-engine.readthedocs.io/en/latest).
+
 ## Build
 
 To compile Luigi using CMake :
