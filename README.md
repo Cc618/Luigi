@@ -38,7 +38,7 @@ If you want to build Luigi as a developer, go to section Build which uses CMake 
 
 ## Documentation
 
-The documentation is hosted on [read the docs](https://luigi-engine.readthedocs.io/en/latest).
+The documentation is hosted on [read the docs](luigi-engine.rtfd.io).
 
 ## Build
 
