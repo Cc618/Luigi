@@ -15,10 +15,10 @@ Some examples are provided in this reposiory, here are some pictures :
 Luigi is available on PyPI, you can install luigi using pip with this command :
 
 ```sh
-python3 -m pip install -i https://test.pypi.org/simple/ luigi-engine==0.1
+python3 -m pip install luigi-engine==0.1
 ```
 
-[Check Luigi on pypi.](https://test.pypi.org/project/luigi-engine/0.1/)
+[Check Luigi on pypi.](https://pypi.org/project/luigi-engine/0.1/)
 
 Note that the package is named luigi-engine but the module to import luigi.
 
