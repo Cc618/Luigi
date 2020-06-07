@@ -18,3 +18,6 @@ tst
 tmp
 .eggs
 __pycache__
+build
+dist
+*.egg-info
