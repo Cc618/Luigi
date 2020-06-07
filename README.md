@@ -4,19 +4,33 @@ Luigi is a 2D Python game engine, written in C++.
 
 ## Install
 
+### With pip
+
+Luigi is available on PyPI, you can install luigi using pip with this command :
+
+```sh
+python3 -m pip install -i https://test.pypi.org/simple/ luigi-engine==0.1
+```
+
+[Check Luigi on pypi.](https://test.pypi.org/project/luigi-engine/0.1/)
+
+Note that the package is named luigi-engine but the module to import luigi.
+
+### With this repository
+
 To install Luigi as a python package, type this command from the root of the repository :
 
-``sh
+```sh
 python3 -m pip install .
-``
+```
 
-This command should work also with python2, you can add --user as option to avoid root permissions.
+You can add --user as option to avoid root permissions.
 
-If you want to build Luigi as a developer, go to section Build which uses CMake for faster compilation times. 
+If you want to build Luigi as a developer, go to section Build which uses CMake for faster compilation times.
 
 ## Build
 
-To compile Luigi :
+To compile Luigi using CMake :
 
 ```sh
 # Install dependencies...
@@ -50,6 +64,8 @@ make html
 ```
 
 ## Dependencies
+
+If you install this package with pip, no dependency is required.
 
 - CMake (cmake for apt)
 - SFML (libsfml-dev for apt)

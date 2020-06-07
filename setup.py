@@ -56,12 +56,18 @@ ext_modules = [
     ),
 ]
 
+# The name is luigi-engine since a package luigi already exists on pypi.
 setup(
-    name='luigi',
+    name='luigi-engine',
     version=f'{LUIGI_VERSION_MAJOR}.{LUIGI_VERSION_MINOR}',
     author='Cc618',
     url='https://github.com/Cc618/Luigi',
     description='Luigi 2D game engine',
+    long_description='Luigi 2D game engine',
+    long_description_content_type='text/markdown',
     ext_modules=ext_modules,
+    classifiers=[
+        'Programming Language :: Python :: 3',
+    ],
     setup_requires=['pybind11>=2.5.0'],
 )
