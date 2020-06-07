@@ -18,6 +18,8 @@ Luigi is available on PyPI, you can install luigi using pip with this command :
 python3 -m pip install luigi-engine==0.1
 ```
 
+You can add --user as option to avoid root permissions.
+
 [Check Luigi on pypi.](https://pypi.org/project/luigi-engine/0.1/)
 
 Note that the package is named luigi-engine but the module to import luigi.
@@ -30,7 +32,7 @@ To install Luigi as a python package, type this command from the root of the rep
 python3 -m pip install .
 ```
 
-You can add --user as option to avoid root permissions.
+Like with pip, you can add --user as option to avoid root permissions.
 
 If you want to build Luigi as a developer, go to section Build which uses CMake for faster compilation times.
 
