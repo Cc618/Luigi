@@ -26,7 +26,7 @@ else:
     except:
         import subprocess
         print('Downloading luigi from pip')
-        subprocess.call('python3.7 -m pip install luigi-engine==0.1 --user'.split(' '))
+        subprocess.call('python3.7 -m pip install luigi-engine==0.1'.split(' '))
 
 # -- Project information -----------------------------------------------------
 
