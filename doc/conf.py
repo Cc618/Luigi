@@ -20,7 +20,13 @@ if dev_mode:
     import os
     import sys
     sys.path.insert(0, os.path.abspath('../bin'))
-
+else:
+    try:
+        import luigi
+    except:
+        import subprocess
+        print('Downloading luigi from pip')
+        subprocess.call('python3.7 -m pip install luigi-engine==0.1 --user'.split(' '))
 
 # -- Project information -----------------------------------------------------
 
