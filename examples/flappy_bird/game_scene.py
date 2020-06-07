@@ -9,7 +9,7 @@ def create():
     # game.set_cam('game')
 
     # Player
-    game.add(Player(width / 3, height / 2, skin='blue'))
+    game.add(Player(width / 3, height / 2))
 
     # Manager
     game.add(PipeManager())

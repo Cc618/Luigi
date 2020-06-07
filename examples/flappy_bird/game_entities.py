@@ -1,6 +1,7 @@
 from random import randint
 import luigi as lg
 from flappy import game, width, height
+import settings
 
 
 # Game
@@ -32,7 +33,7 @@ class Player(lg.Sprite):
     # To access the current player from outside of the Player class
     instance = None
 
-    def __init__(self, x, y, skin):
+    def __init__(self, x, y, on_menu=False):
         '''
             :param skin: Either red or blue, the color of the bird.
         '''
@@ -40,10 +41,11 @@ class Player(lg.Sprite):
         {
             'blue': lg.IndexedFrame('flappy', lg.Box.tape(0, 0, bird_tex_width, bird_tex_height, 3, horizontal=False)),
             'red': lg.IndexedFrame('flappy', lg.Box.tape(bird_tex_width, 0, bird_tex_width, bird_tex_height, 3, horizontal=False)),
-        }, skin))
+        }, settings.skin))
 
         self.x = x
         self.y = y
+        self.on_menu = on_menu
         self.scale(bird_scale)
 
         # Y velocity
@@ -63,7 +65,14 @@ class Player(lg.Sprite):
         # 0 = wings up, 1 = wings mid, 2 = wings down
         self.frame.get().i = 0 if self.vel_y < -100 else 1 if self.vel_y < 100 else 2
 
-        if self.controllable and (game.typed('space') or game.mouse_typed('left')):
+        # If we click and we can fly
+        if self.controllable and (game.typed('space') and not self.on_menu or \
+                (game.mouse_typed('left') and not (self.on_menu and lg.Mouse.pos[1] < height / 2))):
+            # Change skin
+            if self.on_menu:
+                settings.skin = 'blue' if settings.skin == 'red' else 'red'
+                self.frame.current = settings.skin
+
             # Fly
             self.vel_y = Player.jump_force
 
@@ -79,6 +88,16 @@ class Player(lg.Sprite):
 
         # Update position
         self.y += self.vel_y * dt
+
+        if self.on_menu:
+            if self.y <= height * 2 / 3:
+                self.y = height * 2 / 3
+                self.vel_y = 0
+                self.rot = 0
+
+            return
+
+        # Check collisions
         if (self.y - bird_height / 2 * bird_scale <= ground_y or self.y + bird_height / 2 * bird_scale >= height) and self.controllable:
             # Touches ground / top
             self.hit()

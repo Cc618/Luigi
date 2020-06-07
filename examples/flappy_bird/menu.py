@@ -1,6 +1,6 @@
 import luigi as lg
 from flappy import game, width, height
-from game_entities import Image
+from game_entities import Image, Player
 
 
 class Play(lg.Sprite):
@@ -39,6 +39,8 @@ class Play(lg.Sprite):
 
 def create():
     game.add(Play())
+
+    game.add(Player(width / 2, height * 2 / 3, on_menu=True))
 
     # Background
     game.add_layer('background', z=-100)
