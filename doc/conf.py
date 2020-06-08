@@ -14,7 +14,7 @@
 #
 
 # To test locally 
-dev_mode = False
+dev_mode = True
 
 if dev_mode:
     import os
