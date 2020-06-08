@@ -22,6 +22,9 @@ build:
 
 clean:
 	rm -rf bin CMakeCache.txt cmake_install.cmake CMakeFiles Makefile
+
+	rm -rf .eggs build
+
 	cd src && \
 		rm -rf cmake_install.cmake CMakeFiles Makefile config.h
 	
