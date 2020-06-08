@@ -1,60 +1,37 @@
-# !!! Use this script only to install Luigi, to test it, use CMake
-# * pybind11 must be installed
-
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 import sys
+import os
 import setuptools
 import glob
+import shutil
 
 
 LUIGI_VERSION_MAJOR = 0
 LUIGI_VERSION_MINOR = 1
 
 
-class Includes:
-    '''
-        Used to install pybind11 before making str()
-    '''
-    def __str__(self):
-        import pybind11
-        return pybind11.get_include()
+class Luigi(Extension):
+    def __init__(self):
+        super().__init__('luigi', sources=[])
 
 
-def get_src():
-    return [file for file in glob.glob('src/*.cpp')]
+class LuigiBuild(build_ext):
+    def run(self):
+        self.build(self.extensions[0])
 
+        super().run()
 
-def mk_conf():
-    print('Generating src/config.h')
+    def build(self, extension):
+        extension_path = self.get_ext_fullpath(extension.name)
+        extension_name = extension_path[extension_path.rfind('/') + 1:]
+        bin_path = f'bin/{extension_name}'
 
-    with open('src/config.h.in') as f:
-        conf = f.read()
+        self.spawn(['make', '-f', 'luigi.mk'])
 
+        # Copy the file in bin to the build
+        shutil.copy(bin_path, extension_path)
 
-    with open('src/config.h', 'w') as f:
-        conf = conf.replace('@luigi_VERSION_MAJOR@', str(LUIGI_VERSION_MAJOR))
-        conf = conf.replace('@luigi_VERSION_MINOR@', str(LUIGI_VERSION_MINOR))
-
-        f.write(conf)
-
-    print('Generated src/config.h')
-
-
-# Generate config file
-mk_conf()
-
-ext_modules = [
-    Extension(
-        'luigi',
-        sorted(get_src()),
-        include_dirs=[
-            Includes()
-        ],
-        language='c++',
-        libraries=['sfml-window', 'sfml-system', 'sfml-graphics', 'sfml-audio', 'GLEW', 'GL']
-    ),
-]
 
 # The name is luigi-engine since a package luigi already exists on pypi.
 setup(
@@ -65,9 +42,12 @@ setup(
     description='Luigi 2D game engine',
     long_description='Luigi 2D game engine',
     long_description_content_type='text/markdown',
-    ext_modules=ext_modules,
+    ext_modules=[Luigi()],
     classifiers=[
         'Programming Language :: Python :: 3',
     ],
-    setup_requires=['pybind11>=2.5.0'],
+    setup_requires=['pybind11>=2.5.0', 'cmake'],
+    cmdclass={
+        'build_ext': LuigiBuild
+    }
 )
