@@ -14,7 +14,7 @@
 #
 
 # To test locally 
-dev_mode = True
+dev_mode = False
 
 if dev_mode:
     import os
@@ -26,7 +26,7 @@ else:
     except:
         import subprocess
         print('Downloading luigi from pip')
-        subprocess.call('python3.7 -m pip install luigi-engine==0.1'.split(' '))
+        subprocess.call('python3 -m pip install -i https://test.pypi.org/simple/ luigi-engine==0.1'.split(' '))
 
 # -- Project information -----------------------------------------------------
 
