@@ -23,7 +23,7 @@ build:
 clean:
 	rm -rf bin CMakeCache.txt cmake_install.cmake CMakeFiles Makefile
 
-	rm -rf .eggs build
+	rm -rf .eggs build luigi_engine.egg-info dist
 
 	cd src && \
 		rm -rf cmake_install.cmake CMakeFiles Makefile config.h

@@ -1,5 +1,6 @@
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
+from setuptools.command.sdist import sdist
 import sys
 import os
 import setuptools
@@ -24,10 +25,14 @@ class LuigiBuild(build_ext):
 
     def build(self, extension):
         extension_path = self.get_ext_fullpath(extension.name)
-        extension_name = extension_path[extension_path.rfind('/') + 1:]
+        slash = extension_path.rfind('/')
+        extension_name = extension_path[slash + 1:]
+        extension_dir = extension_path[:slash]
         bin_path = f'bin/{extension_name}'
 
         self.spawn(['make', '-f', 'luigi.mk'])
+
+        os.makedirs(extension_dir)
 
         # Copy the file in bin to the build
         shutil.copy(bin_path, extension_path)
@@ -48,6 +53,6 @@ setup(
     ],
     setup_requires=['pybind11>=2.5.0', 'cmake'],
     cmdclass={
-        'build_ext': LuigiBuild
+        'build_ext': LuigiBuild,
     }
 )
