@@ -18,6 +18,8 @@ set_target_properties(luigi
 )
 
 add_subdirectory(pybind11)
+
+list(APPEND CMAKE_PREFIX_PATH ../lib/SFML-2.5.1)
 find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
 find_package(OpenGL REQUIRED)
 
