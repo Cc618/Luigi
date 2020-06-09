@@ -11,22 +11,17 @@
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#
 
-# To test locally 
-dev_mode = False
+import os
+import sys
 
-if dev_mode:
-    import os
-    import sys
-    sys.path.insert(0, os.path.abspath('../bin'))
-else:
-    try:
-        import luigi
-    except:
-        import subprocess
-        print('Downloading luigi from pip')
-        subprocess.call('python3 -m pip install -i https://test.pypi.org/simple/ luigi-engine==0.1'.split(' '))
+sys.path.insert(0, os.path.abspath('../bin'))
+
+# Check whether luigi is built
+try:
+    import luigi
+except:
+    raise Exception('The documentation must be built after Luigi, execute "make -f luigi.mk build" from the root directory and try again')
 
 # -- Project information -----------------------------------------------------
 
