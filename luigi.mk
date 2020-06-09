@@ -21,7 +21,7 @@ build:
 	@echo "--- Successfully built Luigi ---"
 
 clean:
-	rm -rf bin CMakeCache.txt cmake_install.cmake CMakeFiles Makefile
+	rm -rf bin CMakeCache.txt cmake_install.cmake CMakeFiles Makefile luigi-engine-*
 
 	rm -rf .eggs build luigi_engine.egg-info dist
 
