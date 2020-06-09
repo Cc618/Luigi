@@ -12,15 +12,15 @@ Some examples are provided in this reposiory, here are some pictures :
 
 ### With pip
 
-Luigi is available on PyPI, you can install luigi using pip with this command :
+Luigi is available on PyPI, you can install luigi by installing all dependencies and with this command :
 
 ```sh
-python3 -m pip install luigi-engine==0.1
+python3 -m pip install luigi-engine
 ```
 
 You can add --user as option to avoid root permissions.
 
-[Check Luigi on pypi.](https://pypi.org/project/luigi-engine/0.1/)
+[Check Luigi on pypi.](https://pypi.org/project/luigi-engine)
 
 Note that the package is named luigi-engine but the module to import luigi.
 
@@ -81,6 +81,7 @@ If you install this package with pip, no dependency is required.
 
 - CMake (cmake for apt)
 - SFML (libsfml-dev for apt)
+- GLEW
 - OpenGL
 - pybind11 (just headers, run ```git submodule init && git submodule update --remote```)
 - Sphinx (optional, to generate the documentation)
