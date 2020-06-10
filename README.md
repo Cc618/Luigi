@@ -20,9 +20,9 @@ python3 -m pip install luigi-engine
 
 You can add --user as option to avoid root permissions.
 
-[Check Luigi on pypi.](https://pypi.org/project/luigi-engine)
+[Check out Luigi on pypi.](https://pypi.org/project/luigi-engine)
 
-Note that the package is named luigi-engine but the module to import luigi.
+Note that the package is named luigi-engine but the module to import is luigi.
 
 ### With this repository
 
