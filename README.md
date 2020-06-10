@@ -4,7 +4,7 @@ Luigi is a 2D Python game engine, written in C++.
 
 ## Examples
 
-Some examples are provided in this reposiory, here are some pictures :
+Some examples are provided in this repository, here are some pictures :
 
 ![Flappy Bird](res/flappy.gif)
 
@@ -65,7 +65,6 @@ import luigi
 luigi.version
 > '<luigi version>'
 ```
-
 
 ## Dependencies
 
