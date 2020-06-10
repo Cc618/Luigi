@@ -2,6 +2,8 @@
 
 all: build
 
+.PHONY: build doc clean
+
 # Compiles from scratch Luigi
 build:
 	@echo "Initializing submodules..."
@@ -19,6 +21,10 @@ build:
 
 	@echo
 	@echo "--- Successfully built Luigi ---"
+
+doc: build
+	@echo "Generating documentation..."
+	cd doc && make html
 
 clean:
 	rm -rf bin CMakeCache.txt cmake_install.cmake CMakeFiles Makefile luigi-engine-*

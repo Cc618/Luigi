@@ -42,18 +42,16 @@ The documentation is available [here](https://cc618.github.io/Luigi-Docs).
 
 ## Build
 
-To compile Luigi using CMake :
+To compile Luigi :
 
 ```sh
-# Install dependencies...
-# Download pybind11
-git submodule init
-git submodule update --remote
-# Generate build system
-cmake .
-# Build
-make
-# bin/luigi.cpython<system>.so should be created
+make -f luigi.mk
+```
+
+To compile the documentation (requires sphinx and sphinx_rtd_theme) :
+
+```sh
+make -f luigi.mk doc
 ```
 
 ## Test
@@ -68,12 +66,6 @@ luigi.version
 > '<luigi version>'
 ```
 
-To compile the documentation (require sphinx and sphinx_rtd_theme) :
-
-```sh
-cd doc
-make html
-```
 
 ## Dependencies
 
