@@ -34,9 +34,6 @@ class Player(lg.Sprite):
     instance = None
 
     def __init__(self, x, y, on_menu=False):
-        '''
-            :param skin: Either red or blue, the color of the bird.
-        '''
         super().__init__(lg.CompoundFrame(
         {
             'blue': lg.IndexedFrame('flappy', lg.Box.tape(0, 0, bird_tex_width, bird_tex_height, 3, horizontal=False)),
