@@ -1,8 +1,10 @@
 import luigi as lg
 
 
+# Inherit from Sprite
 class Player(lg.Sprite):
     def __init__(self, x, y, speed):
+        # The sprite is a texture region from the top left corner of the 'flappy' texture
         super().__init__(lg.Region('flappy', lg.Box(0, 0, width=256, height=128)))
 
         # Position of the sprite
@@ -32,6 +34,10 @@ class Player(lg.Sprite):
         if game.typed('M'):
             # Go to menu
             game.set_scene('menu')
+
+        if game.typed('K'):
+            # Kill
+            self.dead = True
 
 
 def create_game():
