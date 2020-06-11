@@ -4,6 +4,10 @@ Luigi is a 2D Python game engine, written in C++.
 
 Now, Luigi targets only Linux based desktop devices.
 
+## Documentation
+
+The documentation is available [here](https://cc618.github.io/Luigi-Docs).
+
 ## Examples
 
 Some examples are provided in this repository, here are some pictures :
@@ -37,10 +41,6 @@ python3 -m pip install .
 Like with pip, you can add --user as option to avoid root permissions.
 
 If you want to build Luigi as a developer, go to section Build which uses CMake for faster compilation times.
-
-## Documentation
-
-The documentation is available [here](https://cc618.github.io/Luigi-Docs).
 
 ## Build
 
