@@ -20,7 +20,6 @@ Frame::Frame(const Texture *texture)
     : texture(texture)
 {}
 
-// TODO : Check overflow
 Mat3 *Frame::create_transform(Box box) const
 {
     float inv_width = 1.f / texture->width;
@@ -31,6 +30,13 @@ Mat3 *Frame::create_transform(Box box) const
     box.width *= inv_width;
     box.y *= inv_height;
     box.height *= inv_height;
+
+    Error::check(
+        box.x >= 0 && box.x <= 1 &&
+        box.y >= 0 && box.y <= 1 &&
+        box.x + box.width >= 0 && box.x + box.width <= 1 &&
+        box.y + box.height >= 0 && box.y + box.height <= 1,
+        "Invalid texture region");
 
     return box.get_transform();
 }
