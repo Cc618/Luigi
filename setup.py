@@ -41,7 +41,7 @@ class LuigiBuild(build_ext):
 # The name is luigi-engine since a package luigi already exists on pypi.
 setup(
     name='luigi-engine',
-    version=f'{LUIGI_VERSION_MAJOR}.{LUIGI_VERSION_MINOR}.1',
+    version=f'{LUIGI_VERSION_MAJOR}.{LUIGI_VERSION_MINOR}.2',
     author='Cc618',
     author_email='celian.dev@gmail.com',
     url='https://github.com/Cc618/Luigi',
@@ -50,9 +50,13 @@ setup(
     long_description_content_type='text/markdown',
     ext_modules=[Luigi()],
     classifiers=[
+        'Development Status :: 4 - Beta',
+        'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
+        'Programming Language :: C++',
+        'Topic :: Games/Entertainment',
     ],
-    setup_requires=['pybind11>=2.5.0', 'cmake'],
+    setup_requires=['cmake'],
     cmdclass={
         'build_ext': LuigiBuild,
     }
