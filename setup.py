@@ -43,7 +43,7 @@ setup(
     name='luigi-engine',
     version=f'{LUIGI_VERSION_MAJOR}.{LUIGI_VERSION_MINOR}.1',
     author='Cc618',
-    email='celian.dev@gmail.com',
+    author_email='celian.dev@gmail.com',
     url='https://github.com/Cc618/Luigi',
     description='Luigi 2D game engine',
     long_description='Luigi 2D game engine',
