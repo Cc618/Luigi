@@ -4,7 +4,7 @@ Basics
 This guide explains how to get started with Luigi, we will discover how to make
 a simple game with a controllable player and a menu.
 
-.. TODO : Gif basics
+.. image:: https://github.com/Cc618/Luigi/raw/master/examples/basics/doc/basics.gif
 
 The code for this guide is `here (examples/basics) <https://github.com/Cc618/Luigi/blob/master/examples/basics>`_.
 
@@ -138,7 +138,7 @@ We just have to launch the game with this instruction :
 
 You should have a player that moves with the arrow keys and rotates with space.
 
-.. TODO : Image
+.. image:: https://github.com/Cc618/Luigi/raw/master/examples/basics/doc/basics.gif
 
 ===============
 Game management
