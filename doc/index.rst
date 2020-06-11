@@ -10,9 +10,10 @@ Welcome to Luigi's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   luigi
-
+   basics
    inputs
+
+   luigi
 
 Indices and tables
 ==================
