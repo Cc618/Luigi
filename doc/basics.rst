@@ -29,8 +29,12 @@ These instructions tell luigi that the window will be named Luigi with a size of
 Game construction
 =================
 
-Now, we have to load the game, this is made in the construct method.
+Now, we have to load the game, this is made in the construct function.
 This method serves to load textures and other resources and moreover to register scenes.
+
+In Luigi, we use both object oriented and functional code,
+functions are used to construct the game or create scenes and
+objects are used with entities.
 
 Note that create_game and create_scene will be explained below.
 
@@ -57,6 +61,12 @@ You can add also sounds and more with game.
 
 This methods registers two scenes named 'game' and 'menu',
 we give as argument a function that loads the scene, we call this a scene factory.
+
+Game gathers methods such as add_scene, add_texture, etc... to register and
+load assets, make sure to load these assets in construct and not in a scene
+or entity constructor.
+To handle these assets, you just have to know the name of the target component like
+in set_scene (this avoid global variables).
 
 ==============
 Scene creation
