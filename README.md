@@ -76,6 +76,6 @@ If you install this package with pip, no dependency is required.
 - SFML (libsfml-dev for apt)
 - GLEW
 - OpenGL
-- pybind11 (just headers, run ```git submodule init && git submodule update --remote```)
+- pybind11 (just headers, will be downloaded when running luigi.mk)
 - Sphinx (optional, to generate the documentation)
 - Sphinx-rtd-theme (optional, to generate the documentation)
