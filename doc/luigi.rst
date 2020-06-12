@@ -1,5 +1,5 @@
-Luigi
-=====
+Luigi module reference
+======================
 
 .. automodule:: luigi
     :members:
