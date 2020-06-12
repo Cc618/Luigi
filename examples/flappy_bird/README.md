@@ -15,3 +15,7 @@ To run this example :
 ```sh
 python3 main.py
 ```
+
+## Thanks
+
+A big thanks to [FlapPyBird](https://github.com/sourabhv/FlapPyBird) for all assets of the game.
