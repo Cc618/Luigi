@@ -6,11 +6,11 @@ This guide explains how texture and frames work together in Luigi.
 First of all, let's explain what is a texture and a frame :
 
 - A texture is an image loaded on the GPU, we don't use directly textures,
-    we use texture handlers which describe a texture.
+  we use texture handlers which describe a texture.
 
 - A frame is a texture region, it can be animated and more.
-    We use frames inside a sprite to create animations or just to load less images
-    since loading many images can be expensive.
+  We use frames inside a sprite to create animations or just to load less images
+  since loading many images can be expensive.
 
 .. note:: This guide contains code samples of the `basics example <https://github.com/Cc618/Luigi/blob/master/examples/basics>`_.
 
@@ -99,7 +99,7 @@ Compound Frame
 
 This one is useful to make complex animations.
 We can change a frame with a name, the frame can be any subclass of Frame.
-For example, in the <Flappy Bird example https://github.com/Cc618/Luigi/blob/master/examples/basics>_
+For example, in the `Flappy Bird example <https://github.com/Cc618/Luigi/blob/master/examples/flappy_bird>`_
 we use it to make multiple skins, a blue and red one.
 
 =====
@@ -110,7 +110,7 @@ When using complex or just long animations, we have many boilerplate code since 
 a list of Box objects for an animation, the code can be easier to read with Box.tape.
 This static method creates a list of Box objects with the same dimensions.
 
-To illustrate, the player of the <Flappy Bird example https://github.com/Cc618/Luigi/blob/master/examples/basics>_
+To illustrate, the player of the `Flappy Bird example <https://github.com/Cc618/Luigi/blob/master/examples/flappy_bird>`_
 contains multiple calls to Box.tape :
 
 .. code-block:: python
@@ -123,4 +123,3 @@ contains multiple calls to Box.tape :
         })
 
 Box.tape takes as arguments in addition to the coordinates and dimensions the number of frames and the horizontality of the tape.
-
