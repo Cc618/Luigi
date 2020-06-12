@@ -11,6 +11,7 @@ Welcome to Luigi's documentation!
    :caption: Contents:
 
    basics
+   textures
    inputs
 
    luigi
