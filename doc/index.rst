@@ -12,6 +12,7 @@ Welcome to Luigi's documentation!
 
    basics
    textures
+   sounds
    inputs
 
    luigi
