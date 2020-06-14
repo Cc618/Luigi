@@ -1,7 +1,7 @@
 Sounds
 ======
 
-This page cover the audio functionalities of Luigi.
+This page covers audio functionalities of Luigi.
 
 Firstly, sounds and musics are not the same in Luigi.
 In addition to how the memory is handled for a sound or a music,
@@ -63,7 +63,7 @@ To configure music transition duration, we can use set_fade_duration :
     # In seconds
     game.set_fade_duration(1.2)
 
-Music and Sound classes have two methods useful, set_volume and set_pos,
+Music and Sound classes have two useful methods, set_volume and set_pos,
 set_volume changes the volume of the audio component with a value between 0 and 100.
 
 set_pos will change the x position of the sound, this means that the sound will be

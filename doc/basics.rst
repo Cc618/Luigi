@@ -36,7 +36,7 @@ In Luigi, we use both object oriented and functional code,
 functions are used to construct the game or create scenes and
 objects are used with entities.
 
-Note that create_game and create_scene will be explained below.
+.. note:: create_game and create_scene will be explained below.
 
 .. code-block:: python
 
