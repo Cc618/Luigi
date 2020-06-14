@@ -1,7 +1,7 @@
 Textures
 ========
 
-This guide explains how texture and frames work together in Luigi.
+This guide explains how textures and frames work together in Luigi.
 
 First of all, let's explain what is a texture and a frame :
 
@@ -42,7 +42,7 @@ Here is the texture :
 
 We want to retrieve the top left blue bird, the dimensions of the blue bird region are 256 pixels
 for the width and 128 pixels for the height.
-Moreover, the x and y coordinates are computed from the top left corner of the texture so
+Moreover, the x and y coordinates are relative to the top left corner of the texture so
 the position is (0, 0).
 
 Let's use the Region class which describes a non animated texture region.
@@ -71,7 +71,7 @@ Frame
 Luigi provides subclasses of the Frame class, this class is abstract and can't be used directly.
 
 It contains the copy() and get_transform() methods used more often on the C++ side of Luigi.
-Attributes are more useful, rect describes the hitbox of the region and texture it's image.
+Attributes are more useful, rect describes the hitbox of the region and texture its image.
 
 ******
 Region
@@ -106,7 +106,7 @@ we use it to make multiple skins, a blue and red one.
 Utils
 =====
 
-When using complex or just long animations, we have many boilerplate code since we have to provide
+When using complex or just long animations, we have much boilerplate code since we have to provide
 a list of Box objects for an animation, the code can be easier to read with Box.tape.
 This static method creates a list of Box objects with the same dimensions.
 
