@@ -77,8 +77,6 @@ luigi.version
 
 ## Dependencies
 
-If you install this package with pip, no dependency is required.
-
 - CMake (cmake for apt)
 - SFML (libsfml-dev for apt)
 - GLEW

@@ -38,6 +38,26 @@ class LuigiBuild(build_ext):
         shutil.copy(bin_path, extension_path)
 
 
+long_desc = '''# Luigi
+
+Luigi is a 2D Python game engine, written in C++.
+
+Now, Luigi targets only Linux based desktop devices.
+
+## Features
+
+- 2D lightweight game engine for Python 3
+- Fast : Written in C++, uses OpenGL as backend
+- Free and open source (MIT license)
+- Targets Linux based desktop devices
+
+## Pip dependencies
+
+- SFML
+- GLEW
+- OpenGL
+'''
+
 # The name is luigi-engine since a package luigi already exists on pypi.
 setup(
     name='luigi-engine',
@@ -46,7 +66,7 @@ setup(
     author_email='celian.dev@gmail.com',
     url='https://github.com/Cc618/Luigi',
     description='Luigi 2D game engine',
-    long_description='Luigi 2D game engine',
+    long_description=long_desc,
     long_description_content_type='text/markdown',
     ext_modules=[Luigi()],
     classifiers=[
