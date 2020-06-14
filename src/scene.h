@@ -16,14 +16,7 @@ namespace lg
     public:
         static Scene *current;
 
-        // TMP : rm ?
-        static std::list<Scene*> instances;
-
     public:
-        // TODO : rm
-        // Creates a new scene and registers it
-        // static Scene *create(const std::string& name, const std::string& default_cam);
-
         // Find a scene by name
         // TODO : ren by get
         static Scene *find(const std::string& name);
@@ -62,7 +55,6 @@ namespace lg
         static std::unordered_map<std::string, SceneFactory*> instances;
 
     public:
-        // TMP : Binding keep alive
         SceneFactory(const std::string& name, const std::function<void ()>& factory, const std::string& default_cam);
 
     public:

@@ -26,7 +26,6 @@ void bind_entity(py::module &m)
 
         .def_readwrite("dead", &Entity::dead)
 
-        // TMP
         .def("start", &Entity::start,
             "When all entities are created.")
 

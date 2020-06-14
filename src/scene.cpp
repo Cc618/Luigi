@@ -15,18 +15,6 @@ static bool layer_cmp(Layer* a, Layer *b)
 // --- Scene --- //
 Scene *Scene::current = nullptr;
 
-list<Scene*> Scene::instances;
-
-// TMP
-// Scene *Scene::create(const std::string& name, const std::string& default_cam)
-// {
-//     auto scn = new Scene(name, default_cam);
-
-//     instances.push_back(scn);
-
-//     return scn;
-// }
-
 Scene *Scene::find(const std::string& name)
 {
     auto scn = find_if(instances.begin(), instances.end(), [name](Scene* s) { return s->name == name; });
@@ -146,9 +134,6 @@ void bind_scene(py::module &m)
         
         .def("add", &Scene::add, py::arg("entity"), py::keep_alive<1, 2>(),
             "Adds an entity to the current layer.")
-
-        // TMP .def("set_main_cam", &Game::set_main_cam, py::arg("height"), py::arg("x")=0, py::arg("y")=0, py::arg("rot")=0)
-        // .def("set_cam", &Scene::set_cam, py::arg("name"), py::arg("create")=false, py::arg("height")=100, py::arg("default")=true, py::return_value_policy::reference)
 
         .doc() = "Gathers multiple layers of entities, created with a scene factory."
     ;
