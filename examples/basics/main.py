@@ -1,7 +1,7 @@
 import luigi as lg
 
 
-# Inherit from Sprite
+# Inherits from Sprite
 class Player(lg.Sprite):
     def __init__(self, x, y, speed):
         # The sprite is a texture region from the top left corner of the 'flappy' texture

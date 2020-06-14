@@ -30,7 +30,7 @@ Game construction
 =================
 
 Now, we have to load the game, this is made in the construct function.
-This method serves to load textures and other resources and moreover to register scenes.
+This function serves to load textures and other resources and moreover to register scenes.
 
 In Luigi, we use both object oriented and functional code,
 functions are used to construct the game or create scenes and
@@ -59,7 +59,7 @@ Note that create_game and create_scene will be explained below.
 
 You can add also sounds and more with game.
 
-This methods registers two scenes named 'game' and 'menu',
+This procedure registers two scenes named 'game' and 'menu',
 we give as argument a function that loads the scene, we call this a scene factory.
 
 Game gathers methods such as add_scene, add_texture, etc... to register and
@@ -90,7 +90,7 @@ This scene contains only a player over a blue background.
 
 The game.add function adds entities to the current scene, in Luigi,
 an entity is a game object and provides some methods such as start, draw, update and stop.
-Update is the most important method, it is called each frame and aims to update the player movements.
+Update is the most important method, it is called each frame and aims to update player's behaviour.
 
 =====================
 Entity implementation
@@ -100,7 +100,7 @@ Luigi provides the Sprite class, this class is an entity with a texture and will
 
 .. code-block:: python
 
-    # Inherit from Sprite
+    # Inherits from Sprite
     class Player(lg.Sprite):
         def __init__(self, x, y, speed):
             # The sprite is a texture region from the top left corner of the 'flappy' texture
