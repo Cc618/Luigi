@@ -90,7 +90,7 @@ void bind_sprite(py::module &m)
         .def(py::init<const Frame*, string>(), py::arg("frame"), py::arg("shader")="main")
 
         // TODO : Test return deletion (after scope)
-        .def_static("create", &Sprite::create, py::arg("texture"), py::arg("shader")="main",
+        .def_static("create", &Sprite::create, py::arg("texture"), py::arg("shader")="main", py::return_value_policy::reference,
             "Creates a new sprite with the whole texture.")
 
         .def_readwrite("x", &Sprite::x)
@@ -100,7 +100,6 @@ void bind_sprite(py::module &m)
         .def_readwrite("rot", &Sprite::rot)
         .def_readwrite("frame", &Sprite::frame)
 
-        // TODO : Ref to inherited methods + try without these lines
         .def("start", &Sprite::start)
         .def("update", &Sprite::update, py::arg("dt"))
         .def("draw", &Sprite::draw)

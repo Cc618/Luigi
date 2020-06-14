@@ -16,6 +16,7 @@ namespace lg
     public:
         static Shader *create(const std::string& name, const std::string& vertex_file,
             const std::string& fragment_file, const std::list<std::string>& uniforms);
+        
         // TODO : Binding
         static Shader *get(const std::string& name);
 

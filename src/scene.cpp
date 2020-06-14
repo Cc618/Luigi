@@ -15,15 +15,6 @@ static bool layer_cmp(Layer* a, Layer *b)
 // --- Scene --- //
 Scene *Scene::current = nullptr;
 
-Scene *Scene::find(const std::string& name)
-{
-    auto scn = find_if(instances.begin(), instances.end(), [name](Scene* s) { return s->name == name; });
-
-    Error::check(scn != instances.end(), "No scene with name '" + name + "' found");
-
-    return *scn;
-}
-
 Scene::Scene(const std::string &name, const std::string& default_cam)
     : name(name), layers(layer_cmp), default_cam(default_cam)
 {

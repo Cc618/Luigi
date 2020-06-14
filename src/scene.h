@@ -17,11 +17,6 @@ namespace lg
         static Scene *current;
 
     public:
-        // Find a scene by name
-        // TODO : ren by get
-        static Scene *find(const std::string& name);
-
-    public:
         Scene(const std::string& name, const std::string& default_cam);
         virtual ~Scene() = default;
 

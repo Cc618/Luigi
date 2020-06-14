@@ -414,9 +414,9 @@ void bind_game(py::module &m)
         .def("add", &Game::add, py::arg("entity"), py::keep_alive<1, 2>(),
             "Adds an entity.")
 
-        // TODO : Doc
         .def("add_sound", &Game::add_sound, py::arg("name"), py::arg("file"), py::return_value_policy::reference,
             "Adds a sound.")
+
         .def("add_music", &Game::add_music, py::arg("name"), py::arg("file"), py::return_value_policy::reference,
             "Adds a music.")
 
