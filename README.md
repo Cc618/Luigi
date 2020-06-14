@@ -14,6 +14,13 @@ Some examples are provided in this repository, here are some pictures :
 
 ![Flappy Bird](res/flappy.gif)
 
+## Features
+
+- 2D lightweight game engine for Python 3
+- Fast : Written in C++, uses OpenGL as backend
+- Free and open source (MIT license)
+- Targets Linux based desktop devices
+
 ## Install
 
 ### With pip
