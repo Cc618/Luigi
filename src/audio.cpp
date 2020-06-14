@@ -53,6 +53,11 @@ void lg::Sound::set_pos(float val)
     snd.setPosition(val, 0, 0);
 }
 
+float lg::Sound::get_volume() const
+{
+    return snd.getVolume();
+}
+
 // --- Music --- //
 std::unordered_map<std::string, lg::Music*> lg::Music::instances;
 float lg::Music::default_volume = 60;
@@ -276,6 +281,9 @@ void bind_audio(py::module &m)
         .def("set_pos", &lg::Sound::set_pos, py::arg("x"),
             "Changes the 1D position of the sound.")
 
+        .def("get_volume", &lg::Sound::get_volume,
+            "Returns the current sound volume (between 0 and 100).")
+
         .doc() = R"(
             (**audio**) A SFX, can be played multiple times and at different positions.
 
@@ -303,6 +311,9 @@ void bind_audio(py::module &m)
 
         .def("set_loop", &lg::Music::set_loop, py::arg("loop")=false,
             "Sets whether the music is a loop.")
+
+        .def("get_volume", &lg::Music::get_volume,
+            "Returns the current sound volume (between 0 and 100).")
 
         .doc() = R"(
             (**audio**) A looping music, when the music is changed, a transition is played.

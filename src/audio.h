@@ -29,6 +29,8 @@ namespace lg
         void set_volume(float vol);
         void set_pos(float x);
     
+        float get_volume() const;
+
     public:
         std::string name;
 
@@ -59,7 +61,6 @@ namespace lg
         void set_pos(float x);
         void set_loop(bool loop=false);
     
-        // TMP : Binding
         float get_volume() const;
 
     public:
